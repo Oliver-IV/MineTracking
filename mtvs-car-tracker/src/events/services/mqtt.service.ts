@@ -1,6 +1,6 @@
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { connect, MqttClient } from 'mqtt/*';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { connect, MqttClient } from 'mqtt';
+import MQTT_URL from 'src/configs/mqtt.config';
 
 @Injectable()
 export class MqttService implements OnModuleInit {
@@ -10,10 +10,10 @@ export class MqttService implements OnModuleInit {
     private client: MqttClient;
 
     onModuleInit() {
-        this.client = connect('mqtt://localhost:1883');
+        this.client = connect(MQTT_URL);
 
         this.client.on('connect', () => {
-            console.log('[MQTT] Conectado al broker');
+            this.logger.log('[MQTT] Conectado al broker');
         });
 
         this.client.on('error', (err) => {
