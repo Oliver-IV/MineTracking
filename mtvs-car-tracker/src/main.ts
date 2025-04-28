@@ -13,6 +13,14 @@ async function bootstrap() {
       queueOptions: { durable: true },
     }
   }) ;
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      urls: [RABBITMQ_URL],
+      queue: 'traffic_lights_color_updates',
+      queueOptions: { durable: true },
+    }
+  }) ;
   app.startAllMicroservices() ;
   await app.listen(process.env.PORT ?? 3000);
 }

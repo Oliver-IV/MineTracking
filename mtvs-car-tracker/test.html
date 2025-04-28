@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
         #messages {
             margin-top: 20px;
             border: 1px solid #ddd;
@@ -16,33 +18,41 @@
             max-height: 400px;
             overflow-y: auto;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         .status {
             padding: 5px 10px;
             border-radius: 3px;
             font-weight: bold;
         }
+
         .connected {
             background-color: #d4edda;
             color: #155724;
         }
+
         .disconnected {
             background-color: #f8d7da;
             color: #721c24;
         }
     </style>
 </head>
+
 <body>
     <h1>Monitor de Ubicación de Coches (WebSocket)</h1>
     <p>Estado: <span id="status" class="status disconnected">Desconectado</span></p>
@@ -69,34 +79,42 @@
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script>
         const wsUrl = 'ws://localhost:9001'; // Cambia si tu backend usa otro puerto
-        const client = null ;
-
+        let client = null; // Usar let en lugar de const para poder modificarla
+    
         document.getElementById('connect-btn').addEventListener('click', connectWebSocket);
         document.getElementById('disconnect-btn').addEventListener('click', disconnectWebSocket);
-
+    
         function connectWebSocket() {
-            socket = mqtt.connect(wsUrl);
-
-            socket.on('connect', () => {
+            client = mqtt.connect(wsUrl, {
+                username: 'mosquitto',
+                password: 'compaoli123'
+            });
+    
+            client.subscribe('cars/location');
+    
+            client.on('connect', () => {
                 console.log('Conexión WebSocket establecida');
                 document.getElementById('status').textContent = 'Conectado';
                 document.getElementById('status').className = 'status connected';
                 document.getElementById('connect-btn').disabled = true;
                 document.getElementById('disconnect-btn').disabled = false;
-            }
-            );
-             
-            socket.on('message', (topic, message) => {
-                const data = JSON.parse(message.data);
-                console.log(`Datos recibidos de ${topic}:`, data);
-                addDataToTable(data);
-            })
-
-            socket.on('error', (error) => {
+            });
+    
+            client.on('message', (topic, message) => {
+                try {
+                    const data = JSON.parse(message.toString()); // Convertir Buffer a string antes de parsear
+                    console.log(`Datos recibidos de ${topic}:`, data);
+                    addDataToTable(data);
+                } catch (e) {
+                    console.error('Error parseando mensaje:', e);
+                }
+            });
+    
+            client.on('error', (error) => {
                 console.error('Error WebSocket:', error);
             });
-
-            socket.on('close', () => {
+    
+            client.on('close', () => {
                 console.log('Conexión WebSocket cerrada');
                 document.getElementById('status').textContent = 'Desconectado';
                 document.getElementById('status').className = 'status disconnected';
@@ -104,26 +122,28 @@
                 document.getElementById('disconnect-btn').disabled = true;
             });
         }
-
+    
         function disconnectWebSocket() {
-            if (socket) {
-                socket.close();
+            if (client) {
+                client.end(); // Método correcto para desconectar un cliente MQTT
+                client = null;
             }
         }
-
+    
         function addDataToTable(data) {
             const tableBody = document.getElementById('table-body');
             const row = document.createElement('tr');
-            
+    
             row.innerHTML = `
                 <td>${data.carId}</td>
                 <td>${data.location.latitude}</td>
                 <td>${data.location.longitude}</td>
                 <td>${new Date().toLocaleTimeString()}</td>
             `;
-            
+    
             tableBody.prepend(row);
         }
     </script>
 </body>
+
 </html>
