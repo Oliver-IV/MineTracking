@@ -21,7 +21,7 @@ export class MqttService implements OnModuleInit {
         });
     }
 
-    publicar(topic: string, mensaje: any) {
+    publish(topic: string, mensaje: any) {
         const body = typeof mensaje === 'string' ? mensaje : JSON.stringify(mensaje);
         this.client.publish(topic, body);
     }
