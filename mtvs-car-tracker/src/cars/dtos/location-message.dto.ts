@@ -4,4 +4,6 @@ export class LocationMessageDto {
     timestamp: string;
     location: LocationDto;
     carId: string;
+    speed: number;
+    status: 'MOVING' | 'STOPPED';
 }
