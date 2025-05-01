@@ -28,8 +28,8 @@ message Cars {
 
 message CreateCarDto {
     string name = 1;
-    int32 maxCapacity = 3;
-    string type = 4;
+    int32 maxCapacity = 2;
+    string type = 3;
 }
 
 message Car{

@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TrafficLightsService } from './traffic-lights.service';
-import { CreateTrafficLightDto } from './dto/create-traffic-light.dto';
-import { UpdateTrafficLightDto } from './dto/update-traffic-light.dto';
+import { CreateTrafficLightDto, UpdateTrafficLightDto } from '@app/common/types/trafficLights'
 
 @Controller('traffic-lights')
 export class TrafficLightsController {
@@ -19,16 +18,16 @@ export class TrafficLightsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.trafficLightsService.findOne(+id);
+    return this.trafficLightsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTrafficLightDto: UpdateTrafficLightDto) {
-    return this.trafficLightsService.update(+id, updateTrafficLightDto);
+    return this.trafficLightsService.update(id, updateTrafficLightDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.trafficLightsService.remove(+id);
+    return this.trafficLightsService.remove(id);
   }
 }

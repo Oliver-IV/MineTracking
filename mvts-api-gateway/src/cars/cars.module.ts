@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CarsController } from './cars.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { CARS_SERVICE } from './constants';
+import { CARS_SERVICE } from '@app/common';
 import { join } from 'path';
-import { protobufPackage } from './proto/cars';
+import { CARS_PACKAGE_NAME } from '@app/common';
 
 @Module({
   imports: [
@@ -13,8 +13,8 @@ import { protobufPackage } from './proto/cars';
         name: CARS_SERVICE,
         transport: Transport.GRPC,
         options: {
-          package: protobufPackage,
-          protoPath: join(__dirname, '../cars/proto/cars.proto'),
+          package: CARS_PACKAGE_NAME,
+          protoPath: join(__dirname, '../cars.proto'),
         },
       },
     ]),

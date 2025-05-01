@@ -1,6 +1,10 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { CARS_SERVICE_NAME, CarsServiceClient, CreateCarDto, UpdateCarDto } from './proto/cars';
-import { CARS_SERVICE } from './constants';
+import { 
+  CARS_SERVICE_NAME, 
+  CarsServiceClient,
+  CreateCarDto, UpdateCarDto 
+} from '@app/common';
+import { CARS_SERVICE } from '@app/common';
 import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
@@ -25,8 +29,8 @@ export class CarsService implements OnModuleInit {
     return this.carsService.findOneCar({ id });
   }
 
-  update(updateCarDto: UpdateCarDto) {
-    return this.carsService.updateCar({...updateCarDto});
+  update(id: string, updateCarDto: UpdateCarDto) {
+    return this.carsService.updateCar({...updateCarDto, id});
   }
 
   remove(id: string) {

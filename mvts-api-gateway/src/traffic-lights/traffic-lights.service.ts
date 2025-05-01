@@ -1,26 +1,39 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTrafficLightDto } from './dto/create-traffic-light.dto';
-import { UpdateTrafficLightDto } from './dto/update-traffic-light.dto';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { 
+  CreateTrafficLightDto, UpdateTrafficLightDto,
+  TrafficLightsServiceClient
+} from '@app/common/types/trafficLights';
+import { TRAFFIC_LIGHTS_SERVICE_NAME } from '@app/common/types/trafficLights';
+import { ClientGrpc } from '@nestjs/microservices';
+import { TRAFFIC_LIGHTS_SERVICE } from '@app/common';
 
 @Injectable()
-export class TrafficLightsService {
+export class TrafficLightsService implements OnModuleInit{
+  private trafficLightsService: TrafficLightsServiceClient;
+
+  onModuleInit() {
+    this.trafficLightsService = this.client.getService<TrafficLightsServiceClient>(TRAFFIC_LIGHTS_SERVICE_NAME);
+  }
+
+  constructor(@Inject(TRAFFIC_LIGHTS_SERVICE) private client: ClientGrpc) {}
+
   create(createTrafficLightDto: CreateTrafficLightDto) {
-    return 'This action adds a new trafficLight';
+    return this.trafficLightsService.createTrafficLight(createTrafficLightDto);
   }
 
   findAll() {
-    return `This action returns all trafficLights`;
+    return this.trafficLightsService.findAllTrafficLights({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} trafficLight`;
+  findOne(id: string) {
+    return this.trafficLightsService.findOneTrafficLight({ id });
   }
 
-  update(id: number, updateTrafficLightDto: UpdateTrafficLightDto) {
-    return `This action updates a #${id} trafficLight`;
+  update(id: string, updateTrafficLightDto: UpdateTrafficLightDto) {
+    return this.trafficLightsService.updateTrafficLight({...updateTrafficLightDto, id})
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} trafficLight`;
+  remove(id: string) {
+    return this.trafficLightsService.removeTrafficLight({ id });
   }
 }
