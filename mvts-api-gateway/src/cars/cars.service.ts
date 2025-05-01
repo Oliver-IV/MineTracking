@@ -1,26 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCarDto } from './dto/create-car.dto';
-import { UpdateCarDto } from './dto/update-car.dto';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { CARS_SERVICE_NAME, CarsServiceClient, CreateCarDto, UpdateCarDto } from './proto/cars';
+import { CARS_SERVICE } from './constants';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
-export class CarsService {
+export class CarsService implements OnModuleInit {
+  private carsService: CarsServiceClient;
+
+  constructor(@Inject(CARS_SERVICE) private client: ClientGrpc) {}
+
+  onModuleInit() {
+      this.carsService = this.client.getService<CarsServiceClient>(CARS_SERVICE_NAME);
+  }
+
   create(createCarDto: CreateCarDto) {
-    return 'This action adds a new car';
+    return this.carsService.createCar(createCarDto);
   }
 
   findAll() {
-    return `This action returns all cars`;
+    return this.carsService.findAllCars({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} car`;
+  findOne(id: string) {
+    return this.carsService.findOneCar({ id });
   }
 
-  update(id: number, updateCarDto: UpdateCarDto) {
-    return `This action updates a #${id} car`;
+  update(updateCarDto: UpdateCarDto) {
+    return this.carsService.updateCar({...updateCarDto});
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} car`;
+  remove(id: string) {
+    return this.carsService.removeCar({ id });
   }
 }

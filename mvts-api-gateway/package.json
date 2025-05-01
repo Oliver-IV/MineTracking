@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "proto:generate": "protoc --plugin=.\\node_modules\\.bin\\protoc-gen-ts_proto --ts_proto_out=.\\ --ts_proto_opt=nestJs=true .\\src\\cars\\proto\\cars.proto",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -20,10 +21,14 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.13.3",
+    "@grpc/proto-loader": "^0.7.15",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "*",
+    "@nestjs/microservices": "^11.1.0",
     "@nestjs/platform-express": "^11.0.1",
+    "mvts-api-gateway": "file:",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
@@ -50,6 +55,7 @@
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
+    "ts-proto": "^2.7.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
