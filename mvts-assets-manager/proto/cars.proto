@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package cars;
+
+service CarsService {
+    rpc CreateCar (CreateCarDto) returns (Car) {}
+    rpc FindAllCars (Empty) returns (Cars) {}
+    rpc FindOneCar (FindOneCarDto) returns (Car) {}
+    rpc UpdateCar (UpdateCarDto) returns (Car) {}
+    rpc RemoveCar (FindOneCarDto) returns (Car) {}
+}
+
+message UpdateCarDto {
+    string id = 1;
+    string name = 2;
+    string transitStatus = 3;
+}
+
+message FindOneCarDto {
+    string id = 1;
+}
+
+message Empty {};
+
+message Cars {
+    repeated Car cars = 1;
+}
+
+message CreateCarDto {
+    string name = 1;
+    int32 maxCapacity = 3;
+    string type = 4;
+}
+
+message Car{
+    string id = 1;
+    string name = 2;
+    int32 maxCapacity = 3;
+    string type = 4;
+    string transitStatus = 5;
+}
