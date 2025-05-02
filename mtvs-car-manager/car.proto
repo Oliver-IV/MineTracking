@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package car_manager;
+
+message Car {
+    string carId = 1;
+    string name = 2;
+    CarType type = 3;
+    Capacity capacity = 4;
+    State state = 5;
+}
+
+enum CarType {
+    HEAVY = 0;
+    LIGHT = 1;
+    MEDIUM = 2;
+}
+
+enum State {
+    AVAILABLE = 0;
+    UNAVAILABLE = 1;
+    ON_ROUTE = 2;
+}
+
+enum MeasurementUnit {
+    KG = 0;
+    TON = 1;
+    KTON = 2;
+}
+
+message Capacity {
+    MeasurementUnit measurementUnit = 1;
+    string value = 2;
+}
+
+message CreateCarRequest {
+    string name = 1;
+    CarType type = 2;
+    Capacity capacity = 3;
+    State state = 4;
+}
+
+message CarIdRequest {
+    string carId = 1;
+}
+
+message GetAllCarsRequest {
+    int32 limit = 1;
+    State filter_by_state = 2;
+}
+
+message UpdateCarRequest {
+    string carId = 1;
+    string name = 2;
+    CarType type = 3;
+    Capacity capacity = 4;
+    State state = 5;
+}
+
+message DeleteCarResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+service CarService {
+    rpc createCar (CreateCarRequest) returns (Car);
+    rpc getCarById (CarIdRequest) returns (Car);
+    rpc getAllCars (GetAllCarsRequest) returns (stream Car);
+    rpc updateCar (UpdateCarRequest) returns (Car);
+    rpc deleteCar (CarIdRequest) returns (DeleteCarResponse);
+}
