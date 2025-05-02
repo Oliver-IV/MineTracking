@@ -1,7 +1,8 @@
 import "dotenv/config";
 
 const rabbitMqUrl = process.env.RABBITMQ_URL || 'amqp://localhost';
-const carQueueName = process.env.CAR_QUEUE_NAME || 'car_location_updates';
-const trafficLightQueueName = process.env.TRAFFIC_LIGHT_QUEUE_NAME || 'traffic_lights_color_updates';
+const carQueueName = process.env.CAR_QUEUE_NAME || 'car_location_updates_queue';
+const trafficLightQueueName = process.env.TRAFFIC_LIGHT_QUEUE_NAME || 'traffic_lights_color_updates_queue';
+const trafficLightChangeQueueName = process.env.TRAFFIC_LIGHT_CHANGE_QUEUE_NAME || 'traffic_light_color_change_queue'
 
-export { rabbitMqUrl, carQueueName, trafficLightQueueName };
+export { rabbitMqUrl, carQueueName, trafficLightQueueName, trafficLightChangeQueueName };

@@ -7,6 +7,12 @@ import * as amqp from 'amqplib';
 
 export class LocationService {
 
+    constructor() {
+        this.checkTrafficLights = this.checkTrafficLights.bind(this);
+        this.calculateDistance = this.calculateDistance.bind(this);
+        this.publishLocationUpdate = this.publishLocationUpdate.bind(this);
+    }
+
     calculateDistance(loc1: LocationDto, loc2: LocationDto): number {
         const R = 6371e3; // Radio de la Tierra en metros
         const φ1 = loc1.latitude * Math.PI / 180;

@@ -6,6 +6,11 @@ import trafficLights from "../simulated-data/traffic-lights.simulation";
 
 export class TrafficLightsService {
 
+    constructor() {
+        this.startTrafficLightCycle = this.startTrafficLightCycle.bind(this);
+        this.publishTrafficLightUpdate = this.publishTrafficLightUpdate.bind(this);
+    }
+
     async publishTrafficLightUpdate(trafficLight: TrafficLightDto): Promise<void> {
         try {
             const connection = await amqp.connect(rabbitMqUrl);
@@ -63,7 +68,6 @@ export class TrafficLightsService {
             }
         };
 
-        // Use arrow function here as well to preserve 'this' context
         this.publishTrafficLightUpdate(trafficLight).then(() => {
             trafficLight.intervalId = setTimeout(cycleColor, this.getInitialDelay(trafficLight));
         });
