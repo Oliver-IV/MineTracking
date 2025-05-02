@@ -1,34 +1,45 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  // Post,
+  Body,
+  Patch,
+  Param,
+  // Delete,
+} from '@nestjs/common';
 import { TrafficLightsService } from './traffic-lights.service';
-import { CreateTrafficLightDto } from './dto/create-traffic-light.dto';
+//import { CreateTrafficLightDto } from './dto/create-traffic-light.dto';
 import { UpdateTrafficLightDto } from './dto/update-traffic-light.dto';
 
 @Controller('traffic-lights')
 export class TrafficLightsController {
   constructor(private readonly trafficLightsService: TrafficLightsService) {}
 
-  @Post()
-  create(@Body() createTrafficLightDto: CreateTrafficLightDto) {
-    return this.trafficLightsService.create(createTrafficLightDto);
-  }
+  // @Post()
+  // create(@Body() createTrafficLightDto: CreateTrafficLightDto) {
+  //   return this.trafficLightsService.create(createTrafficLightDto);
+  // }
 
   @Get()
   findAll() {
     return this.trafficLightsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.trafficLightsService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.trafficLightsService.findOne(id);
+  // }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTrafficLightDto: UpdateTrafficLightDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateTrafficLightDto: UpdateTrafficLightDto,
+  ) {
     return this.trafficLightsService.update(+id, updateTrafficLightDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.trafficLightsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.trafficLightsService.remove(id);
+  // }
 }
