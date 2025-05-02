@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package cars;
+
+service CarsService {
+    rpc CreateCar (CreateCarDto) returns (Car) {}
+    rpc FindAllCars (Empty) returns (Cars) {}
+    rpc FindOneCar (FindOneCarDto) returns (Car) {}
+    rpc UpdateCar (UpdateCarDto) returns (Car) {}
+    rpc RemoveCar (FindOneCarDto) returns (Car) {}
+}
+
+message UpdateCarDto {
+    string carId = 1;
+    string name = 2;
+    string state = 3;
+    Capacity capacity = 4;
+    string type = 5;
+}
+
+message FindOneCarDto {
+    string carId = 1;
+}
+
+message Empty {};
+
+message Cars {
+    repeated Car cars = 1;
+}
+
+message CreateCarDto {
+    string name = 1;
+    Capacity capacity = 2;
+    string type = 3;
+}
+
+message Capacity {
+    string capacityId = 1;
+    string measurementUnit = 2;
+    int32 value = 3;
+}
+
+message Car{
+    string carId = 1;
+    string name = 2;
+    Capacity capacity = 3;
+    string type = 4;
+    string state = 5;
+}
