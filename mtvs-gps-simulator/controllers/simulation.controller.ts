@@ -6,10 +6,12 @@ import carSimulation from "../simulated-data/cars.simulation";
 import trafficLights from "../simulated-data/traffic-lights.simulation";
 import { LocationDto } from "../dtos/location.dto";
 import { v4 as uuidv4 } from 'uuid';
+import { TrafficLightsConsumer } from "../consumers/traffic-lights.consumer";
 
 const carService = new CarService();
 const locationService = new LocationService();
 const trafficLightsService = new TrafficLightsService();
+const trafficLightsConsumer = new TrafficLightsConsumer(trafficLightsService);
 
 const { simulateGoogleMapsRoute } = carService;
 const { calculateDistance, checkTrafficLights, publishLocationUpdate, } = locationService;
@@ -17,6 +19,8 @@ const { startTrafficLightCycle, stopTrafficLightCycle } = trafficLightsService;
 
 function POSTstartSimulation(req: Request, res: Response) {
     const { origin, destination } = req.body as { origin: LocationDto, destination: LocationDto };
+
+    trafficLightsConsumer.start() ;
 
     if (!origin || !destination) {
         res.status(400).json({ error: 'Se requieren origen y destino' });
@@ -89,6 +93,9 @@ function POSTstopSimulation(req: Request, res: Response) {
     if (carSimulation.intervalId) {
         clearInterval(carSimulation.intervalId);
     }
+
+    trafficLightsConsumer.stop() ;
+
     carSimulation.active = false;
 
     // Detener todos los semáforos

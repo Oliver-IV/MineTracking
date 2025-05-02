@@ -1,4 +1,4 @@
-export class TrafficLightUpdateMessage {
+export class TrafficLightUpdateMessageDto {
     pattern: string;
     data: {
         trafficLightId: string;

@@ -2,7 +2,7 @@ import { rabbitMqUrl, trafficLightChangeQueueName, trafficLightQueueName } from 
 import * as amqp from 'amqplib';
 import { TrafficLightDto } from "../dtos/traffic-light.dto";
 import { TrafficLightsService } from "../services/traffic-lights.service";
-import { TrafficLightUpdateMessage as TrafficLightUpdateMessageDto } from "../dtos/traffic-light-update-message.dto";
+import { TrafficLightUpdateMessageDto as TrafficLightUpdateMessageDto } from "../dtos/traffic-light-update-message.dto";
 
 export class TrafficLightsConsumer {
 
