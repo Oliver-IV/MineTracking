@@ -1,5 +1,4 @@
 ﻿using mvts_congestion_service.Models;
-using System.Runtime.CompilerServices;
 
 namespace mvts_congestion_service.Mappers
 {

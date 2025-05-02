@@ -3,43 +3,28 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
 } from '@nestjs/common';
 import { CongestionsService } from './congestions.service';
-import { CreateCongestionDto } from './dto/create-congestion.dto';
-import { UpdateCongestionDto } from './dto/update-congestion.dto';
+import { CongestionCreateDTO } from './protos/congestion_service';
 
 @Controller('congestions')
 export class CongestionsController {
-  constructor(private readonly congestionsService: CongestionsService) {}
+  constructor(private readonly congesService: CongestionsService) {}
 
   @Post()
-  create(@Body() createCongestionDto: CreateCongestionDto) {
-    return this.congestionsService.create(createCongestionDto);
+  create(@Body() createCongeDto: CongestionCreateDTO) {
+    return this.congesService.createCongestion(createCongeDto);
   }
 
-  @Get()
-  findAll() {
-    return this.congestionsService.findAll();
-  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.congestionsService.findOne(+id);
+    return this.congesService.getCongestionById({id:parseInt(id)});
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCongestionDto: UpdateCongestionDto,
-  ) {
-    return this.congestionsService.update(+id, updateCongestionDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.congestionsService.remove(+id);
+  @Get()
+  getAll(){
+    return this.congesService.getAll({});
   }
 }

@@ -1,26 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCongestionDto } from './dto/create-congestion.dto';
-import { UpdateCongestionDto } from './dto/update-congestion.dto';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { CongestionByIdDTO, CongestionCreateDTO, CongestionDTO, CongestionServiceClient, GetCongestionRequest, ListCongestionDTO } from './protos/congestion_service';
+import { Observable } from 'rxjs';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
-export class CongestionsService {
-  create(createCongestionDto: CreateCongestionDto) {
-    return 'This action adds a new congestion';
+export class CongestionsService implements OnModuleInit, CongestionServiceClient{
+  private congesService : CongestionServiceClient;
+  constructor(@Inject('CONGESTION_PACKAGE') private client : ClientGrpc){}
+  
+  onModuleInit() {
+    this.congesService = this.client.getService<CongestionServiceClient>('CongestionService');
+  }
+  
+  createCongestion(request: CongestionCreateDTO): Observable<CongestionByIdDTO> {
+    return this.congesService.createCongestion(request);
+  }
+  getCongestionById(request: CongestionByIdDTO): Observable<CongestionDTO> {
+    return this.congesService.getCongestionById(request);
+  }
+  getAll(request: GetCongestionRequest): Observable<ListCongestionDTO>{
+    return this.congesService.getAll(request);
   }
 
-  findAll() {
-    return `This action returns all congestions`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} congestion`;
-  }
-
-  update(id: number, updateCongestionDto: UpdateCongestionDto) {
-    return `This action updates a #${id} congestion`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} congestion`;
-  }
 }
