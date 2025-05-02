@@ -1,0 +1,42 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "mvts_congestion_service";
+
+package congestion;
+
+service CongestionService {
+  rpc CreateCongestion (CongestionCreateDTO) returns (CongestionByIdDTO);
+  rpc GetCongestionById (CongestionByIdDTO) returns (CongestionDTO);
+  rpc GetAll (GetCongestionRequest) returns (ListCongestionDTO);
+}
+
+message ListCongestionDTO {
+	repeated CongestionDTO congestions = 1;
+}
+
+message CongestionCreateDTO {
+	string name = 1;
+	float lat = 2;
+	float lng = 3;
+}
+
+message GetCongestionRequest {
+
+}
+
+message CongestionByIdDTO {
+	int32 id = 1;
+}
+
+message CongestionDTO {
+	int32 id = 1;
+	string name = 2;
+	float lat = 3;
+	float lng = 4;
+	string created_at = 5;
+}
+
+message ErrorResponse  {
+	string name = 1;
+	repeated string details = 2;
+}
