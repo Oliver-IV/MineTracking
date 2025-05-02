@@ -1,11 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTrafficLightDto } from './dto/create-traffic-light.dto';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { UpdateTrafficLightDto } from './dto/update-traffic-light.dto';
+import { Observable } from 'rxjs';
+import { ClientGrpc } from '@nestjs/microservices';
+
+interface TrafficLightGrpcService {
+  UpdateTrafficLightColor(data: {
+    id: string;
+    data: { color: string };
+  }): Observable<{ message: string }>;
+}
 
 @Injectable()
-export class TrafficLightsService {
-  create(createTrafficLightDto: CreateTrafficLightDto) {
-    return 'This action adds a new trafficLight';
+export class TrafficLightsService implements OnModuleInit {
+  private grpcService: TrafficLightGrpcService;
+
+  constructor(@Inject('TRAFFIC_LIGHT_PACKAGE') private client: ClientGrpc) {}
+
+  onModuleInit() {
+    this.grpcService = this.client.getService<TrafficLightGrpcService>(
+      'trafficLightService',
+    );
   }
 
   findAll() {
@@ -17,7 +31,14 @@ export class TrafficLightsService {
   }
 
   update(id: number, updateTrafficLightDto: UpdateTrafficLightDto) {
-    return `This action updates a #${id} trafficLight`;
+    const payload = {
+      id: id.toString(),
+      data: {
+        color: updateTrafficLightDto.color,
+      },
+    };
+
+    return this.grpcService.UpdateTrafficLightColor(payload);
   }
 
   remove(id: number) {
