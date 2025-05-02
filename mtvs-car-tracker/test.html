@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Tráfico - Autos y Semáforos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #messages {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .traffic-light {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .red {
+            background-color: #ff0000;
+        }
+
+        .yellow {
+            background-color: #ffff00;
+        }
+
+        .green {
+            background-color: #00ff00;
+        }
+
+        .car-status {
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .moving {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .stopped {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Monitor de Tráfico en Tiempo Real</h1>
+    <p>Estado: <span id="status" class="status disconnected">Desconectado</span></p>
+    <div>
+        <button id="connect-btn">Conectar</button>
+        <button id="disconnect-btn" disabled>Desconectar</button>
+    </div>
+
+    <div id="messages">
+        <h2 class="section-title">Datos de Semáforos</h2>
+        <table id="traffic-lights-table">
+            <thead>
+                <tr>
+                    <th>ID Semáforo</th>
+                    <th>Estado</th>
+                    <th>Color Actual</th>
+                    <th>Ciclo (R/Y/G)</th>
+                    <th>Última Actualización</th>
+                </tr>
+            </thead>
+            <tbody id="traffic-lights-body">
+                <!-- Datos de semáforos dinámicos aquí -->
+            </tbody>
+        </table>
+
+        <h2 class="section-title">Datos de Vehículos</h2>
+        <table id="cars-table">
+            <thead>
+                <tr>
+                    <th>Car ID</th>
+                    <th>Latitud</th>
+                    <th>Longitud</th>
+                    <th>Velocidad (km/h)</th>
+                    <th>Estado</th>
+                    <th>Hora</th>
+                </tr>
+            </thead>
+            <tbody id="cars-body">
+                <!-- Datos de autos dinámicos aquí -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script>
+        const wsUrl = 'ws://localhost:9001'; // Cambia si tu backend usa otro puerto
+        let client = null;
+        
+        // Objetos para almacenar el estado actual
+        const trafficLights = {};
+        const cars = {};
+
+        document.getElementById('connect-btn').addEventListener('click', connectWebSocket);
+        document.getElementById('disconnect-btn').addEventListener('click', disconnectWebSocket);
+
+        function connectWebSocket() {
+            client = mqtt.connect(wsUrl, {
+                username: 'mosquitto',
+                password: 'compaoli123'
+            });
+
+            // Suscribirse a ambos temas
+            client.subscribe('cars/location');
+            client.subscribe('traffic_lights/color');
+
+            client.on('connect', () => {
+                console.log('Conexión WebSocket establecida');
+                updateStatus('Conectado', 'connected');
+                document.getElementById('connect-btn').disabled = true;
+                document.getElementById('disconnect-btn').disabled = false;
+            });
+
+            client.on('message', (topic, message) => {
+                try {
+                    const data = JSON.parse(message.toString());
+                    console.log(`Datos recibidos de ${topic}:`, data);
+                    
+                    if (topic === 'cars/location') {
+                        updateCarData(data);
+                    } else if (topic === 'traffic_lights/color') {
+                        updateTrafficLightData(data);
+                    }
+                } catch (e) {
+                    console.error('Error parseando mensaje:', e);
+                }
+            });
+
+            client.on('error', (error) => {
+                console.error('Error WebSocket:', error);
+            });
+
+            client.on('close', () => {
+                console.log('Conexión WebSocket cerrada');
+                updateStatus('Desconectado', 'disconnected');
+                document.getElementById('connect-btn').disabled = false;
+                document.getElementById('disconnect-btn').disabled = true;
+            });
+        }
+
+        function disconnectWebSocket() {
+            if (client) {
+                client.end();
+                client = null;
+            }
+        }
+
+        function updateStatus(text, className) {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = text;
+            statusElement.className = `status ${className}`;
+        }
+
+        function updateCarData(data) {
+            // Actualizar el objeto de coches
+            cars[data.carId] = {
+                ...data,
+                lastUpdate: new Date().toLocaleTimeString()
+            };
+            
+            // Actualizar la tabla
+            const tableBody = document.getElementById('cars-body');
+            let row = document.getElementById(`car-${data.carId}`);
+            
+            if (!row) {
+                row = document.createElement('tr');
+                row.id = `car-${data.carId}`;
+                tableBody.prepend(row);
+            }
+            
+            row.innerHTML = `
+                <td>${data.carId}</td>
+                <td>${data.location.latitude.toFixed(6)}</td>
+                <td>${data.location.longitude.toFixed(6)}</td>
+                <td>${data.speed || 'N/A'}</td>
+                <td><span class="car-status ${data.status === 'MOVING' ? 'moving' : 'stopped'}">${data.status}</span></td>
+                <td>${new Date().toLocaleTimeString()}</td>
+            `;
+        }
+
+        function updateTrafficLightData(data) {
+            // Actualizar el objeto de semáforos
+            trafficLights[data.trafficLightId] = {
+                ...data,
+                lastUpdate: new Date().toLocaleTimeString()
+            };
+            
+            // Actualizar la tabla
+            const tableBody = document.getElementById('traffic-lights-body');
+            let row = document.getElementById(`tl-${data.trafficLightId}`);
+            
+            if (!row) {
+                row = document.createElement('tr');
+                row.id = `tl-${data.trafficLightId}`;
+                tableBody.prepend(row);
+            }
+            
+            // Crear representación visual del color
+            const colorIndicator = `<span class="traffic-light ${data.color.toLowerCase()}"></span>`;
+            
+            row.innerHTML = `
+                <td>${data.trafficLightId}</td>
+                <td>${data.active ? 'Activo' : 'Inactivo'}</td>
+                <td>${colorIndicator} ${data.color}</td>
+                <td>${formatCycleIntervals(data.cycleIntervals)}</td>
+                <td>${new Date().toLocaleTimeString()}</td>
+            `;
+        }
+
+        function formatCycleIntervals(intervals) {
+            if (!intervals) return 'N/A';
+            return `R:${intervals.red/1000}s / Y:${intervals.yellow/1000}s / G:${intervals.green/1000}s`;
+        }
+    </script>
+</body>
+
+</html>
