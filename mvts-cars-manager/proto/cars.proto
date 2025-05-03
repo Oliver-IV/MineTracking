@@ -12,10 +12,10 @@ service CarsService {
 
 message UpdateCarDto {
     string carId = 1;
-    string name = 2;
-    string state = 3;
-    Capacity capacity = 4;
-    string type = 5;
+    optional string name = 2;
+    optional string state = 3;
+    optional Capacity capacity = 4;
+    optional string type = 5;
 }
 
 message FindOneCarDto {

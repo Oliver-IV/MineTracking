@@ -11,13 +11,15 @@ service CarsService {
 }
 
 message UpdateCarDto {
-    string id = 1;
-    string name = 2;
-    string transitStatus = 3;
+    string carId = 1;
+    optional string name = 2;
+    optional string state = 3;
+    optional Capacity capacity = 4;
+    optional string type = 5;
 }
 
 message FindOneCarDto {
-    string id = 1;
+    string carId = 1;
 }
 
 message Empty {};
@@ -28,14 +30,20 @@ message Cars {
 
 message CreateCarDto {
     string name = 1;
-    int32 maxCapacity = 3;
-    string type = 4;
+    Capacity capacity = 2;
+    string type = 3;
+}
+
+message Capacity {
+    string capacityId = 1;
+    string measurementUnit = 2;
+    int32 value = 3;
 }
 
 message Car{
-    string id = 1;
+    string carId = 1;
     string name = 2;
-    int32 maxCapacity = 3;
+    Capacity capacity = 3;
     string type = 4;
-    string transitStatus = 5;
+    string state = 5;
 }

@@ -1,13 +1,12 @@
-import { Car, CreateCarDto } from "@app/common";
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { Capacity } from "@app/common/entities/capacity.entity";
-import { CarEntity } from "@app/common/entities/car.entity";
-import { CarType } from "@app/common/enums/car-type.enum";
-import { MeasurementUnit } from "@app/common/enums/measurement-unit.enum";
-import { State } from "@app/common/enums/state.enum";
+import { 
+    CarEntity, CapacityEntity,
+    CarType, MeasurementUnit, State,
+    Capacity, Car, CreateCarDto
+ } from "@app/common";
 
 @Injectable()
-export class DtoConverter {
+export class Converter {
     stringToCarType(type: string): CarType {
         const types = Object.values(CarType);
         if (types.includes(type as CarType)) {
@@ -31,22 +30,27 @@ export class DtoConverter {
         throw new BadRequestException('Invalid measurement unit');
     }
 
-    carDtoToEntity(carDto: CreateCarDto, state: State, carId: string): CarEntity {
-        const capacity = carDto.capacity;
+    capacityProtoToEntity(capacity: Capacity): CapacityEntity {
+        const measurementUnit = this.stringToMeasurement(capacity.measurementUnit);
+        const capacityEntity: CapacityEntity = {
+            capacityId: capacity.capacityId,
+            measurementUnit,
+            value: capacity.value
+        };
+        return capacityEntity;
+    }
 
+    carDtoToEntity(carDto: CreateCarDto, state: State, carId: string): CarEntity {
+        const {name, type, capacity} = carDto;
         if(capacity === undefined){
             throw new BadRequestException('Capacity must be defined');
         }
-        const measurementUnit = this.stringToMeasurement(capacity.measurementUnit);
-        const capacityEntity: Capacity = {
-            capacityId: capacity.capacityId,
-            measurementUnit,
-            value: capacity.value 
-        };
-        
+
+        const capacityEntity = this.capacityProtoToEntity(capacity);
+
         const car: CarEntity = {
-            name: carDto.name,
-            type: this.stringToCarType(carDto.type),
+            name,
+            type: this.stringToCarType(type),
             state,
             carId,
             capacity: capacityEntity
@@ -54,7 +58,7 @@ export class DtoConverter {
         return car;
     }
 
-    carEntityToDto(carEntity: CarEntity): Car{
+    carEntityToProto(carEntity: CarEntity): Car{
         const car: Car={
             ...carEntity
         }

@@ -6,6 +6,7 @@ import {
 } from '@app/common';
 import { CARS_SERVICE } from '@app/common';
 import { ClientGrpc } from '@nestjs/microservices';
+import { CreateCarValidatedDto } from './dto';
 
 @Injectable()
 export class CarsService implements OnModuleInit {
@@ -26,14 +27,15 @@ export class CarsService implements OnModuleInit {
   }
 
   findOne(id: string) {
-    return this.carsService.findOneCar({ id });
+    return this.carsService.findOneCar({ carId: id });
   }
 
   update(id: string, updateCarDto: UpdateCarDto) {
-    return this.carsService.updateCar({...updateCarDto, id});
+    console.log(id,updateCarDto);
+    return this.carsService.updateCar({...updateCarDto, carId: id});
   }
 
   remove(id: string) {
-    return this.carsService.removeCar({ id });
+    return this.carsService.removeCar({ carId: id });
   }
 }

@@ -1,25 +1,19 @@
-import { Car, Cars, CreateCarDto, UpdateCarDto } from '@app/common';
-import { Inject, Injectable, InternalServerErrorException, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { 
+  Car, Cars, CreateCarDto, UpdateCarDto,
+  CarEntity, State } from '@app/common';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CarEntity } from '@app/common/entities/car.entity';
-import { CarType } from '@app/common/enums/car-type.enum';
-import { State } from '@app/common/enums/state.enum';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { DtoConverter } from './dto-converter';
-import { MeasurementUnit } from '@app/common/enums/measurement-unit.enum';
+import { Repository } from 'typeorm';
+import { Converter } from './converter';
+import { CapacityService } from './capacity.service';
 
 @Injectable()
-export class CarsService implements OnModuleInit{
+export class CarsService{
   constructor(
     @InjectRepository(CarEntity) private carRepository: Repository<CarEntity>,
-    @Inject() private converter: DtoConverter
+    @Inject() private capacityService: CapacityService,
+    @Inject() private converter: Converter
   ){}
-  
-  onModuleInit() {
-    for (let i = 0; i < 100; i++) {
-      this.create({name:`car ${i+1}`,capacity: {capacityId:'',measurementUnit: MeasurementUnit.KG, value:20}, type: CarType.HEAVY});
-    }
-  }
 
   formatId(count: number, padding: number = 5): string {
     const nextId = count + 1;
@@ -27,7 +21,7 @@ export class CarsService implements OnModuleInit{
   }
   
   async generateCarId(): Promise<string> {
-    const count = await this.carRepository.count({});
+    const count = await this.carRepository.count();
     return this.formatId(count);
   }
 
@@ -38,9 +32,12 @@ export class CarsService implements OnModuleInit{
         State.AVAILABLE, 
         await this.generateCarId()
       );
-      
-      const savedCar = await this.carRepository.save(carEntity);
-      return this.converter.carEntityToDto(savedCar);
+      const {measurementUnit, value} = carEntity.capacity;
+      carEntity.capacity = await this.capacityService.createCapacity(measurementUnit, value);
+
+      const savedCar =  await this.carRepository.save(carEntity);
+
+      return this.converter.carEntityToProto(savedCar);
     } catch (error) {
       console.error('Error saving car:', error);
       throw new InternalServerErrorException('Something went wrong while saving the car');
@@ -53,7 +50,7 @@ export class CarsService implements OnModuleInit{
       throw new NotFoundException('There are no registered cars');
     }
 
-    const carsArr = foundCars.map(car => this.converter.carEntityToDto(car));
+    const carsArr = foundCars.map(car => this.converter.carEntityToProto(car));
     return { cars: carsArr };
   }
 
@@ -63,24 +60,35 @@ export class CarsService implements OnModuleInit{
       throw new NotFoundException(`Car not found by id ${id}`);
     }
 
-    return this.converter.carEntityToDto(car);
+    return this.converter.carEntityToProto(car);
   }
 
   async update(id: string, updateCarDto: UpdateCarDto): Promise<Car> {
-    const state = this.converter.stringToState(updateCarDto.state);
-    const updateEntity = this.converter.carDtoToEntity(updateCarDto, state, id);
-    const result = await this.carRepository.update({ carId: id }, updateEntity);
-
-    if (!result.affected || result.affected === 0) {
+    const car = await this.carRepository.findOne({ where: { carId: id } });
+    if (!car) {
       throw new NotFoundException(`Car not found by id ${id}`);
     }
-
-    const updatedCar = await this.carRepository.findOne({ where: { carId: id } });
-    if (!updatedCar) {
-      throw new InternalServerErrorException('Car was updated but could not be retrieved');
+    
+    const { capacity, name, state, type } = updateCarDto;
+    const updatedEntity: CarEntity = {
+      carId: id,
+      name: name ? name : car.name,
+      state: state ? this.converter.stringToState(state) : car.state,
+      type: type ? this.converter.stringToCarType(type) : car.type,
+      capacity: capacity ? this.converter.capacityProtoToEntity(capacity) : car.capacity
+    }
+    
+    const result = await this.carRepository.update({ carId: id }, updatedEntity);
+    
+    if (result.affected && result.affected > 0) {
+      const updatedCar = await this.carRepository.findOne({ where: { carId: id } });
+      if (!updatedCar) {
+        throw new InternalServerErrorException('Car was updated but could not be retrieved');
+      }
+      return this.converter.carEntityToProto(updatedCar);
     }
 
-    return this.converter.carEntityToDto(updatedCar);
+    throw new InternalServerErrorException(`Something went wrong while updating the car with id ${id}`);
   }
 
   async remove(id: string): Promise<Car> {
@@ -94,6 +102,6 @@ export class CarsService implements OnModuleInit{
       throw new InternalServerErrorException(`Something went wrong while removing the car with id ${id}`);
     }
     
-    return this.converter.carEntityToDto(car);
+    return this.converter.carEntityToProto(car);
   }
 }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { CarsModule } from './cars/cars.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from 'configs/database.config';
+import { CapacityEntity, CarEntity } from '@app/common';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from 'configs/databas
       username: DB_USER,
       password: DB_PASSWORD,
       database: DB_NAME,
-      entities: [__dirname + '@app/common/entities/*.entity{.ts,.js}'],
+      entities: [CarEntity, CapacityEntity],
       synchronize: true,
     }),
   ],

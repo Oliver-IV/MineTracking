@@ -12,10 +12,10 @@ export const protobufPackage = "cars";
 
 export interface UpdateCarDto {
   carId: string;
-  name: string;
-  state: string;
-  capacity: Capacity | undefined;
-  type: string;
+  name?: string | undefined;
+  state?: string | undefined;
+  capacity?: Capacity | undefined;
+  type?: string | undefined;
 }
 
 export interface FindOneCarDto {

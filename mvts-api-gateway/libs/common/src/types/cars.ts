@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.7.0
 //   protoc               v3.20.3
-// source: src/cars/proto/cars.proto
+// source: proto/cars.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
@@ -11,13 +11,15 @@ import { Observable } from "rxjs";
 export const protobufPackage = "cars";
 
 export interface UpdateCarDto {
-  id: string;
-  name: string;
-  transitStatus: string;
+  carId: string;
+  name?: string | undefined;
+  state?: string | undefined;
+  capacity?: Capacity | undefined;
+  type?: string | undefined;
 }
 
 export interface FindOneCarDto {
-  id: string;
+  carId: string;
 }
 
 export interface Empty {
@@ -29,16 +31,22 @@ export interface Cars {
 
 export interface CreateCarDto {
   name: string;
-  maxCapacity: number;
+  capacity: Capacity | undefined;
   type: string;
 }
 
+export interface Capacity {
+  capacityId: string;
+  measurementUnit: string;
+  value: number;
+}
+
 export interface Car {
-  id: string;
+  carId: string;
   name: string;
-  maxCapacity: number;
+  capacity: Capacity | undefined;
   type: string;
-  transitStatus: string;
+  state: string;
 }
 
 export const CARS_PACKAGE_NAME = "cars";

@@ -1,7 +1,6 @@
-import { CarType } from "../../../../enums/car-type.enum";
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
-import { Capacity } from "./capacity.entity";
-import { State } from "../../../../enums/state.enum";
+import { CarType,State } from "@app/common";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { CapacityEntity } from "./capacity.entity";
 
 @Entity("car")
 export class CarEntity {
@@ -12,12 +11,13 @@ export class CarEntity {
     @Column({ name:"name", nullable: false })
     name: string
 
-    @Column({ name:"type", enum: ["HEAVY", "LIGHT", "MEDIUM"], nullable: false })
+    @Column({ type: 'enum', name:"type", enum: CarType, nullable: false })
     type: CarType
 
-    @Column({ name:"state", enum: ["AVAILABLE", "UNAVAILABLE", "ON_ROUTE"], nullable: false })
+    @Column({type: 'enum', name:"state", enum: State, nullable: false })
     state: State
 
-    @ManyToOne(() => Capacity)
-    capacity: Capacity
+    @ManyToOne(() => CapacityEntity, {eager: true})
+    @JoinColumn({name : 'capacity_id'})
+    capacity: CapacityEntity
 }

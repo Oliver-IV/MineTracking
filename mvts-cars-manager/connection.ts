@@ -1,6 +1,5 @@
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from "./configs/database.config";
-import { Capacity } from "./libs/common/src/entities/capacity.entity";
-import { CarEntity } from "./libs/common/src/entities/car.entity";
+import { CarEntity, CapacityEntity } from "@app/common";
 import { DataSource } from "typeorm";
 
 const connection = new DataSource({
@@ -11,7 +10,7 @@ const connection = new DataSource({
     password: DB_PASSWORD,
     database: DB_NAME,
     synchronize: true,
-    entities: [Capacity, CarEntity]
+    entities: [CapacityEntity, CarEntity]
 }) ;
 
 export default connection ;
