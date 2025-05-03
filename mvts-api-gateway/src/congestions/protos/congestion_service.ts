@@ -20,7 +20,11 @@ export interface CongestionCreateDTO {
   lng: number;
 }
 
-export interface GetCongestionRequest {
+export interface EmptyMessage {
+}
+
+export interface GetCongestionByDateRequest {
+  optionDate: number;
 }
 
 export interface CongestionByIdDTO {
@@ -47,7 +51,9 @@ export interface CongestionServiceClient {
 
   getCongestionById(request: CongestionByIdDTO): Observable<CongestionDTO>;
 
-  getAll(request: GetCongestionRequest): Observable<ListCongestionDTO>;
+  getAll(request: EmptyMessage): Observable<ListCongestionDTO>;
+
+  getByDate(request: GetCongestionByDateRequest): Observable<ListCongestionDTO>;
 }
 
 export interface CongestionServiceController {
@@ -57,12 +63,16 @@ export interface CongestionServiceController {
 
   getCongestionById(request: CongestionByIdDTO): Promise<CongestionDTO> | Observable<CongestionDTO> | CongestionDTO;
 
-  getAll(request: GetCongestionRequest): Promise<ListCongestionDTO> | Observable<ListCongestionDTO> | ListCongestionDTO;
+  getAll(request: EmptyMessage): Promise<ListCongestionDTO> | Observable<ListCongestionDTO> | ListCongestionDTO;
+
+  getByDate(
+    request: GetCongestionByDateRequest,
+  ): Promise<ListCongestionDTO> | Observable<ListCongestionDTO> | ListCongestionDTO;
 }
 
 export function CongestionServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createCongestion", "getCongestionById", "getAll"];
+    const grpcMethods: string[] = ["createCongestion", "getCongestionById", "getAll", "getByDate"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("CongestionService", method)(constructor.prototype[method], method, descriptor);

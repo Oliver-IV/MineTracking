@@ -7,5 +7,6 @@ namespace mvts_congestion_service.Repositories
         Task<Congestion> Create(Congestion congestion);
         Task<Congestion?> FindById(int congestionId);
         Task<IEnumerable<Congestion>> GetAll();
+        Task<IEnumerable<Congestion>> GetAllByDate(int option);
     }
 }

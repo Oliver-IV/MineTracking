@@ -28,5 +28,34 @@ namespace mvts_congestion_service.Repositories
         {
             return await _context.Congestions.ToListAsync();
         }
+
+        public async Task<IEnumerable<Congestion>> GetAllByDate(int option)
+        {
+
+            switch (option)
+            {
+                case 1:
+                    // Logs today
+                    return await _context.Congestions
+                        .Where(e => e.CreatedAt >= DateTime.Today && e.CreatedAt < DateTime.Today.AddDays(1))
+                        .OrderByDescending(r => r.CreatedAt)
+                        .ToListAsync();
+                case 2:
+                    // Logs in the last 7 days (including today)
+                    return await _context.Congestions
+                        .Where(e => e.CreatedAt >= DateTime.Today.AddDays(-6) && e.CreatedAt < DateTime.Today.AddDays(1))
+                        .OrderByDescending(r => r.CreatedAt)
+                        .ToListAsync();
+                case 3:
+                    
+                    // Logs in the last 4 weeks (including today)
+                    return await _context.Congestions
+                        .Where(e => e.CreatedAt >= DateTime.Today.AddDays(-27) && e.CreatedAt < DateTime.Today.AddDays(1))
+                        .OrderByDescending(r => r.CreatedAt)
+                        .ToListAsync();
+                default:
+                    throw new ArgumentException("Invalid option");
+            }
+        }
     }
 }

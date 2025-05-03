@@ -5,7 +5,8 @@ package congestion;
 service CongestionService {
   rpc CreateCongestion (CongestionCreateDTO) returns (CongestionByIdDTO);
   rpc GetCongestionById (CongestionByIdDTO) returns (CongestionDTO);
-  rpc GetAll (GetCongestionRequest) returns (ListCongestionDTO);
+  rpc GetAll (EmptyMessage) returns (ListCongestionDTO);
+  rpc GetByDate(GetCongestionByDateRequest) returns (ListCongestionDTO);
 }
 
 message ListCongestionDTO {
@@ -18,8 +19,11 @@ message CongestionCreateDTO {
 	float lng = 3;
 }
 
-message GetCongestionRequest {
+message EmptyMessage {
 
+}
+message GetCongestionByDateRequest {
+	int32 option_date = 1;
 }
 
 message CongestionByIdDTO {

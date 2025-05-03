@@ -21,8 +21,9 @@ namespace mvts_congestion_service.Models
         [Required]
         public float Lng { get; set; }
 
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [Column("created_at", TypeName = "timestamp without time zone")]
+        
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [Column("type")]
         public CongestionType Type { get; set; } = CongestionType.TrafficJam;

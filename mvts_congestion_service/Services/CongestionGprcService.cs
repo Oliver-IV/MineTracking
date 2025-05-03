@@ -43,9 +43,23 @@ namespace mvts_congestion_service.Services
             return new CongestionByIdDTO() { Id= entityCreated.Id };
         }
 
-        public override async Task<ListCongestionDTO> GetAll(GetCongestionRequest request, ServerCallContext context)
+        public override async Task<ListCongestionDTO> GetAll(EmptyMessage request, ServerCallContext context)
         {
             var list = await _congesRepo.GetAll();
+
+
+            return new ListCongestionDTO
+            {
+                Congestions =
+                {
+                    list.Select(c => c.ToDTO())
+                }
+            };
+        }
+
+        public async  override Task<ListCongestionDTO> GetByDate(GetCongestionByDateRequest request, ServerCallContext context)
+        {
+            var list = await _congesRepo.GetAllByDate(request.OptionDate);
 
 
             return new ListCongestionDTO

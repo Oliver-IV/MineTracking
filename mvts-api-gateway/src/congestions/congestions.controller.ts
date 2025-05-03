@@ -27,4 +27,8 @@ export class CongestionsController {
   getAll(){
     return this.congesService.getAll({});
   }
+  @Get('date/:id')
+  getByDate(@Param('id') id: string) {
+    return this.congesService.getByDate({optionDate:parseInt(id)});
+  }
 }
