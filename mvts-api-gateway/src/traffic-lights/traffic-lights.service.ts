@@ -1,47 +1,43 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { UpdateTrafficLightDto } from './dto/update-traffic-light.dto';
-import { Observable } from 'rxjs';
+import { 
+  CreateTrafficLightDto, UpdateTrafficLightDto,
+  TrafficLightsServiceClient,
+  TRAFFIC_LIGHTS_SERVICE_NAME,
+  TRAFFIC_LIGHTS_PACKAGE_NAME
+} from './type/traffic-lights';
 import { ClientGrpc } from '@nestjs/microservices';
-
-interface TrafficLightGrpcService {
-  UpdateTrafficLightColor(data: {
-    id: string;
-    data: { color: string };
-  }): Observable<{ message: string }>;
-}
+import { ChangeLightStateDto } from './type/traffic-lights';
 
 @Injectable()
-export class TrafficLightsService implements OnModuleInit {
-  private grpcService: TrafficLightGrpcService;
-
-  constructor(@Inject('TRAFFIC_LIGHT_PACKAGE') private client: ClientGrpc) {}
+export class TrafficLightsService implements OnModuleInit{
+  private trafficLightsService: TrafficLightsServiceClient;
 
   onModuleInit() {
-    this.grpcService = this.client.getService<TrafficLightGrpcService>(
-      'trafficLightService',
-    );
+    this.trafficLightsService = this.client.getService<TrafficLightsServiceClient>(TRAFFIC_LIGHTS_SERVICE_NAME);
+  }
+
+  constructor(@Inject(TRAFFIC_LIGHTS_PACKAGE_NAME) private client: ClientGrpc) {}
+
+  create(createTrafficLightDto: CreateTrafficLightDto) {
+    return this.trafficLightsService.createTrafficLight(createTrafficLightDto);
   }
 
   findAll() {
-    return `This action returns all trafficLights`;
+    return this.trafficLightsService.findAllTrafficLights({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} trafficLight`;
+  findOne(id: string) {
+    return this.trafficLightsService.findOneTrafficLight({ id });
   }
 
-  update(id: number, updateTrafficLightDto: UpdateTrafficLightDto) {
-    const payload = {
-      id: id.toString(),
-      data: {
-        color: updateTrafficLightDto.color,
-      },
-    };
-
-    return this.grpcService.UpdateTrafficLightColor(payload);
+  update(trafficLightId: string, updateTrafficLightDto: UpdateTrafficLightDto) {
+    return this.trafficLightsService.updateTrafficLight({...updateTrafficLightDto, trafficLightId});
+  }
+  changeState(trafficLightId: string, changeStateDto: ChangeLightStateDto) {
+    return this.trafficLightsService.changeTrafficLightState({...changeStateDto, trafficLightId});
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} trafficLight`;
+  remove(id: string) {
+    return this.trafficLightsService.removeTrafficLight({ id });
   }
 }
