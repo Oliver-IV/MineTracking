@@ -1,0 +1,50 @@
+# Visual Studio and .NET build outputs
+.vs/*
+/bin/*
+/obj/*
+
+# User-specific files and settings
+*.suo
+*.user
+*.userprefs
+/Properties/launchSettings.json # Evitar exponer configuraciones de lanzamiento locales
+
+# Migrations that generate the database
+/Migrations/*
+
+
+# Project files (normalmente no se ignoran, pero pueden ser útiles en ciertos flujos)
+# /mvts-congestion-service.csproj
+# /mvts-congestion-service.csproj.user
+# /mvts-congestion-service.sln
+
+# Configuration files (depende de tu estrategia de configuración)
+/appsettings.Development.json
+# appsettings.Production.json # Podrías considerar ignorar configuraciones específicas de entorno
+# nlog.config # Si utilizas NLog u otro framework de logging
+
+# NuGet related
+/packages/*
+*.nupkg
+# nuget.config # Podrías ignorar la configuración local de NuGet
+
+# Docker related (si aplica)
+/Dockerfile*
+/.dockerignore
+
+# Kubernetes related (si aplica)
+/.kube/
+*.yaml # O los archivos de configuración de Kubernetes que uses
+
+# ReSharper cache
+_ReSharper.*
+
+# Rider cache
+.idea/
+
+# Tooling artifacts
+.editorconfig.lock.json
+
+# Temporary files and logs
+*.log
+*.tmp

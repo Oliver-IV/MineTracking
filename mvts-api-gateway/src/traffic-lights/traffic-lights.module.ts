@@ -14,7 +14,7 @@ import { join } from 'path';
         transport: Transport.GRPC,
         options: {
           package: 'trafficLightService',
-          protoPath: join(__dirname, '../proto/traffic.proto'),
+          protoPath: join(__dirname, 'proto','trafficLight.proto'),
         },
       },
     ]),
