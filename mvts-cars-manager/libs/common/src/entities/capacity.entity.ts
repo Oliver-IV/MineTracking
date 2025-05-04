@@ -1,8 +1,7 @@
-import { MeasurementUnit } from "@app/common/enums/measurement-unit.enum";
+// import { MeasurementUnit } from "@app/common/enums/measurement-unit.enum";
+import { MeasurementUnit } from "../types";
 import { Column, Entity, PrimaryColumn } from "typeorm";
-console.log('-----------');
-console.log(MeasurementUnit);
-console.log('-----------');
+
 @Entity("capacity")
 export class CapacityEntity {
 

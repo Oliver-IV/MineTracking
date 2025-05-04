@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { 
   CarEntity, CapacityEntity,
 } from '@app/common';
-import { Converter } from './converter';
 import { CapacityService } from './capacity.service';
 
 @Module({
@@ -13,6 +12,6 @@ import { CapacityService } from './capacity.service';
     TypeOrmModule.forFeature([CarEntity, CapacityEntity]),
   ],
   controllers: [CarsController],
-  providers: [CarsService, Converter, CapacityService],
+  providers: [CarsService, CapacityService],
 })
 export class CarsModule {}

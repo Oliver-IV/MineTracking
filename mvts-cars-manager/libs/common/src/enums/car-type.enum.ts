@@ -1,5 +1,5 @@
 export enum CarType {
-    HEAVY = 'heavy',
-    LIGHT = 'light',
-    MEDIUM = 'medium'
+    HEAVY = 0,
+    LIGHT = 1,
+    MEDIUM = 2
 }

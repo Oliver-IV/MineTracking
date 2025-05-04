@@ -58,7 +58,7 @@ export class TrafficLightsService {
     const trafficLight: TrafficLightEntity = this.trafficLightRepository.create({...createTrafficLightDto,trafficLightId, state: State.RED, location});
     const savedTrafficLight = await this.trafficLightRepository.save(trafficLight);
     
-    this.rmqClient.emit(PATTERNS.TRAFFIC_LIGHT_CREATED,savedTrafficLight);
+    this.rmqClient.emit(PATTERNS.TRAFFIC_LIGHT_CREATED,createTrafficLightDto);
 
     return savedTrafficLight;
   }

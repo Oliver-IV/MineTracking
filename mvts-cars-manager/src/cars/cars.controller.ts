@@ -9,7 +9,7 @@ import {
   UpdateCarDto
 } from '@app/common'
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { CreatedTrafficLightValidatedDto } from './dto/traffic-light/created-traffic-light.dto';
+import { CreatedTrafficLightValidatedDto } from './dto';
 import { PATTERNS } from 'configs/rmq.config';
 
 @Controller()
@@ -36,7 +36,6 @@ export class CarsController implements CarsServiceController {
   }
 
   updateCar( updateCarDto: UpdateCarDto) {
-    console.log('in update endpoint');
     return this.carsService.update(updateCarDto.carId, updateCarDto);
   }
 

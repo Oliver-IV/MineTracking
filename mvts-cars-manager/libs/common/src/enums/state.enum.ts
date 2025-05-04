@@ -1,5 +1,5 @@
 export enum State {
-    AVAILABLE = "available",
-    UNAVAILABLE = "unavailable",
-    ON_ROUTE = "on route"
+    AVAILABLE = 0,
+    UNAVAILABLE = 1,
+    ON_ROUTE = 2
 }

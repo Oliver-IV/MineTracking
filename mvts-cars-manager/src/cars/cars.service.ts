@@ -1,19 +1,20 @@
 import { 
   Car, Cars, CreateCarDto, UpdateCarDto,
-  CarEntity, State } from '@app/common';
-import { Inject, Injectable, InternalServerErrorException, NotFoundException, OnModuleInit } from '@nestjs/common';
+  CarEntity, State
+  } from '@app/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Converter } from './converter';
 import { CapacityService } from './capacity.service';
-import { CreatedTrafficLightValidatedDto } from './dto/traffic-light/created-traffic-light.dto';
+import { CreatedTrafficLightValidatedDto } from './dto';
+import { RpcException } from '@nestjs/microservices';
+import { status } from '@grpc/grpc-js';
 
 @Injectable()
 export class CarsService{
   constructor(
     @InjectRepository(CarEntity) private carRepository: Repository<CarEntity>,
     @Inject() private capacityService: CapacityService,
-    @Inject() private converter: Converter
   ){}
 
   /**
@@ -50,20 +51,33 @@ export class CarsService{
  */
   async create(createCarDto: CreateCarDto): Promise<Car> {
     try {
-      const carEntity = this.converter.carDtoToEntity(
-        createCarDto, 
-        State.AVAILABLE, 
-        await this.generateCarId()
-      );
-      const {measurementUnit, value} = carEntity.capacity;
-      carEntity.capacity = await this.capacityService.createCapacity(measurementUnit, value);
+      const {capacity} = createCarDto;
+      if(!capacity){
+        throw new RpcException({
+          code: status.INVALID_ARGUMENT,
+          message: 'Capacity must be defined'
+        });
+      }
+      const carId = await this.generateCarId();
+      capacity.capacityId = carId;
+      const carEntity: CarEntity = {
+        ...createCarDto,
+        state: State.AVAILABLE,
+        carId,
+        capacity
+      };
+        
+      carEntity.capacity = await this.capacityService.createCapacity(capacity);
 
       const savedCar =  await this.carRepository.save(carEntity);
 
-      return this.converter.carEntityToProto(savedCar);
+      return savedCar;
     } catch (error) {
       console.error('Error saving car:', error);
-      throw new InternalServerErrorException('Something went wrong while saving the car');
+      throw new RpcException({
+        code: status.INTERNAL,
+        message: 'Something went wrong while saving the car'
+      });
     }
   }
   
@@ -72,13 +86,14 @@ export class CarsService{
    * @returns Proto con una lista de los carros encontrados
    */
   async findAll(): Promise<Cars> {
-    const foundCars = await this.carRepository.find();
-    if (foundCars.length === 0) {
-      throw new NotFoundException('There are no registered cars');
+    const cars = await this.carRepository.find();
+    if (cars.length === 0) {
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: 'There are no registered cars'
+      });
     }
-
-    const carsArr = foundCars.map(car => this.converter.carEntityToProto(car));
-    return { cars: carsArr };
+    return { cars };
   }
 
   /**
@@ -87,13 +102,16 @@ export class CarsService{
    * @returns - El carro encontrado
    * @throws NotFoundException - si no se encontró un carro con el id
    */
-  async findOne(id: string): Promise<Car> {
-    const car = await this.carRepository.findOne({ where: { carId: id } });
+  async findOne(carId: string): Promise<Car> {
+    const car = await this.carRepository.findOne({ where: { carId } });
     if (!car) {
-      throw new NotFoundException(`Car not found by id ${id}`);
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `Car not found by id ${carId}`
+      });
     }
 
-    return this.converter.carEntityToProto(car);
+    return car;
   }
 
   /**
@@ -102,45 +120,41 @@ export class CarsService{
    * @param updateCarDto 
    * @returns 
    */
-  async update(id: string, updateCarDto: UpdateCarDto): Promise<Car> {
-    const car = await this.carRepository.findOne({ where: { carId: id } });
+  async update(carId: string, updateCarDto: UpdateCarDto): Promise<Car> {
+    const car = await this.carRepository.findOne({ where: { carId} });
     if (!car) {
-      throw new NotFoundException(`Car not found by id ${id}`);
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `Car not found by id ${carId}`
+      });
     }
+    const updated = await this.carRepository.save({...car,...updateCarDto}); 
     
-    const { capacity, name, state, type } = updateCarDto;
-    const updatedEntity: CarEntity = {
-      carId: id,
-      name: name ? name : car.name,
-      state: state ? this.converter.stringToState(state) : car.state,
-      type: type ? this.converter.stringToCarType(type) : car.type,
-      capacity: capacity ? this.converter.capacityProtoToEntity(capacity) : car.capacity
+    if(!updated){
+      throw new RpcException({
+        code: status.UNKNOWN,
+        message: `Something went wrong while updating the car with id ${carId}`
+      });
     }
-    
-    const result = await this.carRepository.update({ carId: id }, updatedEntity);
-    
-    if (result.affected && result.affected > 0) {
-      const updatedCar = await this.carRepository.findOne({ where: { carId: id } });
-      if (!updatedCar) {
-        throw new InternalServerErrorException('Car was updated but could not be retrieved');
-      }
-      return this.converter.carEntityToProto(updatedCar);
-    }
-
-    throw new InternalServerErrorException(`Something went wrong while updating the car with id ${id}`);
+    return updated;
   }
 
-  async remove(id: string): Promise<Car> {
-    const car = await this.carRepository.findOne({ where: { carId: id } });
+  async remove(carId: string): Promise<Car> {
+    const car = await this.carRepository.findOne({ where: { carId} });
     if (!car) {
-      throw new NotFoundException(`Car not found by id ${id}`);
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `Car not found by id ${carId}`
+      });
     }
     
-    const result = await this.carRepository.delete({ carId: id });
-    if (!result.affected || result.affected === 0) {
-      throw new InternalServerErrorException(`Something went wrong while removing the car with id ${id}`);
+    const deleted = await this.carRepository.remove(car);
+    if (!deleted) {
+      throw new RpcException({
+        code: status.UNKNOWN,
+        message: `Something went wrong while updating the car with id ${carId}`
+      });
     }
-    
-    return this.converter.carEntityToProto(car);
+    return deleted;
   }
 }
