@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package cars;
+
+service CarsService {
+    rpc CreateCar (CreateCarDto) returns (Car) {}
+    rpc FindAllCars (Empty) returns (Cars) {}
+    rpc FindOneCar (FindOneCarDto) returns (Car) {}
+    rpc UpdateCar (UpdateCarDto) returns (Car) {}
+    rpc RemoveCar (FindOneCarDto) returns (Car) {}
+}
+
+message UpdateCarDto {
+    string carId = 1;
+    optional string name = 2;
+    optional State state = 3;
+    optional Capacity capacity = 4;
+    optional CarType type = 5;
+}
+
+message FindOneCarDto {
+    string carId = 1;
+}
+
+message Empty {};
+
+message Cars {
+    repeated Car cars = 1;
+}
+
+message CreateCarDto {
+    string name = 1;
+    Capacity capacity = 2;
+    CarType type = 3;
+}
+
+enum MeasurementUnit {
+    KG = 0;
+    TON = 1;
+    KTON = 2;
+}
+
+message Capacity {
+    string capacityId = 1;
+    MeasurementUnit measurementUnit = 2;
+    float value = 3;
+}
+
+enum CarType {
+    HEAVY = 0;
+    MEDIUM = 1;
+    LIGHT = 2;
+}
+
+enum State {
+    AVAILABLE = 0;
+    UNAVAILABLE = 1;
+    ON_ROUTE = 2;
+}
+
+message Car{
+    string carId = 1;
+    string name = 2;
+    Capacity capacity = 3;
+    CarType type = 4;
+    State state = 5;
+}

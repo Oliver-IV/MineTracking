@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package trafficLightService;
+
+service trafficLightService {
+  rpc UpdateTrafficLightColor(UpdateTrafficLightRequest) returns (UpdateTrafficLightResponse);
+}
+
+message UpdateTrafficLightRequest {
+  string id = 1;
+  TrafficLightData data = 2;
+}
+
+message TrafficLightData {
+  string color = 1;
+}
+
+message UpdateTrafficLightResponse {
+  string message = 1;
+}
