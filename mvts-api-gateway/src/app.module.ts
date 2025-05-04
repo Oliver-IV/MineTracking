@@ -8,7 +8,13 @@ import { CarsModule } from './cars/cars.module';
 import { ReportsModule } from './reports/reports.module';
 
 @Module({
-  imports: [CongestionsModule, CargosModule, TrafficLightsModule, CarsModule, ReportsModule],
+  imports: [
+    CongestionsModule,
+    CargosModule,
+    TrafficLightsModule,
+    CarsModule,
+    ReportsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
