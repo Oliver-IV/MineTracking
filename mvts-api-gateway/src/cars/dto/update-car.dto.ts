@@ -1,8 +1,9 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateCarValidatedDto } from './create-car.dto';
-import { IsIn, IsNotEmpty, IsNumberString, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsEnum, IsIn, IsNotEmpty, IsNumberString, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { CapacityDto } from './capacity.dto';
 import { Type } from 'class-transformer';
+import { CarType, State } from '../type/cars';
 
 export class UpdateCarValidatedDto extends PartialType(CreateCarValidatedDto) {
     @IsNotEmpty()
@@ -10,12 +11,8 @@ export class UpdateCarValidatedDto extends PartialType(CreateCarValidatedDto) {
     carId:string;
 
     @IsOptional()
-    @IsString()
-    name: string;
-
-    @IsOptional()
-    @IsIn(["available", "unavailable", "on route"], { message: "Invalid state" })
-    state: string;
+    @IsEnum(State, { message: "Invalid state" })
+    state: State;
 
     @IsOptional()
     @ValidateNested()
@@ -23,6 +20,6 @@ export class UpdateCarValidatedDto extends PartialType(CreateCarValidatedDto) {
     capacity: CapacityDto;
 
     @IsOptional()
-    @IsIn(["heavy", "light", "medium"], { message: "Invalid car type" })
-    type: string;
+    @IsEnum(CarType, { message: "Invalid car type" })
+    type: CarType;
 }

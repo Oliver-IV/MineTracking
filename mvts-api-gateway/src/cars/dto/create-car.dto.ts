@@ -1,6 +1,7 @@
-import { IsIn, IsNotEmpty, IsString, ValidateNested } from "class-validator";
+import { IsEnum, IsIn, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 import { CapacityDto } from "./capacity.dto";
 import { Type } from "class-transformer";
+import { CarType, State } from "../type/cars";
 
 export class CreateCarValidatedDto {
 
@@ -11,9 +12,9 @@ export class CreateCarValidatedDto {
     @Type(() => CapacityDto)
     capacity: CapacityDto;
 
-    @IsIn(["heavy","light","medium"],{message: "Invalid car type"})
-    type: string;
+    @IsEnum(CarType,{message: "Invalid car type"})
+    type: CarType;
 
-    @IsIn(["available", "unavailable", "on route"], { message: "Invalid state" })
-    state: string = 'available';
+    @IsEnum(State, { message: "Invalid state" })
+    state: State;
 }

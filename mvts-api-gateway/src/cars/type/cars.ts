@@ -10,12 +10,33 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "cars";
 
+export enum MeasurementUnit {
+  KG = 0,
+  TON = 1,
+  KTON = 2,
+  UNRECOGNIZED = -1,
+}
+
+export enum CarType {
+  HEAVY = 0,
+  MEDIUM = 1,
+  LIGHT = 2,
+  UNRECOGNIZED = -1,
+}
+
+export enum State {
+  AVAILABLE = 0,
+  UNAVAILABLE = 1,
+  ON_ROUTE = 2,
+  UNRECOGNIZED = -1,
+}
+
 export interface UpdateCarDto {
   carId: string;
   name?: string | undefined;
-  state?: string | undefined;
+  state?: State | undefined;
   capacity?: Capacity | undefined;
-  type?: string | undefined;
+  type?: CarType | undefined;
 }
 
 export interface FindOneCarDto {
@@ -32,12 +53,12 @@ export interface Cars {
 export interface CreateCarDto {
   name: string;
   capacity: Capacity | undefined;
-  type: string;
+  type: CarType;
 }
 
 export interface Capacity {
   capacityId: string;
-  measurementUnit: string;
+  measurementUnit: MeasurementUnit;
   value: number;
 }
 
@@ -45,8 +66,8 @@ export interface Car {
   carId: string;
   name: string;
   capacity: Capacity | undefined;
-  type: string;
-  state: string;
+  type: CarType;
+  state: State;
 }
 
 export const CARS_PACKAGE_NAME = "cars";

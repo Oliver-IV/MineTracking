@@ -11,7 +11,8 @@ async function bootstrap() {
       transport: Transport.GRPC,
       options: {
         protoPath: join(__dirname, '../traffic-lights.proto'),
-        package: [TRAFFIC_LIGHTS_PACKAGE_NAME,]
+        package: [TRAFFIC_LIGHTS_PACKAGE_NAME,],
+        url: 'localhost:5000'
       }
     }
   )
