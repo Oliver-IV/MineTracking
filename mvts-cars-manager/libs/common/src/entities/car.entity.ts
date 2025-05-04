@@ -1,4 +1,4 @@
-import { CarType,State } from "@app/common";
+import { CarType,State } from "../enums";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { CapacityEntity } from "./capacity.entity";
 

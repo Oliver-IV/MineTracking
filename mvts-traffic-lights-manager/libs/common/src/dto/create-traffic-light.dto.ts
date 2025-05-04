@@ -1,7 +1,6 @@
 import { Type } from "class-transformer";
 import { IsEnum, IsNotEmpty, IsString, ValidateNested } from "class-validator";
-import { LocationDto } from "./location.dto";
-import { Mode } from "../type/traffic-lights";
+import { Mode, LocationDto } from "@app/common";
 
 export class CreateTrafficLightValidatedDto {
 

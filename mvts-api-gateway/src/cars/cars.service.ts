@@ -3,10 +3,9 @@ import {
   CARS_SERVICE_NAME, 
   CarsServiceClient,
   CreateCarDto, UpdateCarDto 
-} from '@app/common';
+} from './type/cars';
 import { CARS_SERVICE } from '@app/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { CreateCarValidatedDto } from './dto';
 
 @Injectable()
 export class CarsService implements OnModuleInit {

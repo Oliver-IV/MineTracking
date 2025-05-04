@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.7.0
 //   protoc               v3.20.3
-// source: proto/trafficLights.proto
+// source: proto/traffic-lights.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
@@ -10,11 +10,29 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "trafficLights";
 
+export enum State {
+  RED = 0,
+  YELLOW = 1,
+  GREEN = 2,
+  UNRECOGNIZED = -1,
+}
+
+export enum Mode {
+  AUTO = 0,
+  MANUAL = 1,
+  UNRECOGNIZED = -1,
+}
+
+export interface ChangeLightStateDto {
+  trafficLightId: string;
+  state: State;
+}
+
 export interface UpdateTrafficLightDto {
-  id: string;
-  name: string;
-  location: string;
-  mode: string;
+  trafficLightId: string;
+  name?: string | undefined;
+  location?: Location | undefined;
+  mode?: Mode | undefined;
 }
 
 export interface FindOneTrafficLightDto {
@@ -30,15 +48,22 @@ export interface TrafficLights {
 
 export interface CreateTrafficLightDto {
   name: string;
-  location: string;
-  mode: string;
+  location: Location | undefined;
+  mode: Mode;
+}
+
+export interface Location {
+  locationId: string;
+  latitude: string;
+  longitude: string;
 }
 
 export interface TrafficLight {
-  id: string;
+  trafficLightId: string;
   name: string;
-  location: string;
-  mode: string;
+  location: Location | undefined;
+  mode: Mode;
+  state: State;
 }
 
 export const TRAFFIC_LIGHTS_PACKAGE_NAME = "trafficLights";
@@ -53,6 +78,8 @@ export interface TrafficLightsServiceClient {
   updateTrafficLight(request: UpdateTrafficLightDto): Observable<TrafficLight>;
 
   removeTrafficLight(request: FindOneTrafficLightDto): Observable<TrafficLight>;
+
+  changeTrafficLightState(request: ChangeLightStateDto): Observable<TrafficLight>;
 }
 
 export interface TrafficLightsServiceController {
@@ -65,6 +92,10 @@ export interface TrafficLightsServiceController {
   updateTrafficLight(request: UpdateTrafficLightDto): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
 
   removeTrafficLight(request: FindOneTrafficLightDto): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
+
+  changeTrafficLightState(
+    request: ChangeLightStateDto,
+  ): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
 }
 
 export function TrafficLightsServiceControllerMethods() {
@@ -75,6 +106,7 @@ export function TrafficLightsServiceControllerMethods() {
       "findOneTrafficLight",
       "updateTrafficLight",
       "removeTrafficLight",
+      "changeTrafficLightState",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

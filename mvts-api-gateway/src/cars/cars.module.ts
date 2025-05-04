@@ -4,7 +4,7 @@ import { CarsController } from './cars.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CARS_SERVICE } from '@app/common';
 import { join } from 'path';
-import { CARS_PACKAGE_NAME } from '@app/common';
+import { CARS_PACKAGE_NAME } from './type/cars';
 
 @Module({
   imports: [

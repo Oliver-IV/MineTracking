@@ -8,11 +8,19 @@ import {
   FindOneCarDto,
   UpdateCarDto
 } from '@app/common'
+import { EventPattern, Payload } from '@nestjs/microservices';
+import { CreatedTrafficLightValidatedDto } from './dto/traffic-light/created-traffic-light.dto';
+import { PATTERNS } from 'configs/rmq.config';
 
 @Controller()
 @CarsServiceControllerMethods()
 export class CarsController implements CarsServiceController {
   constructor(private readonly carsService: CarsService) {}
+
+  @EventPattern(PATTERNS.TRAFFIC_LIGHT_CREATED)
+  handleTrafficLightCreated(@Payload() data: CreatedTrafficLightValidatedDto){
+    console.log(this.carsService.handleTrafficLightCreated(data));
+  }
 
   createCar(createCarDto: CreateCarDto) {
     const car:Promise<Car> = this.carsService.create(createCarDto);

@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Converter } from './converter';
 import { CapacityService } from './capacity.service';
+import { CreatedTrafficLightValidatedDto } from './dto/traffic-light/created-traffic-light.dto';
 
 @Injectable()
 export class CarsService{
@@ -15,16 +16,38 @@ export class CarsService{
     @Inject() private converter: Converter
   ){}
 
+  /**
+ * Genera un id con ceros a la izquierda.
+ * 
+ * @param count - Numero actual de registros de carros existentes
+ * @param padding - Longitud deseada en el id. Default 5
+ * @returns Id formateado (queda 00001, 00042, etc)
+ */
   formatId(count: number, padding: number = 5): string {
     const nextId = count + 1;
     return nextId.toString().padStart(padding, '0');
   }
   
+  /**
+ * Genera un id para un carro en base a la cantidad de registros en la bd
+ * @returns el id generado
+ */
   async generateCarId(): Promise<string> {
     const count = await this.carRepository.count();
     return this.formatId(count);
   }
 
+  handleTrafficLightCreated(data: CreatedTrafficLightValidatedDto):string{
+    return `traffic light created received: ${data}`;
+  }
+
+  /**
+ * Guarda un carro en la bd
+ * 
+ * @param createCarDto - dto con los datos del carro a guardar
+ * @returns El proto del carro creado
+ * @throws InternalServerErrorException si ocurre un error al guardar el auto
+ */
   async create(createCarDto: CreateCarDto): Promise<Car> {
     try {
       const carEntity = this.converter.carDtoToEntity(
@@ -44,6 +67,10 @@ export class CarsService{
     }
   }
   
+  /**
+   * Obtiene todos los autos en la bd
+   * @returns Proto con una lista de los carros encontrados
+   */
   async findAll(): Promise<Cars> {
     const foundCars = await this.carRepository.find();
     if (foundCars.length === 0) {
@@ -54,6 +81,12 @@ export class CarsService{
     return { cars: carsArr };
   }
 
+  /**
+   * Busca un carro con el id del parametro
+   * @param id - id mediante el cual se buscara el carro en la bd
+   * @returns - El carro encontrado
+   * @throws NotFoundException - si no se encontró un carro con el id
+   */
   async findOne(id: string): Promise<Car> {
     const car = await this.carRepository.findOne({ where: { carId: id } });
     if (!car) {
@@ -63,6 +96,12 @@ export class CarsService{
     return this.converter.carEntityToProto(car);
   }
 
+  /**
+   * 
+   * @param id - 
+   * @param updateCarDto 
+   * @returns 
+   */
   async update(id: string, updateCarDto: UpdateCarDto): Promise<Car> {
     const car = await this.carRepository.findOne({ where: { carId: id } });
     if (!car) {
