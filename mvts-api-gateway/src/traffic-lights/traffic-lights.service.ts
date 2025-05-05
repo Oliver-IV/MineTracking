@@ -1,12 +1,11 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { 
-  CreateTrafficLightDto, UpdateTrafficLightDto,
+  CreateTrafficLightDto, UpdateTrafficLightDto, ChangeLightStateDto,
   TrafficLightsServiceClient,
   TRAFFIC_LIGHTS_SERVICE_NAME,
-  TRAFFIC_LIGHTS_PACKAGE_NAME
 } from './type/traffic-lights';
 import { ClientGrpc } from '@nestjs/microservices';
-import { ChangeLightStateDto } from './type/traffic-lights';
+import { TRAFFIC_LIGHTS_SERVICE } from '@app/common';
 
 @Injectable()
 export class TrafficLightsService implements OnModuleInit{
@@ -16,7 +15,7 @@ export class TrafficLightsService implements OnModuleInit{
     this.trafficLightsService = this.client.getService<TrafficLightsServiceClient>(TRAFFIC_LIGHTS_SERVICE_NAME);
   }
 
-  constructor(@Inject(TRAFFIC_LIGHTS_PACKAGE_NAME) private client: ClientGrpc) {}
+  constructor(@Inject(TRAFFIC_LIGHTS_SERVICE) private client: ClientGrpc) {}
 
   create(createTrafficLightDto: CreateTrafficLightDto) {
     return this.trafficLightsService.createTrafficLight(createTrafficLightDto);

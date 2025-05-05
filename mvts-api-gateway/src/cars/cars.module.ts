@@ -15,6 +15,7 @@ import { CARS_PACKAGE_NAME } from './type/cars';
         options: {
           package: CARS_PACKAGE_NAME,
           protoPath: join(__dirname, '../cars.proto'),
+          url: 'localhost:5001'
         },
       },
     ]),

@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Delete, UseInterceptors, Param } from '@nestjs/common';
 import { TrafficLightsService } from './traffic-lights.service';
 import { ChangeLightStateValidatedDto, CreateTrafficLightValidatedDto, UpdateTrafficLightValidatedDto } from './dto'
+import { GrpcExceptionInterceptor } from '@app/common';
 
 @Controller('traffic-lights')
+@UseInterceptors(GrpcExceptionInterceptor)
 export class TrafficLightsController {
   constructor(private readonly trafficLightsService: TrafficLightsService) {}
 
@@ -16,23 +18,23 @@ export class TrafficLightsController {
     return this.trafficLightsService.findAll();
   }
 
-  @Get()
-  findOne(@Query('id') id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.trafficLightsService.findOne(id);
   }
 
-  @Patch('state')
-  changeState(@Query('id') id: string, @Body() changeStateDto: ChangeLightStateValidatedDto) {
+  @Patch('state/:id')
+  changeState(@Param('id') id: string, @Body() changeStateDto: ChangeLightStateValidatedDto) {
     return this.trafficLightsService.changeState(id, changeStateDto);
   }
 
-  @Patch()
-  update(@Query('id') id: string, @Body() updateTrafficLightDto: UpdateTrafficLightValidatedDto) {
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateTrafficLightDto: UpdateTrafficLightValidatedDto) {
     return this.trafficLightsService.update(id, updateTrafficLightDto);
   }
 
-  @Delete()
-  remove(@Query('id') id: string) {
+  @Delete(':id')
+  remove(@Param('id') id: string) {
     return this.trafficLightsService.remove(id);
   }
 }

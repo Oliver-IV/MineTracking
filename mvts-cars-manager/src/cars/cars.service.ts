@@ -87,6 +87,7 @@ export class CarsService{
    */
   async findAll(): Promise<Cars> {
     const cars = await this.carRepository.find();
+    console.log(cars);
     if (cars.length === 0) {
       throw new RpcException({
         code: status.NOT_FOUND,

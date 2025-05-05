@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LocationEntity,TrafficLightEntity } from '@app/common';
 import { LocationService } from './location.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { RMQ_CLIENT_NAME, RMQ_QUEUE_NAME } from 'configs/rmq.config';
+import { RMQ_CLIENT_NAME, RMQ_QUEUE_NAME, RMQ_URI } from 'configs/rmq.config';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { RMQ_CLIENT_NAME, RMQ_QUEUE_NAME } from 'configs/rmq.config';
         name: RMQ_CLIENT_NAME,
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [RMQ_URI],
           queue: RMQ_QUEUE_NAME,
         },
       },
