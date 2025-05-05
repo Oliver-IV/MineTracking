@@ -1,9 +1,10 @@
 import { LocationDto } from "./location.dto";
+import { State } from "./state.enum";
 
 export class TrafficLightDto {
-    id: string;
+    trafficLightId: string;
     location: LocationDto;
-    currentColor: 'RED' | 'YELLOW' | 'GREEN';
+    currentState: State ;
     cycleIntervals: {
         red: number;
         yellow: number;

@@ -3,8 +3,9 @@ import { CarSimulationDto } from "../dtos/car-simulation.dto";
 const carSimulation: CarSimulationDto = {
     active: false,
     currentLocation: {
-        latitude: 19.4326, // Ciudad de México como punto de inicio por defecto
-        longitude: -99.1332
+        locationId: '',
+        latitude: 25.564878, // Guasave como punto de inicio por defecto
+        longitude: -108.457834
     },
     destination: null,
     route: [],

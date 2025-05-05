@@ -26,6 +26,7 @@ export class CarService {
             const lngVariation = (Math.random() - 0.5) * 0.001;
             
             route.push({
+              locationId: '' ,
               latitude: lat + latVariation,
               longitude: lng + lngVariation
             });
