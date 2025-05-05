@@ -33,7 +33,7 @@ export class TrafficLightsService implements OnModuleInit{
     return this.trafficLightsService.updateTrafficLight({...updateTrafficLightDto, trafficLightId});
   }
   changeState(trafficLightId: string, changeStateDto: ChangeLightStateDto) {
-    this.trafficLightsService.changeTrafficLightState({...changeStateDto, trafficLightId});
+    return this.trafficLightsService.changeTrafficLightState({...changeStateDto, trafficLightId});
   }
 
   remove(id: string) {

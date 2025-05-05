@@ -29,7 +29,7 @@ import {
         name: TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE,
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5673'],
+          urls: ['amqp://localhost:5672'],
           queue: TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE,
         },
       },
