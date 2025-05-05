@@ -127,12 +127,12 @@ export class TrafficLightsService {
     changeLightStateDto: ChangeLightStateDto,
   ) {
     const { trafficLightId, state } = changeLightStateDto;
-    const trafficLight: TrafficLight = await this.findOne(trafficLightId);
+    // const trafficLight: TrafficLight = await this.findOne(trafficLightId);
 
-    const updated = await this.trafficLightRepository.save({
-      ...trafficLight,
-      state,
-    });
+    // const updated = await this.trafficLightRepository.save({
+    //   ...trafficLight,
+    //   state,
+    // });
 
     //the conejo 4 the color change
     this.rmqColorChangeClient.emit(TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE, {
