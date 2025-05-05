@@ -1,9 +1,6 @@
 ﻿using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
 using System.Text;
-using System.Text.Json.Nodes;
-using mvts_report_service.dtos;
-using System.Text.Json;
 using mvts_report_service.services;
 
 namespace mvts_report_service.utils.rabbitmq
@@ -50,9 +47,10 @@ namespace mvts_report_service.utils.rabbitmq
                 {
                     Console.WriteLine("Process request");
                     var message = Encoding.UTF8.GetString(body);
+                    Console.WriteLine(message);
                     response = await _reportService.GenerateReport(message);
-                    Console.WriteLine("Request processed");
-
+                    Console.WriteLine($"Request processed");
+                    
                 }
                 catch (Exception e)
                 {

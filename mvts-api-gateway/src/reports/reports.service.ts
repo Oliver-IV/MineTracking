@@ -1,26 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { CreateReportDto } from './dto/create-report.dto';
-import { UpdateReportDto } from './dto/update-report.dto';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { ReportDetailsDTO } from './dto/report.detailts.dto';
+import { ReportDTO } from './dto/report.dto';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ReportsService {
-  create(createReportDto: CreateReportDto) {
-    return 'This action adds a new report';
-  }
+  private readonly logger = new Logger(ReportsService.name);
 
-  findAll() {
-    return `This action returns all reports`;
-  }
+  constructor(@Inject('REPORT_SERVICE') private readonly rabbitClient: ClientProxy) {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} report`;
-  }
-
-  update(id: number, updateReportDto: UpdateReportDto) {
-    return `This action updates a #${id} report`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} report`;
+   generatePdf(reportDetails: ReportDetailsDTO) : Observable<ReportDTO>{
+    return this.rabbitClient.send<ReportDTO,ReportDetailsDTO>('create-pdf',reportDetails);
   }
 }

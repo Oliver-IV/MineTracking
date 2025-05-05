@@ -28,7 +28,7 @@ namespace mvts_report_service.render_handlers.pdfs
                 ContentType = "application/pdf",
                 ExtFile = ".pdf",
                 FileName = $"CongestionReport_{Guid.NewGuid().ToString()}",
-                File = file
+                File = Convert.ToBase64String(file)
             };
             Console.WriteLine($"FilePdfCongestion: Pdf con nombre {report.FileName}{report.ExtFile} creado");
             return report;

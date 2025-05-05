@@ -9,7 +9,7 @@ namespace mvts_report_service.renders.pdf
     {
         private readonly DateTime _dateRequest;
         private readonly IEnumerable<CongestionDTO> _congestions;
-        private string? _titulo;
+        private string? _titulo = "Congestiones";
 
         public PdfCongestion(IEnumerable<CongestionDTO> congestions, int date)
         {
@@ -23,16 +23,16 @@ namespace mvts_report_service.renders.pdf
             switch (date)
             {
                 case 1:
-                    _titulo = "Congestiones del día de hoy";
+                    _titulo += $" del día de hoy";
                     break;
                 case 2:
-                    _titulo = "Congestiones desde hace 7 días";
+                    _titulo = $" desde hace 7 días";
                     break;
                 case 3:
-                    _titulo = "Congestiones de las ultimas 4 semanas";
+                    _titulo = $" de las ultimas 4 semanas";
                     break;
                 default:
-                    _titulo = "Congestiones por fecha";
+                    _titulo = $" por fecha";
                     break;
             }
         }
