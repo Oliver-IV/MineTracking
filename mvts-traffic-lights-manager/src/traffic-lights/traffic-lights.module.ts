@@ -6,6 +6,7 @@ import { LocationEntity, TrafficLightEntity } from '@app/common';
 import { LocationService } from './location.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import {
+  PATTERNS,
   RMQ_CLIENT_NAME,
   RMQ_QUEUE_NAME,
   RMQ_URI,
@@ -37,4 +38,4 @@ import {
   controllers: [TrafficLightsController],
   providers: [TrafficLightsService, LocationService],
 })
-export class TrafficLightsModule {}
+export class TrafficLightsModule { }

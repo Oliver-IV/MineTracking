@@ -20,7 +20,7 @@ import {
 import { LocationService } from './location.service';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
-import { PATTERNS } from 'configs/rmq.config';
+import { PATTERNS, TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE } from 'configs/rmq.config';
 
 @Injectable()
 export class TrafficLightsService {
@@ -29,9 +29,9 @@ export class TrafficLightsService {
     private trafficLightRepository: Repository<TrafficLightEntity>,
     @Inject() private locationService: LocationService,
     @Inject('TRAFFIC_LIGHTS_SERVICE') private rmqClient: ClientProxy,
-    @Inject('TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE')
+    @Inject(TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE)
     private rmqColorChangeClient: ClientProxy,
-  ) {}
+  ) { }
 
   formatId(count: number, padding: number = 5): string {
     const nextId = count + 1;
@@ -135,10 +135,13 @@ export class TrafficLightsService {
     });
 
     //the conejo 4 the color change
-    this.rmqColorChangeClient.emit(PATTERNS.TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE, {
+    this.rmqColorChangeClient.emit(TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE, {
       trafficLightId,
       state,
     });
+
+
+
 
     return updated;
   }

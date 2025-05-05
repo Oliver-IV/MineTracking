@@ -12,7 +12,7 @@ import {
 @Controller()
 @TrafficLightsServiceControllerMethods()
 export class TrafficLightsController implements TrafficLightsServiceController {
-  constructor(private readonly trafficLightsService: TrafficLightsService) {}
+  constructor(private readonly trafficLightsService: TrafficLightsService) { }
 
   createTrafficLight(createTrafficLightDto: CreateTrafficLightDto) {
     return this.trafficLightsService.create(createTrafficLightDto);

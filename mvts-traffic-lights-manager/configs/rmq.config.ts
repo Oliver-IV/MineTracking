@@ -19,3 +19,4 @@ export enum PATTERNS {
   TRAFFIC_LIGHT_UPDATED = 'traffic-light-updated',
   TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE = 'traffic-light-state-changed',
 }
+//traffic_light_color_change_queue
