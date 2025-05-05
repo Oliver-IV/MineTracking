@@ -71,7 +71,7 @@ function POSTstartSimulation(req: Request, res: Response) {
 
             // Detener todos los semáforos
             trafficLights.forEach(trafficLight => {
-                stopTrafficLightCycle(trafficLight.id);
+                stopTrafficLightCycle(trafficLight.trafficLightId);
             });
 
             console.log('Simulación completada: Llegó al destino');
@@ -100,7 +100,7 @@ function POSTstopSimulation(req: Request, res: Response) {
 
     // Detener todos los semáforos
     trafficLights.forEach(trafficLight => {
-        stopTrafficLightCycle(trafficLight.id);
+        stopTrafficLightCycle(trafficLight.trafficLightId);
     });
 
     res.json({

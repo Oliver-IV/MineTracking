@@ -105,7 +105,8 @@
             font-size: 14px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
@@ -193,76 +194,69 @@
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
     <script>
-        // Configuración inicial
         const wsUrl = 'ws://localhost:9001';
         let client = null;
-        
-        // Almacenamiento de estado
+    
         const trafficLights = {};
         const cars = {};
-        
-        // Capas del mapa
         let map;
         let carMarkers = {};
         let trafficLightMarkers = {};
         let carRoutes = {};
-
-        // Iconos personalizados
+    
         const carIcon = L.icon({
             iconUrl: 'https://cdn-icons-png.flaticon.com/512/2253/2253065.png',
             iconSize: [32, 32],
             iconAnchor: [16, 16]
         });
-
+    
         const redLightIcon = L.icon({
             iconUrl: 'https://cdn-icons-png.flaticon.com/512/702/702814.png',
             iconSize: [24, 24],
             iconAnchor: [12, 12]
         });
-
+    
         const yellowLightIcon = L.icon({
             iconUrl: 'https://cdn-icons-png.flaticon.com/512/702/702815.png',
             iconSize: [24, 24],
             iconAnchor: [12, 12]
         });
-
+    
         const greenLightIcon = L.icon({
             iconUrl: 'https://cdn-icons-png.flaticon.com/512/702/702816.png',
             iconSize: [24, 24],
             iconAnchor: [12, 12]
         });
-
-        // Inicializar mapa
+    
         function initMap() {
-            map = L.map('map').setView([19.4326, -99.1332], 14); // Centro en CDMX
-            
+            map = L.map('map').setView([25.564878, -108.4578342], 15);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
         }
-
-        // Inicializar conexión WebSocket/MQTT
+    
+        document.getElementById('connect-btn').addEventListener('click', connectWebSocket);
+        document.getElementById('disconnect-btn').addEventListener('click', disconnectWebSocket);
+    
         function connectWebSocket() {
             client = mqtt.connect(wsUrl, {
                 username: 'mosquitto',
                 password: 'compaoli123'
             });
-
+    
             client.subscribe('cars/location');
             client.subscribe('traffic_lights/color');
-
+    
             client.on('connect', () => {
                 console.log('Conexión establecida');
                 updateStatus('Conectado', 'connected');
                 document.getElementById('connect-btn').disabled = true;
                 document.getElementById('disconnect-btn').disabled = false;
             });
-
+    
             client.on('message', (topic, message) => {
                 try {
                     const data = JSON.parse(message.toString());
-                    console.log(`Datos recibidos de ${topic}:`, data);
-                    
                     if (topic === 'cars/location') {
                         updateCarData(data);
                     } else if (topic === 'traffic_lights/color') {
@@ -272,11 +266,11 @@
                     console.error('Error parseando mensaje:', e);
                 }
             });
-
+    
             client.on('error', (error) => {
                 console.error('Error:', error);
             });
-
+    
             client.on('close', () => {
                 console.log('Conexión cerrada');
                 updateStatus('Desconectado', 'disconnected');
@@ -284,73 +278,59 @@
                 document.getElementById('disconnect-btn').disabled = true;
             });
         }
-
+    
         function disconnectWebSocket() {
             if (client) {
                 client.end();
                 client = null;
             }
         }
-
+    
         function updateStatus(text, className) {
             const statusElement = document.getElementById('status');
             statusElement.textContent = text;
             statusElement.className = `status ${className}`;
         }
-
+    
         function updateCarData(data) {
-            // Actualizar datos del coche
             const carId = data.carId;
-            cars[carId] = {
-                ...data,
-                lastUpdate: new Date()
-            };
-
-            // Actualizar tabla
+            cars[carId] = { ...data, lastUpdate: new Date() };
+    
             updateCarTable(carId, data);
-
-            // Actualizar mapa
             updateCarOnMap(carId, data);
         }
-
+    
         function updateCarTable(carId, data) {
             let row = document.getElementById(`car-${carId}`);
-            
             if (!row) {
                 row = document.createElement('tr');
                 row.id = `car-${carId}`;
                 document.getElementById('cars-body').appendChild(row);
             }
-            
+    
             row.innerHTML = `
                 <td>${carId}</td>
                 <td><span class="car-status ${data.status === 'MOVING' ? 'moving' : 'stopped'}">${data.status}</span></td>
                 <td>${data.speed || 'N/A'} km/h</td>
             `;
         }
-
+    
         function updateCarOnMap(carId, data) {
             const latLng = L.latLng(data.location.latitude, data.location.longitude);
-            
-            // Crear o actualizar marcador
+    
             if (!carMarkers[carId]) {
                 carMarkers[carId] = L.marker(latLng, {
                     icon: carIcon,
                     title: `Vehículo ${carId}`
                 }).addTo(map);
-                
-                // Crear ruta si no existe
-                if (!carRoutes[carId]) {
-                    carRoutes[carId] = L.polyline([], {color: 'blue'}).addTo(map);
-                }
+    
+                carRoutes[carId] = L.polyline([], { color: 'blue' }).addTo(map);
             } else {
                 carMarkers[carId].setLatLng(latLng);
             }
-            
-            // Actualizar ruta
+    
             carRoutes[carId].addLatLng(latLng);
-            
-            // Actualizar popup
+    
             carMarkers[carId].bindPopup(`
                 <b>Vehículo ${carId}</b><br>
                 Estado: ${data.status}<br>
@@ -358,79 +338,84 @@
                 Última actualización: ${new Date().toLocaleTimeString()}
             `);
         }
-
+    
         function updateTrafficLightData(data) {
-            // Actualizar datos del semáforo
             const tlId = data.trafficLightId;
-            trafficLights[tlId] = {
-                ...data,
-                lastUpdate: new Date()
-            };
-
-            // Actualizar tabla
-            updateTrafficLightTable(tlId, data);
-
-            // Actualizar mapa
-            updateTrafficLightOnMap(tlId, data);
+            trafficLights[tlId] = { ...data, lastUpdate: new Date() };
+    
+            const stateStr = getLightStateString(data.state);
+            const icon = getTrafficLightIcon(data.state);
+    
+            updateTrafficLightTable(tlId, data, stateStr);
+            updateTrafficLightOnMap(tlId, data, stateStr, icon);
         }
-
-        function updateTrafficLightTable(tlId, data) {
+    
+        function getLightStateString(state) {
+            switch (state) {
+                case 0: return 'RED';
+                case 1: return 'YELLOW';
+                case 2: return 'GREEN';
+                default: return 'UNRECOGNIZED';
+            }
+        }
+    
+        function getTrafficLightIcon(state) {
+            switch (state) {
+                case 0: return redLightIcon;
+                case 1: return yellowLightIcon;
+                case 2: return greenLightIcon;
+                default: return redLightIcon;
+            }
+        }
+    
+        function updateTrafficLightTable(tlId, data, stateStr) {
             let row = document.getElementById(`tl-${tlId}`);
-            
             if (!row) {
                 row = document.createElement('tr');
                 row.id = `tl-${tlId}`;
                 document.getElementById('traffic-lights-body').appendChild(row);
             }
-            
+    
             row.innerHTML = `
                 <td>${tlId}</td>
                 <td>${data.active ? 'Activo' : 'Inactivo'}</td>
-                <td><span class="traffic-light-status ${data.color.toLowerCase()}"></span> ${data.color}</td>
+                <td><span class="traffic-light ${stateStr.toLowerCase()}"></span> ${stateStr}</td>
+                <td>${formatCycleIntervals(data.cycleIntervals)}</td>
+                <td>${new Date().toLocaleTimeString()}</td>
             `;
         }
-
-        function updateTrafficLightOnMap(tlId, data) {
-            // Obtener coordenadas (asumiendo que están en el mensaje)
+    
+        function updateTrafficLightOnMap(tlId, data, stateStr, icon) {
             const latLng = L.latLng(data.location.latitude, data.location.longitude);
-            
-            // Seleccionar icono basado en el color
-            let icon;
-            switch(data.color) {
-                case 'RED': icon = redLightIcon; break;
-                case 'YELLOW': icon = yellowLightIcon; break;
-                case 'GREEN': icon = greenLightIcon; break;
-                default: icon = redLightIcon;
-            }
-            
-            // Crear o actualizar marcador
+    
             if (!trafficLightMarkers[tlId]) {
                 trafficLightMarkers[tlId] = L.marker(latLng, {
                     icon: icon,
                     title: `Semáforo ${tlId}`
                 }).addTo(map);
             } else {
+                trafficLightMarkers[tlId].setLatLng(latLng);
                 trafficLightMarkers[tlId].setIcon(icon);
             }
-            
-            // Actualizar popup
+    
             trafficLightMarkers[tlId].bindPopup(`
                 <b>Semáforo ${tlId}</b><br>
-                Estado: ${data.color}<br>
-                Ciclo: R ${data.cycleIntervals.red/1000}s / Y ${data.cycleIntervals.yellow/1000}s / G ${data.cycleIntervals.green/1000}s<br>
+                Estado: ${stateStr}<br>
+                Activo: ${data.active ? 'Sí' : 'No'}<br>
                 Última actualización: ${new Date().toLocaleTimeString()}
             `);
         }
+    
+        function formatCycleIntervals(intervals) {
+            if (!intervals) return 'N/A';
+            return `R:${intervals.red / 1000}s / Y:${intervals.yellow / 1000}s / G:${intervals.green / 1000}s`;
+        }
 
-        // Event listeners
-        document.getElementById('connect-btn').addEventListener('click', connectWebSocket);
-        document.getElementById('disconnect-btn').addEventListener('click', disconnectWebSocket);
-
-        // Inicializar mapa cuando se carga la página
         window.onload = function() {
             initMap();
         };
     </script>
+    
 </body>
 
 </html>

@@ -2,7 +2,7 @@ import { rabbitMqUrl, trafficLightChangeQueueName, trafficLightQueueName } from 
 import * as amqp from 'amqplib';
 import { TrafficLightDto } from "../dtos/traffic-light.dto";
 import { TrafficLightsService } from "../services/traffic-lights.service";
-import { TrafficLightUpdateMessageDto as TrafficLightUpdateMessageDto } from "../dtos/traffic-light-update-message.dto";
+import { RMQChangeLightStateMessageDto } from "../dtos/rmq-change-light-state-message.dto";
 
 export class TrafficLightsConsumer {
 
@@ -70,21 +70,21 @@ export class TrafficLightsConsumer {
         if (!msg) return;
 
         try {
-            const content = JSON.parse(msg.content.toString()) as TrafficLightUpdateMessageDto;
+            const content = JSON.parse(msg.content.toString()) as RMQChangeLightStateMessageDto;
 
             // Validar el mensaje recibido
-            if (!content.data || !content.data.trafficLightId || !content.data.color) {
+            if (!content.data.trafficLightId || !content.data.state) {
                 console.error('Mensaje con formato incorrecto recibido:', content);
                 this.channel?.nack(msg, false, false);
                 return;
             }
 
-            const { trafficLightId, color } = content.data;
+            const { trafficLightId, state } = content.data ;
 
-            console.log(`Mensaje recibido - ID: ${trafficLightId}, Color: ${color}`);
+            console.log(`Mensaje recibido - ID: ${trafficLightId}, Color: ${state}`);
 
             // Actualizar el semáforo usando el servicio
-            const result = this.trafficLightsService.changeTrafficLightColor(trafficLightId, color);
+            const result = this.trafficLightsService.changeTrafficLightColor(trafficLightId, state);
             
             if (result.error) {
                 console.error(`Error al actualizar semáforo: ${result.error}`);
