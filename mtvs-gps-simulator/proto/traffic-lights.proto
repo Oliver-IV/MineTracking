@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package trafficLights;
+
+service TrafficLightsService {
+    rpc FindAllTrafficLights (Empty) returns (TrafficLights) {}
+}
+
+message Empty {};
+
+message TrafficLights {
+    repeated TrafficLight trafficLights = 1;
+}
+
+message Location {
+    string locationId = 1;
+    string latitude = 2; 
+    string longitude = 3;
+}
+
+enum State {
+    RED = 0;
+    YELLOW = 1;
+    GREEN = 2;
+}
+
+enum Mode {
+    AUTO = 0;
+    MANUAL = 1;
+}
+
+message TrafficLight{
+    string trafficLightId = 1;
+    string name = 2;
+    Location location = 3;
+    Mode mode = 4;
+    State state = 5;
+}
