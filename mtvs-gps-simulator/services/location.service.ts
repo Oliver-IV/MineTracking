@@ -1,6 +1,7 @@
 import { carQueueName, rabbitMqUrl } from "../configs/rabbitmq.config";
 import { LocationMessageDto } from "../dtos/location-message.dto";
 import { LocationDto } from "../dtos/location.dto";
+import { State } from "../dtos/state.enum";
 import carSimulation from "../simulated-data/cars.simulation";
 import trafficLights from "../simulated-data/traffic-lights.simulation";
 import * as amqp from 'amqplib';
@@ -30,7 +31,7 @@ export class LocationService {
 
     checkTrafficLights(carLocation: LocationDto): boolean {
         for (const trafficLight of trafficLights) {
-            if (trafficLight.currentColor === 'RED' || trafficLight.currentColor === 'YELLOW') {
+            if (trafficLight.currentState === State.RED || trafficLight.currentState === State.YELLOW) {
                 const distance = this.calculateDistance(carLocation, trafficLight.location);
                 if (distance <= trafficLight.radius) {
                     return true; // Hay un semáforo en rojo/amarillo cerca

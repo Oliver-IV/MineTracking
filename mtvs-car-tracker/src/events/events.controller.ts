@@ -16,6 +16,8 @@ export class EventsController {
     this.mqttService.publish('cars/location', {
       carId: data.carId,
       location: data.location,
+      speed: data.speed,
+      status: data.status
     });
     return { processed: true };
   }
@@ -23,10 +25,13 @@ export class EventsController {
   @MessagePattern('traffic_lights_color_updates')
   async handleTrafficLightsColorUpdate(@Payload() data: any) {
     this.logger.log(`[Controller] Recibida actualización de color de semáforo para carID: ${data.carId}`);
-    this.logger.log(`[Controller] Color: ${data.color}`);
+    this.logger.log(`[Controller] Color: ${data.currentState}`);
     this.mqttService.publish('traffic_lights/color', {
       trafficLightId: data.trafficLightId,
-      color: data.color
+      state: data.currentState,
+      location: data.location,
+      cycleIntervals: data.cycleIntervals,
+      active: data.active
     });
     return { processed: true };
   }
