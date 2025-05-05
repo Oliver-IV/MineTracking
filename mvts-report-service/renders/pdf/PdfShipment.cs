@@ -23,16 +23,16 @@ namespace mvts_report_service.renders.pdf
             switch (date)
             {
                 case 1:
-                    _titulo += $"{_titulo} del día de hoy";
+                    _titulo += $" del día de hoy";
                     break;
                 case 2:
-                    _titulo = $"{_titulo} desde hace 7 días";
+                    _titulo = $" desde hace 7 días";
                     break;
                 case 3:
-                    _titulo = $"{_titulo} de las ultimas 4 semanas";
+                    _titulo = $" de las ultimas 4 semanas";
                     break;
                 default:
-                    _titulo = $"{_titulo} por fecha";
+                    _titulo = $" por fecha";
                     break;
             }
         }

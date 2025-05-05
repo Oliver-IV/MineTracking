@@ -7,16 +7,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ClientsModule.register([
       {
-        name: 'MATH_SERVICE',
+        name: 'REPORT_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: ['amqp://localhost:5672'],
           queue: 'report_request_queue',
-          queueOptions: {
-            durable: false
-          },
-          prefetchCount: 0,
-          replyQueue: ''
         },
       },
     ]),

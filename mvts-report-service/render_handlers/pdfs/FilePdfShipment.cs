@@ -26,7 +26,7 @@ namespace mvts_report_service.render_handlers.pdfs
                 ContentType = "application/pdf",
                 ExtFile = ".pdf",
                 FileName = $"ShipmentReport_{DateTime.UtcNow.ToString("yyyyMMdd_HHmmss")}",
-                File = file
+                File = Convert.ToBase64String(file)
             };
             Console.WriteLine($"FilePdfShipment: Pdf {report.FileName}{report.ExtFile} creado");
 

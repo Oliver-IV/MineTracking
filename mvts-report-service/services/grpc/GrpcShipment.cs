@@ -10,7 +10,7 @@ namespace mvts_report_service.services.grpc
 
         public GrpcShipment()
         {
-            _channel = GrpcChannel.ForAddress("https://localhost:5299");
+            _channel = GrpcChannel.ForAddress("http://localhost:5299");
         }
         public async ValueTask DisposeAsync()
         {

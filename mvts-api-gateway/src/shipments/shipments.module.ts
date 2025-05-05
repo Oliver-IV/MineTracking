@@ -13,7 +13,7 @@ import { join } from 'path';
           options: {
             url: 'localhost:5299',
             package: 'shipment',
-            protoPath: join(__dirname, 'protos','shipment_service.proto'),
+            protoPath: join(process.cwd(), 'src', 'shipments', 'protos', 'shipment_service.proto')
           },
         },
       ]),
