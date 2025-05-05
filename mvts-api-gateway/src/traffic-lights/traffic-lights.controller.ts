@@ -6,7 +6,7 @@ import { GrpcExceptionInterceptor } from '@app/common';
 @Controller('traffic-lights')
 @UseInterceptors(GrpcExceptionInterceptor)
 export class TrafficLightsController {
-  constructor(private readonly trafficLightsService: TrafficLightsService) {}
+  constructor(private readonly trafficLightsService: TrafficLightsService) { }
 
   @Post()
   create(@Body() createTrafficLightDto: CreateTrafficLightValidatedDto) {

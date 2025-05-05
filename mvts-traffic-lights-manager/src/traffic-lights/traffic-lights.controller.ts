@@ -1,16 +1,20 @@
 import { Controller } from '@nestjs/common';
 import { TrafficLightsService } from './traffic-lights.service';
-import { 
-  ChangeLightStateDto, CreateTrafficLightDto, FindOneTrafficLightDto, UpdateTrafficLightDto, 
-  TrafficLightsServiceController, TrafficLightsServiceControllerMethods 
+import {
+  ChangeLightStateDto,
+  CreateTrafficLightDto,
+  FindOneTrafficLightDto,
+  UpdateTrafficLightDto,
+  TrafficLightsServiceController,
+  TrafficLightsServiceControllerMethods,
 } from '@app/common';
 
 @Controller()
 @TrafficLightsServiceControllerMethods()
-export class TrafficLightsController implements TrafficLightsServiceController{
+export class TrafficLightsController implements TrafficLightsServiceController {
   constructor(private readonly trafficLightsService: TrafficLightsService) {}
 
-  createTrafficLight( createTrafficLightDto: CreateTrafficLightDto) {
+  createTrafficLight(createTrafficLightDto: CreateTrafficLightDto) {
     return this.trafficLightsService.create(createTrafficLightDto);
   }
 
@@ -18,19 +22,22 @@ export class TrafficLightsController implements TrafficLightsServiceController{
     return this.trafficLightsService.findAll();
   }
 
-  findOneTrafficLight( findOneTrafficLight : FindOneTrafficLightDto) {
+  findOneTrafficLight(findOneTrafficLight: FindOneTrafficLightDto) {
     return this.trafficLightsService.findOne(findOneTrafficLight.id);
   }
 
-  updateTrafficLight( updateTrafficLightDto: UpdateTrafficLightDto) {
-    return this.trafficLightsService.update(updateTrafficLightDto.trafficLightId, updateTrafficLightDto);
+  updateTrafficLight(updateTrafficLightDto: UpdateTrafficLightDto) {
+    return this.trafficLightsService.update(
+      updateTrafficLightDto.trafficLightId,
+      updateTrafficLightDto,
+    );
   }
 
-  changeTrafficLightState(changeLightStateDto: ChangeLightStateDto){
-      return this.trafficLightsService.changeState(changeLightStateDto);
+  changeTrafficLightState(changeLightStateDto: ChangeLightStateDto) {
+    return this.trafficLightsService.changeState(changeLightStateDto);
   }
 
-  removeTrafficLight( findOneTrafficLight : FindOneTrafficLightDto) {
+  removeTrafficLight(findOneTrafficLight: FindOneTrafficLightDto) {
     return this.trafficLightsService.remove(findOneTrafficLight.id);
   }
 }

@@ -5,9 +5,7 @@
   "sourceRoot": "./",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": [
-      "proto/*.proto"
-    ],
+    "assets": ["proto/*.proto"],
     "watchAssets": true,
     "webpack": true
   },

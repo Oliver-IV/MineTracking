@@ -1,14 +1,13 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity("location")
+@Entity('location')
 export class LocationEntity {
+  @PrimaryColumn({ name: 'location_id' })
+  locationId: string;
 
-    @PrimaryColumn({name: "location_id"})
-    locationId : string;
+  @Column()
+  latitude: string;
 
-    @Column()
-    latitude: string;
-    
-    @Column()
-    longitude: string;
+  @Column()
+  longitude: string;
 }

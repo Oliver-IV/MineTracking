@@ -1,13 +1,18 @@
-import { IsLatitude, IsLongitude, IsNumberString, IsOptional } from "class-validator";
+import {
+  IsLatitude,
+  IsLongitude,
+  IsNumberString,
+  IsOptional,
+} from 'class-validator';
 
 export class LocationDto {
-    @IsOptional()
-    @IsNumberString()
-    locationId: string = '0';
+  @IsOptional()
+  @IsNumberString()
+  locationId: string = '0';
 
-    @IsLatitude()
-    latitude: string;
+  @IsLatitude()
+  latitude: string;
 
-    @IsLongitude()
-    longitude: string;
+  @IsLongitude()
+  longitude: string;
 }

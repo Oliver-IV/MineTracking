@@ -5,10 +5,10 @@
 // source: proto/traffic-lights.proto
 
 /* eslint-disable */
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
-export const protobufPackage = "trafficLights";
+export const protobufPackage = 'trafficLights';
 
 export enum State {
   RED = 0,
@@ -39,8 +39,7 @@ export interface FindOneTrafficLightDto {
   id: string;
 }
 
-export interface Empty {
-}
+export interface Empty {}
 
 export interface TrafficLights {
   trafficLights: TrafficLight[];
@@ -66,32 +65,46 @@ export interface TrafficLight {
   state: State;
 }
 
-export const TRAFFIC_LIGHTS_PACKAGE_NAME = "trafficLights";
+export const TRAFFIC_LIGHTS_PACKAGE_NAME = 'trafficLights';
 
 export interface TrafficLightsServiceClient {
   createTrafficLight(request: CreateTrafficLightDto): Observable<TrafficLight>;
 
   findAllTrafficLights(request: Empty): Observable<TrafficLights>;
 
-  findOneTrafficLight(request: FindOneTrafficLightDto): Observable<TrafficLight>;
+  findOneTrafficLight(
+    request: FindOneTrafficLightDto,
+  ): Observable<TrafficLight>;
 
   updateTrafficLight(request: UpdateTrafficLightDto): Observable<TrafficLight>;
 
   removeTrafficLight(request: FindOneTrafficLightDto): Observable<TrafficLight>;
 
-  changeTrafficLightState(request: ChangeLightStateDto): Observable<TrafficLight>;
+  changeTrafficLightState(
+    request: ChangeLightStateDto,
+  ): Observable<TrafficLight>;
 }
 
 export interface TrafficLightsServiceController {
-  createTrafficLight(request: CreateTrafficLightDto): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
+  createTrafficLight(
+    request: CreateTrafficLightDto,
+  ): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
 
-  findAllTrafficLights(request: Empty): Promise<TrafficLights> | Observable<TrafficLights> | TrafficLights;
+  findAllTrafficLights(
+    request: Empty,
+  ): Promise<TrafficLights> | Observable<TrafficLights> | TrafficLights;
 
-  findOneTrafficLight(request: FindOneTrafficLightDto): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
+  findOneTrafficLight(
+    request: FindOneTrafficLightDto,
+  ): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
 
-  updateTrafficLight(request: UpdateTrafficLightDto): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
+  updateTrafficLight(
+    request: UpdateTrafficLightDto,
+  ): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
 
-  removeTrafficLight(request: FindOneTrafficLightDto): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
+  removeTrafficLight(
+    request: FindOneTrafficLightDto,
+  ): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
 
   changeTrafficLightState(
     request: ChangeLightStateDto,
@@ -101,23 +114,37 @@ export interface TrafficLightsServiceController {
 export function TrafficLightsServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
-      "createTrafficLight",
-      "findAllTrafficLights",
-      "findOneTrafficLight",
-      "updateTrafficLight",
-      "removeTrafficLight",
-      "changeTrafficLightState",
+      'createTrafficLight',
+      'findAllTrafficLights',
+      'findOneTrafficLight',
+      'updateTrafficLight',
+      'removeTrafficLight',
+      'changeTrafficLightState',
     ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("TrafficLightsService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('TrafficLightsService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("TrafficLightsService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('TrafficLightsService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const TRAFFIC_LIGHTS_SERVICE_NAME = "TrafficLightsService";
+export const TRAFFIC_LIGHTS_SERVICE_NAME = 'TrafficLightsService';
