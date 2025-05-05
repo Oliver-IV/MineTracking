@@ -9,7 +9,7 @@ export class EventsController {
 
   constructor(private readonly mqttService: MqttService) { }
 
-  @MessagePattern('car_location_updates')
+  @EventPattern('car_location_updates')
   async handleCarLocationUpdate(@Payload() data: LocationMessageDto) {
     this.logger.log(`[Controller] Recibida actualización de ubicación para carID: ${data.carId}`);
     this.logger.log(`[Controller] Coordenadas: ${data.location.latitude}, ${data.location.longitude}`);
@@ -20,7 +20,7 @@ export class EventsController {
     return { processed: true };
   }
 
-  @MessagePattern('traffic_lights_color_updates')
+  @EventPattern('traffic_lights_color_updates')
   async handleTrafficLightsColorUpdate(@Payload() data: any) {
     this.logger.log(`[Controller] Recibida actualización de color de semáforo para carID: ${data.carId}`);
     this.logger.log(`[Controller] Color: ${data.color}`);
@@ -29,5 +29,15 @@ export class EventsController {
       color: data.color
     });
     return { processed: true };
+  }
+
+  @EventPattern()
+  async handleCongestionTraffic(@Payload() data: any) {
+    this.logger.log(`[Controller] Congestión Recibida!!`);
+    this.logger.log(`[Controller] Nombre: ${data.Name}, ID: ${data.Id}`);
+    this.mqttService.publish('congestion/traffic', {
+      trafficLightId: data.trafficLightId,
+      color: data.color
+    });
   }
 }

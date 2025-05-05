@@ -21,7 +21,17 @@ async function bootstrap() {
       queueOptions: { durable: true },
     }
   }) ;
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      urls: [RABBITMQ_URL],
+      queue: 'congestion_traffic_queue',
+      queueOptions: { durable: false },
+      exchange: 'congestion_traffic_exchange',
+      exchangeType: 'fanout'
+    }
+  }) ;
   app.startAllMicroservices() ;
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3002);
 }
 bootstrap();

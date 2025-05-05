@@ -15,7 +15,7 @@ namespace mvts_report_service.services.grpc
         private  readonly GrpcChannel _channel;
         
         public GrpcCongestion() {
-            _channel = GrpcChannel.ForAddress("https://localhost:7001");
+            _channel = GrpcChannel.ForAddress("http://localhost:5295");
         }
         public async ValueTask DisposeAsync()
         {
