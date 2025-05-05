@@ -125,7 +125,7 @@ export class TrafficLightsService {
 
   async changeState(
     changeLightStateDto: ChangeLightStateDto,
-  ): Promise<TrafficLight> {
+  ) {
     const { trafficLightId, state } = changeLightStateDto;
     const trafficLight: TrafficLight = await this.findOne(trafficLightId);
 
@@ -140,10 +140,6 @@ export class TrafficLightsService {
       state,
     });
 
-
-
-
-    return updated;
   }
 
   async remove(trafficLightId: string): Promise<TrafficLight> {

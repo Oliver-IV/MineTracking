@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarValidatedDto, UpdateCarValidatedDto } from './dto';
 import { GrpcExceptionInterceptor } from '@app/common';

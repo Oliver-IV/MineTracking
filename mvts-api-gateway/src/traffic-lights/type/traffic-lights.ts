@@ -79,7 +79,7 @@ export interface TrafficLightsServiceClient {
 
   removeTrafficLight(request: FindOneTrafficLightDto): Observable<TrafficLight>;
 
-  changeTrafficLightState(request: ChangeLightStateDto): Observable<TrafficLight>;
+  changeTrafficLightState(request: ChangeLightStateDto): Observable<Empty>;
 }
 
 export interface TrafficLightsServiceController {
@@ -93,9 +93,7 @@ export interface TrafficLightsServiceController {
 
   removeTrafficLight(request: FindOneTrafficLightDto): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
 
-  changeTrafficLightState(
-    request: ChangeLightStateDto,
-  ): Promise<TrafficLight> | Observable<TrafficLight> | TrafficLight;
+  changeTrafficLightState(request: ChangeLightStateDto): Promise<Empty> | Observable<Empty> | Empty;
 }
 
 export function TrafficLightsServiceControllerMethods() {

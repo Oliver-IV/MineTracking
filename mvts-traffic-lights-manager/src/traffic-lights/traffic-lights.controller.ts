@@ -34,7 +34,8 @@ export class TrafficLightsController implements TrafficLightsServiceController {
   }
 
   changeTrafficLightState(changeLightStateDto: ChangeLightStateDto) {
-    return this.trafficLightsService.changeState(changeLightStateDto);
+    this.trafficLightsService.changeState(changeLightStateDto);
+    return {};
   }
 
   removeTrafficLight(findOneTrafficLight: FindOneTrafficLightDto) {

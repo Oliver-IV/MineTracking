@@ -8,7 +8,7 @@ service TrafficLightsService {
     rpc FindOneTrafficLight (FindOneTrafficLightDto) returns (TrafficLight) {}
     rpc UpdateTrafficLight (UpdateTrafficLightDto) returns (TrafficLight) {}
     rpc RemoveTrafficLight (FindOneTrafficLightDto) returns (TrafficLight) {}
-    rpc ChangeTrafficLightState (ChangeLightStateDto) returns (TrafficLight) {}
+    rpc ChangeTrafficLightState (ChangeLightStateDto) returns (Empty) {}
 }
 
 message ChangeLightStateDto {
