@@ -3,8 +3,8 @@ import { GETsimulationStatus, POSTstartSimulation, POSTstopSimulation } from "..
 
 const simulationRouter = Router() ;
 
-simulationRouter.post('/start', (req, res) => {
-    POSTstartSimulation(req, res);
+simulationRouter.post('/start', async (req, res) => {
+    await POSTstartSimulation(req, res);
 }) ;
 
 simulationRouter.post('/stop', (req, res) => {

@@ -4,23 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate-proto": "npx protoc --ts_proto_out=./generated --ts_proto_opt=outputServices=grpc-js --proto_path=./proto ./proto/traffic-lights.proto"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@grpc/grpc-js": "^1.13.3",
+    "@grpc/proto-loader": "^0.7.15",
     "amqplib": "^0.10.7",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "google-protobuf": "^3.21.4",
+    "ts-proto": "^2.7.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.7",
     "@types/express": "^5.0.1",
+    "@types/google-protobuf": "^3.15.12",
     "@types/node": "^22.14.1",
     "@types/uuid": "^10.0.0",
-    "typescript": "^5.8.3"
+    "ts-protoc-gen": "^0.15.0"
   }
 }
