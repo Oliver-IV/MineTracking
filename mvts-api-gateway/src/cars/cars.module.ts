@@ -5,6 +5,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CARS_SERVICE } from '@app/common';
 import { join } from 'path';
 import { CARS_PACKAGE_NAME } from './type/cars';
+import * as grpc from '@grpc/grpc-js';
+import * as fs from 'fs';
 
 @Module({
   imports: [
@@ -15,7 +17,8 @@ import { CARS_PACKAGE_NAME } from './type/cars';
         options: {
           package: CARS_PACKAGE_NAME,
           protoPath: join(__dirname, '../cars.proto'),
-          url: 'localhost:5001'
+          url: 'localhost:5001',
+          credentials: grpc.credentials.createSsl(fs.readFileSync('./certs/server.crt')),
         },
       },
     ]),
