@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Cart } from '@/types/Cart';
+import IconMineCart from './icons/IconMineCart.vue';
 const props = defineProps<{
     carts: Cart[]
 }>()
@@ -13,7 +14,7 @@ const emit = defineEmits<{
 <template>
     <div v-for="cart in props.carts" :key="cart.id" class="container" @click="emit('select', cart)">
         <div class="cart">
-            <img src="../assets/cart.png" alt="cart icon" class="cart-icon" />
+            <IconMineCart class="mine-cart-icon"/>
             <p>{{ cart.name }}</p>
         </div>
         <div class="action">
@@ -36,7 +37,7 @@ const emit = defineEmits<{
     display: flex;
     align-items: center;
     padding: 0 1rem;
-    gap : 1rem
+    gap: 1rem
 }
 
 #cart-icon {
@@ -57,7 +58,7 @@ const emit = defineEmits<{
 
 }
 
-.cart-icon {
+.mine-cart-icon{
     width: 30px;
     height: 30px;
 }

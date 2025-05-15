@@ -5,19 +5,22 @@ import { ref } from 'vue';
 import CongestionAlert from '@/components/CongestionAlert.vue';
 import InTransitVehicle from '@/components/InTransitVehicle.vue';
 import CartDetails from '@/components/CartDetails.vue';
-import TrafficLight from '@/components/TrafficLight.vue';
+import TrafficLightPill from '@/components/TrafficLightPill.vue';
 // mock data
 import { testCongestions } from '@/mockData/Congestion';
 import { testCart } from '@/mockData/Cart';
 import { testTrafficLights } from '@/mockData/TrafficLight';
 // types
 import type { Cart } from '@/types/Cart';
+import type { TrafficLight } from '@/types/TrafficLight';
+import TrafficLightDetails from '@/components/TrafficLightDetails.vue';
 
 
 const congestions = testCongestions;
 const carts = testCart
 const trafficLights = testTrafficLights
 const selectedCart = ref<Cart | null>(null);
+const selectedTrafficLight = ref<TrafficLight | null>(null);
 </script>
 
 <template>
@@ -40,13 +43,19 @@ const selectedCart = ref<Cart | null>(null);
                 <CongestionAlert :congestions="congestions" />
                 <h3>Vehicles in Transit</h3>
                 <InTransitVehicle :carts="carts" @select="selectedCart = $event" />
-                <TrafficLight :trafficLights="trafficLights" />
+                <TrafficLightPill :trafficLights="trafficLights" @select="selectedTrafficLight = $event" />
             </template>
 
             <template v-else>
                 <CartDetails :cart="selectedCart" />
                 <p @click="selectedCart = null" id="close-details">Close Details</p>
             </template>
+
+            <template v-if="selectedTrafficLight">
+                <TrafficLightDetails :trafficLight="selectedTrafficLight" />
+                <p @click="selectedTrafficLight = null" id="close-details">Close Details</p>
+            </template>
+
 
 
         </template>

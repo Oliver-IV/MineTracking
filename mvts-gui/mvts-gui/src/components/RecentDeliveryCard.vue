@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import IconAlert from './icons/IconAlert.vue';
-import type { Congestion } from '@/types/Congestion';
 import type { Cart } from "@/types/Cart";
+import IconMineCart from './icons/IconMineCart.vue';
 
 const props = defineProps<{
     carts: Cart[]
@@ -15,7 +15,7 @@ const props = defineProps<{
         <div class="cart">
             <div class="left">
                 <div class="alert-icon">
-                    <IconAlert />
+                    <IconMineCart class="mine-cart-icon" />
                 </div>
                 <div class="alert-description">
                     <p class="sector">Sector {{ cart.name }}</p>
@@ -58,10 +58,7 @@ const props = defineProps<{
 
 .alert-icon {
     display: flex;
-    color: #f9a825;
-    /* Color naranja del icono de alerta */
-    font-size: 1.2rem;
-    /* Ajusta el tamaño del icono si es necesario */
+
 }
 
 .alert-description {
@@ -72,14 +69,13 @@ const props = defineProps<{
 
 .sector {
     font-weight: bold;
-    /* El nombre del sector en negrita */
+
     margin-bottom: 0.2rem;
 }
 
 .date,
 .cause {
     color: #717171;
-    /* Color de texto secundario */
     font-size: 0.85rem;
     margin-bottom: 0.1rem;
 }
@@ -93,17 +89,19 @@ const props = defineProps<{
 .alert-time-car {
     display: flex;
     gap: 0.5rem;
-    /* Espacio entre los "pills" */
+
 }
 
 .pill {
     background-color: #e0e0e0;
-    /* Fondo gris claro para los pills */
     color: #333;
-    /* Color del texto en los pills */
     padding: 0.5rem 0.8rem;
     border-radius: 15px;
-    /* Bordes redondeados para los pills */
     font-size: 0.9rem;
+}
+
+.mine-cart-icon {
+    width: 30px;
+    height: 30px;
 }
 </style>
