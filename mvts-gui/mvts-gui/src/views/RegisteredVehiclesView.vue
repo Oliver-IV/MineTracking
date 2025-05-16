@@ -5,6 +5,9 @@ import IconTrash from '@/components/icons/IconTrash.vue';
 
 import { testCart } from '@/mockData/Cart';
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const carts = testCart;
 
@@ -18,13 +21,17 @@ const filteredCarts = computed(() => {
         return matchesVehicle && matchesState;
     })
 })
+
+function goToRegisterRoute() {
+    router.push({ name: 'registerVehicle' });
+}
 </script>
 
 <template>
     <div class="container">
         <div class="header">
             <h1>Registered Vehicles</h1>
-            <button class="register-button">Register Vehicle</button>
+            <button class="register-button" @click="goToRegisterRoute">Register Vehicle</button>
         </div>
 
         <div class="filter-bar">

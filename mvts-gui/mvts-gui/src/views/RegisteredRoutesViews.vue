@@ -4,53 +4,56 @@ import IconEdit from '@/components/icons/IconEdit.vue';
 import IconTrash from '@/components/icons/IconTrash.vue';
 
 import { testCart } from '@/mockData/Cart';
+import { testRoutes } from '@/mockData/Routes';
 
 import { ref, computed } from 'vue';
 
-const carts = testCart;
 
-//filters fam
-const searchVehicle = ref('');
-const searchState = ref('');
+import { useRouter } from 'vue-router';
 
-const filteredCarts = computed(() => {
-    return carts.filter(cart => {
-        const matchesVehicle = searchVehicle.value === '' || cart.name.toLowerCase().includes(searchVehicle.value.toLowerCase());
-        const matchesState = searchState.value === '' || cart.state.toLowerCase().includes(searchState.value.toLowerCase());
-        return matchesVehicle && matchesState;
-    });
-});
+const router = useRouter();
+
+const routes = testRoutes;
+const searchDeparture = ref('');
+const searchDestination = ref('');
+
+const filteredRoutes = computed(() => {
+    return routes.filter(route => {
+        const matchesDeparture = searchDeparture.value === '' || route.locations[0].name.toLowerCase().includes(searchDeparture.value.toLowerCase());
+        const matchesDestination = searchDestination.value === '' || route.locations[1].name.toLowerCase().includes(searchDestination.value.toLowerCase());
+        return matchesDeparture && matchesDestination;
+    })
+})
+
+
+function goToRegisterRoute() {
+    router.push({ name: 'registerRoute' });
+}
 </script>
+
 <template>
     <div class="container">
         <div class="header">
             <h1>Registered Routes</h1>
-            <button class="register-button">Register Route</button>
+            <button class="register-button" @click="goToRegisterRoute">Register Route</button>
         </div>
 
         <div class="filter-bar">
-            <input class="filter-input" type="text" placeholder="Search Vehicle" v-model="searchVehicle" />
-            <input class="filter-input" type="text" placeholder="State" v-model="searchState" />
+            <input class="filter-input" type="text" placeholder="Search Departure" v-model="searchDeparture" />
+            <input class="filter-input" type="text" placeholder="Search Destination" v-model="searchDestination" />
         </div>
 
         <div class="name-bar">
             <p>ID</p>
-            <p>Vehicle on Cargo</p>
-            <p>Transported Material</p>
             <p>Departure Point</p>
             <p>Destination</p>
-            <p>Transit State</p>
             <p>Actions</p>
         </div>
 
+        <div v-if="filteredRoutes.length > 0" class="info-display" v-for="route in filteredRoutes" :key="route.id">
+            <p>{{ route.locations[0].name }}</p>
+            <p>{{ route.locations[1].name }}</p>
 
-        <div class="info-display" v-for="cart in filteredCarts" :key="cart.id">
-            <p>{{ cart.id }}</p>
-            <p>{{ cart.name }}</p>
-            <p>{{ cart.material }}</p>
-            <p>{{ cart.departure }}</p>
-            <p>{{ cart.destination }}</p>
-            <p>{{ cart.state }}</p>
             <p class="action-icons">
                 <IconSee />
                 <IconEdit />
@@ -70,7 +73,6 @@ const filteredCarts = computed(() => {
     margin-top: 2%;
 }
 
-
 .header {
     display: flex;
     justify-content: space-between;
@@ -87,7 +89,6 @@ const filteredCarts = computed(() => {
     padding: 0 15px;
 }
 
-
 .filter-bar {
     display: flex;
     justify-content: space-between;
@@ -101,7 +102,6 @@ const filteredCarts = computed(() => {
     border: 1px solid #d1d5db;
     margin-right: 1rem;
 }
-
 
 .name-bar {
     display: flex;
@@ -118,7 +118,6 @@ const filteredCarts = computed(() => {
     flex: 1 1 150px;
     margin: 0 5px;
 }
-
 
 .info-display {
     display: flex;
@@ -147,7 +146,6 @@ const filteredCarts = computed(() => {
     justify-content: center;
     align-items: center;
 }
-
 
 @media (max-width: 768px) {
     .container {

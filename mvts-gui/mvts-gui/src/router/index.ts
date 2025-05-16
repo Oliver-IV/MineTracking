@@ -9,7 +9,9 @@ import RegisteredTrafficLightsView from '@/views/RegisteredTrafficLightsView.vue
 import RegisteredAddressesView from '@/views/RegisteredAddressesView.vue';
 import TransportedMaterialView from '@/views/TransportedMaterialView.vue';
 import CongestionsView from '@/views/CongestionsView.vue';
-//import CongestionsView from '@/views/CongestionsView.vue';
+import RegisterNewRouteView from '@/views/RegisterNewRouteView.vue';
+import RegisterNewVehicleView from '@/views/RegisterNewVehicleView.vue';
+
 
 
 const router = createRouter({
@@ -54,9 +56,19 @@ const router = createRouter({
                     component: RegisteredRoutesViews
                 },
                 {
+                    path: 'routes/register',
+                    name: 'registerRoute',
+                    component: RegisterNewVehicleView
+                },
+                {
                     path: 'vehicles',
                     name: 'vehicles',
                     component: RegisteredVehiclesView,
+                },
+                {
+                    path: 'vehicles/register',
+                    name: 'registerVehicle',
+                    component: RegisterNewVehicleView
                 },
                 {
                     path: 'trafficLights',
