@@ -40,6 +40,8 @@ const props = defineProps<{
     border-radius: 10px;
     border: solid 1px #D1D5DB;
     width: 90%;
+    margin: auto;
+    margin-bottom: 2%;
 
 }
 

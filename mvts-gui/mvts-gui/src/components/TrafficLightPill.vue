@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TrafficLight } from '@/types/TrafficLight';
+import IconTrafficLight from './icons/IconTrafficLight.vue';
 
 const props = defineProps<{
     trafficLights: TrafficLight[]
@@ -27,9 +28,10 @@ const emit = defineEmits<{
 
 <template>
 
-    <div v-for="trafficLight in props.trafficLights" :key="trafficLight.id" class="traffic-light-container" @click="emit('select', trafficLight)">
+    <div v-for="trafficLight in props.trafficLights" :key="trafficLight.id" class="traffic-light-container"
+        @click="emit('select', trafficLight)">
         <div class="signal">
-            <img src="../assets/trafficLight.png" alt="signal icon" class="signal-icon">
+            <IconTrafficLight class="signal-icon" />
             <p>Traffic Light {{ trafficLight.id }}</p>
         </div>
         <div class="traffic-light-color" :style="{ backgroundColor: getTrafficLightColor(trafficLight.state) }"></div>
@@ -67,7 +69,6 @@ const emit = defineEmits<{
     border-radius: 50%;
     width: 30px;
     height: 30px;
-    background-color: #22C55E;
     margin-right: 1rem;
 }
 </style>

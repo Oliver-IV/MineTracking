@@ -14,11 +14,11 @@ import { testTrafficLights } from '@/mockData/TrafficLight';
 import type { Cart } from '@/types/Cart';
 import type { TrafficLight } from '@/types/TrafficLight';
 import TrafficLightDetails from '@/components/TrafficLightDetails.vue';
-
+import IconLocation from '@/components/icons/IconLocation.vue';
 
 const congestions = testCongestions;
-const carts = testCart
-const trafficLights = testTrafficLights
+const carts = testCart;
+const trafficLights = testTrafficLights;
 const selectedCart = ref<Cart | null>(null);
 const selectedTrafficLight = ref<TrafficLight | null>(null);
 </script>
@@ -27,48 +27,55 @@ const selectedTrafficLight = ref<TrafficLight | null>(null);
     <div class="main-layout">
         <div class="map-container">
             <div class="map-view">
-                <img src="../assets/location.png" alt="pin image" class="map-icon">
+                <IconLocation class="map-icon" />
                 <div class="text-group">
                     <h2>Map View</h2>
                     <p>Real time monitoring of maps and traffic lights</p>
                 </div>
             </div>
         </div>
-        <template class="information-container">
-            <h2>Information</h2>
-            <p>Vehicle information and alerts</p>
-            <br />
-            <template v-if="!selectedCart">
-                <h3>Active Congestions</h3>
-                <CongestionAlert :congestions="congestions" />
-                <h3>Vehicles in Transit</h3>
-                <InTransitVehicle :carts="carts" @select="selectedCart = $event" />
-                <TrafficLightPill :trafficLights="trafficLights" @select="selectedTrafficLight = $event" />
-            </template>
 
-            <template v-else>
-                <CartDetails :cart="selectedCart" />
-                <p @click="selectedCart = null" id="close-details">Close Details</p>
-            </template>
+        <!-- Contenedor adicional para los "information containers" -->
+        <div class="information-wrapper">
+            <div class="information-container">
+                <h2>Information</h2>
+                <p>Vehicle information and alerts</p>
+                <br />
+                <template v-if="!selectedCart">
+                    <h3>Active Congestions</h3>
+                    <CongestionAlert :congestions="congestions" />
+                    <h3>Vehicles in Transit</h3>
+                    <InTransitVehicle :carts="carts" @select="selectedCart = $event" />
+                  
+                </template>
 
-            <template v-if="selectedTrafficLight">
-                <TrafficLightDetails :trafficLight="selectedTrafficLight" />
-                <p @click="selectedTrafficLight = null" id="close-details">Close Details</p>
-            </template>
+                <template v-else>
+                    <CartDetails :cart="selectedCart" />
+                    <p @click="selectedCart = null" id="close-details">Close Details</p>
+                </template>
 
+            </div>
 
-
-        </template>
-
+            <div class="information-container">
+                <h2>Information</h2>
+                <p>Vehicle information and alerts</p>
+                <br />
+                <template v-if="!selectedTrafficLight">
+                    <TrafficLightPill :trafficLights="trafficLights" @select="selectedTrafficLight = $event" />
+                </template>
+                <template v-if="selectedTrafficLight">
+                    <TrafficLightDetails :trafficLight="selectedTrafficLight" />
+                    <p @click="selectedTrafficLight = null" id="close-details">Close Details</p>
+                </template>
+            </div>
+        </div>
     </div>
 </template>
-
 
 <style scoped>
 .main-layout {
     display: flex;
     gap: 1rem;
-
 }
 
 .map-container {
@@ -78,6 +85,13 @@ const selectedTrafficLight = ref<TrafficLight | null>(null);
     border-radius: 20px;
 }
 
+.information-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+}
+
 .information-container {
     flex: 1;
     border: solid 1px #D1D5DB;
@@ -85,7 +99,7 @@ const selectedTrafficLight = ref<TrafficLight | null>(null);
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
 }
 
@@ -119,6 +133,7 @@ p {
     color: black;
     border: solid 1px black;
     border-radius: 15px;
-    padding: 10px 50px 10px 50px;
+    padding: 10px 50px;
+    cursor: pointer;
 }
 </style>
