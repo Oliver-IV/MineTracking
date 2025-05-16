@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { ReportsController } from './reports.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { REPORTS_RQM_URL } from 'src/configs/enviroment';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'REPORT_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [REPORTS_RQM_URL],
           queue: 'report_request_queue',
         },
       },

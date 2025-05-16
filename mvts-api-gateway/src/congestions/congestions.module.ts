@@ -3,6 +3,7 @@ import { CongestionsService } from './congestions.service';
 import { CongestionsController } from './congestions.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { CONGESTION_SERVICE_URL } from 'src/configs/enviroment';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { join } from 'path';
         name: 'CONGESTION_PACKAGE',
         transport: Transport.GRPC,
         options: {
-          url: 'localhost:5295',
+          url: CONGESTION_SERVICE_URL,
           package: 'congestion',
           protoPath: join(process.cwd(), 'src', 'congestions', 'protos', 'congestion_service.proto')
         },

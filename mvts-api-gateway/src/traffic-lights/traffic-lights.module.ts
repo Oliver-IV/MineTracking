@@ -7,6 +7,7 @@ import { join } from 'path';
 import { TRAFFIC_LIGHTS_PACKAGE_NAME} from './type/traffic-lights';
 import * as grpc from '@grpc/grpc-js';
 import * as fs from 'fs';
+import { TRAFFIC_LIGHTS_URL } from 'src/configs/enviroment';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import * as fs from 'fs';
           name: TRAFFIC_LIGHTS_SERVICE,
           transport: Transport.GRPC,
           options: {
+            url: TRAFFIC_LIGHTS_URL,
             package: TRAFFIC_LIGHTS_PACKAGE_NAME,
             protoPath: join(__dirname, '../traffic-lights.proto'),
             credentials: grpc.credentials.createSsl(fs.readFileSync('./certs/server.crt'))

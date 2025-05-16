@@ -3,6 +3,7 @@ import { ShipmentsService } from './shipments.service';
 import { ShipmentsController } from './shipments.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { SHIPMENTS_SERVICE_URL } from 'src/configs/enviroment';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { join } from 'path';
           name: 'SHIPMENT_PACKAGE',
           transport: Transport.GRPC,
           options: {
-            url: 'localhost:5299',
+            url: SHIPMENTS_SERVICE_URL,
             package: 'shipment',
             protoPath: join(process.cwd(), 'src', 'shipments', 'protos', 'shipment_service.proto')
           },

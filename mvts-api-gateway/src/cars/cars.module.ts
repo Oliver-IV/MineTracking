@@ -7,6 +7,7 @@ import { join } from 'path';
 import { CARS_PACKAGE_NAME } from './type/cars';
 import * as grpc from '@grpc/grpc-js';
 import * as fs from 'fs';
+import { CARS_MANAGER_SERVICE_URL } from 'src/configs/enviroment';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import * as fs from 'fs';
         options: {
           package: CARS_PACKAGE_NAME,
           protoPath: join(__dirname, '../cars.proto'),
-          url: 'localhost:5001',
+          url: CARS_MANAGER_SERVICE_URL,
           credentials: grpc.credentials.createSsl(fs.readFileSync('./certs/server.crt')),
         },
       },
