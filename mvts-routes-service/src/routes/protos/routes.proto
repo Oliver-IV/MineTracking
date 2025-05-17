@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package routes_service;
+
+service RoutesService {
+  rpc CreateRoute (CreateRouteDTO) returns (CreateRouteResponse);
+  rpc FindAllRoutes (EmptyMessage) returns (FindAllRoutesResponse);
+  rpc UpdateRoute (UpdateRouteDTO) returns (UptateRouteResponse);
+  rpc DeleteRoute (DeleteRouteDTO) returns (DeleteRouteResponse);
+}
+
+// Requests
+message CreateRouteDTO {
+  LocationDTO start = 1;
+  LocationDTO end = 2;
+}
+
+message LocationDTO {
+  string name = 1;
+  double latitude = 2;
+  double longitude = 3;
+}
+
+message UpdateRouteDTO {
+  string routeId = 1;
+  LocationDTO start = 2;
+  LocationDTO end = 3;
+}
+
+message DeleteRouteDTO {
+  string routeId = 1;
+}
+
+
+// Responses
+message CreateRouteResponse {
+  string routeId = 1;
+  LocationDTO start = 2;
+  LocationDTO end = 3;
+}
+
+message UptateRouteResponse {
+  string routeId = 1;
+  LocationDTO start = 2;
+  LocationDTO end = 3;
+}
+
+message RouteResponse {
+  string routeId = 1;
+  LocationDTO start = 2;
+  LocationDTO end = 3;
+}
+
+message FindAllRoutesResponse {
+  repeated RouteResponse routes = 1;
+}
+
+message DeleteRouteResponse {
+  string routeId = 1;
+  bool deleted = 2;
+}
+
+message EmptyMessage {}
