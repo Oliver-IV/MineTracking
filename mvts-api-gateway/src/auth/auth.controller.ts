@@ -21,7 +21,8 @@ export class AuthController {
         });
         return res.status(200).json({
             success: true,
-            user: response.user
+            user: response.user,
+            token: response.token
         });
     }
 
