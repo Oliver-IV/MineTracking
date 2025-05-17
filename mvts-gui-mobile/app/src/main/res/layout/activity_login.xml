@@ -49,13 +49,13 @@
         android:layout_marginBottom="32dp"/>
 
     <EditText
-        android:id="@+id/user"
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:background="@drawable/gray"
+        android:background="@drawable/border_txt"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="16dp"
@@ -65,13 +65,13 @@
         android:layout_gravity="center"/>
 
     <EditText
-        android:id="@+id/pass"
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:background="@drawable/et_background"
+        android:background="@drawable/border_txt"
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:padding="16dp"
@@ -81,25 +81,17 @@
         android:layout_gravity="center"/>
 
     <TextView
-        android:id="@+id/tvError"
+        android:id="@+id/error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/red"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:paddingTop="20dp"
         android:paddingBottom="15dp"
         android:textAlignment="center"
         />
 
-    <TextView
-        android:id="@+id/sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/signin_link"
-        android:textColor="@color/colorText"
-        android:textAlignment="center"
-        android:layout_gravity="center"/>
+
 
     <View
         android:layout_width="match_parent"
