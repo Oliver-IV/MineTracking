@@ -1,10 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { Location } from "./location.entity";
 
 @Entity("routes")
 export class Route {
 
-    @PrimaryColumn({name: 'routeId'})
+    @PrimaryColumn({ name: 'routeId' })
     routeId: string;
 
     @ManyToOne(() => Location)
@@ -13,4 +13,8 @@ export class Route {
     @ManyToOne(() => Location)
     end: Location;
 
+    @BeforeInsert()
+    generateUid() {
+        this.routeId = crypto.randomUUID();
+    }
 }

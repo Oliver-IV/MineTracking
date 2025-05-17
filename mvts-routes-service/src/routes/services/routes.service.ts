@@ -26,8 +26,9 @@ export class RoutesService {
       end: routeDto.end
     }
   }
+
   async findAllRoutes(request: EmptyMessage): Promise<FindAllRoutesResponse> {
-    const routes = await this.routeRepository.find();
+    const routes = await this.routeRepository.find({relations: ['start', 'end']});
     return {
       routes: routes.map(route => ({
         routeId: route.routeId,
@@ -45,14 +46,17 @@ export class RoutesService {
     }
   }
   async updateRoute(updateRouteDto: UpdateRouteDTO): Promise<UptateRouteResponse> {
+    console.log(updateRouteDto);
     const route = await this.routeRepository.findOne({where: {routeId: updateRouteDto.routeId}});
     if (!route)
       throw new Error('Route not found');
     if (updateRouteDto.start) {
+      console.log("START")
       const start = await this.locationService.findLocationByName(updateRouteDto.start.name);
       route.start = start;
     }
     if (updateRouteDto.end) {
+      console.log("END")
       const end = await this.locationService.findLocationByName(updateRouteDto.end.name);
       route.end = end;
     }
@@ -60,14 +64,14 @@ export class RoutesService {
     return {
       routeId: route.routeId,
       start: {
-        name: route.start.name,
-        latitude: route.start.latitude,
-        longitude: route.start.longitude
+        name: route?.start.name,
+        latitude: route?.start.latitude,
+        longitude: route?.start.longitude
       },
       end: {
-        name: route.end.name,
-        latitude: route.end.latitude,
-        longitude: route.end.longitude
+        name: route?.end.name,
+        latitude: route?.end.latitude,
+        longitude: route?.end.longitude
       }
     }
   }

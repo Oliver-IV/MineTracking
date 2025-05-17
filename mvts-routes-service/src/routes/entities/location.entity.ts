@@ -5,7 +5,7 @@ import * as crypto from 'crypto';
 export class Location {
     
     @PrimaryColumn({name: 'locationId'})
-    id: string;
+    locationId: string;
 
     @Column({name: 'name', nullable: false, unique: true})
     name: string;
@@ -18,6 +18,6 @@ export class Location {
 
     @BeforeInsert()
     generateUid() {
-        this.id = crypto.randomUUID() ;
+        this.locationId = crypto.randomUUID() ;
     }
 }

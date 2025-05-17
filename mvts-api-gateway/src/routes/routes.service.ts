@@ -38,14 +38,14 @@ export class RoutesService {
         return await lastValueFrom(this.routesService.updateRoute({
             routeId: routeId,
             start: {
-                name: routeDto.start.name,
-                latitude: routeDto.start.latitude,
-                longitude: routeDto.start.longitude
+                name: routeDto?.start?.name,
+                latitude: routeDto?.start?.latitude,
+                longitude: routeDto?.start?.longitude
             },
             end: {
-                name: routeDto.end.name,
-                latitude: routeDto.end.latitude,
-                longitude: routeDto.end.longitude
+                name: routeDto?.end?.name,
+                latitude: routeDto?.end?.latitude,
+                longitude: routeDto?.end?.longitude
             }
         }));
     }
