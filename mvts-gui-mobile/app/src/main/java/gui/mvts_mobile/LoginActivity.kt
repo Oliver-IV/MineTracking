@@ -11,6 +11,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import gui.mvts_mobile.dto.login.LoginRequestDTO
 import gui.mvts_mobile.dto.login.LoginResponseDTO
+import gui.mvts_mobile.dto.login.UserDTO
+import gui.mvts_mobile.dto.singleton.AppDataSingleton
 import gui.mvts_mobile.service.ApiService
 import gui.mvts_mobile.utils.RetroFitClient
 import retrofit2.Call
@@ -47,7 +49,12 @@ class LoginActivity : AppCompatActivity() {
 
             if(validateData()) {
                 val user = LoginRequestDTO(email, pass)
-                loadLogin(user)
+//                loadLogin(user)
+
+                var data = AppDataSingleton.getInstance()
+                data.user = UserDTO("123", "Monkey D. Luffy", "luffy@gmail.com")
+                data.token = "SuperSmashBros"
+                changeDisplay()
             }
         }
     }

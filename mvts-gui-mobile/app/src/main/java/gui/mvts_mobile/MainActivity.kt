@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import gui.mvts_mobile.utils.CongestionFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,14 +27,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> replaceFragment(HomeFragment())
-//                R.id.nav_citas -> replaceFragment(EmpresasFragment())
-//                R.id.nav_info -> replaceFragment(InfoFragment())
-//                R.id.nav_avaluos -> replaceFragment(MisAvaluos2())
-//                R.id.nav_avaluos -> {
-//                    val intent = Intent(this, MisAvaluosActivity::class.java)
-//                    startActivity(intent)
-//                    return@setOnItemSelectedListener false
-//                }
+                R.id.nav_congestion -> replaceFragment(CongestionFragment())
+                R.id.nav_shipment -> replaceFragment(ShipmentFragment())
             }
             true
         }
