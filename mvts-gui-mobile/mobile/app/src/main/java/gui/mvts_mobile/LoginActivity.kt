@@ -18,6 +18,7 @@ import gui.mvts_mobile.utils.RetroFitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.util.Log;
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var txtEmail: EditText
@@ -30,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
-        apiService = RetroFitClient.getApiService(this)
+        apiService = RetroFitClient.getAuthenticatedApiService("",this)
         initComponents()
         setupListeners()
     }
@@ -49,12 +50,12 @@ class LoginActivity : AppCompatActivity() {
 
             if(validateData()) {
                 val user = LoginRequestDTO(email, pass)
-//                loadLogin(user)
+                loadLogin(user)
 
                 var data = AppDataSingleton.getInstance()
                 data.user = UserDTO("123", "Monkey D. Luffy", "luffy@gmail.com")
                 data.token = "SuperSmashBros"
-                changeDisplay()
+                //changeDisplay()
             }
         }
     }
@@ -67,16 +68,27 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<LoginResponseDTO>
             ) {
                 if (response.isSuccessful && response.body() != null) {
-                    txtError.text = response.body()?.token
+                    val resp= response.body()
+                    if(resp != null ){
+                        val token = resp.token
+                        val user = resp.user
+                        Log.d("token","token: $token")
+                        val instance = AppDataSingleton.getInstance()
+                        instance.user = UserDTO(user.id, user.name, user.email)
+                        instance.token = token
+                    }
+//                    txtError.text = response.body()?.token
                     // Una vez que el inicio de sesión es exitoso, cambiamos a la actividad principal
-//                    changeDisplay()
+                    changeDisplay()
                 } else {
                     txtError.text = "Email o contraseña incorrectos"
                 }
             }
 
             override fun onFailure(call: Call<LoginResponseDTO>, t: Throwable) {
+                Log.i("failure","Error : ${t.message}")
                 txtError.text = "Error de conexión: ${t.message}"
+
             }
         })
     }
@@ -100,10 +112,10 @@ class LoginActivity : AppCompatActivity() {
             return false
         }
 
-        if (pass.length < 6) {
-            txtError.text = "La contraseña debe tener al menos 6 caracteres"
-            return false
-        }
+//        if (pass.length < 6) {
+//            txtError.text = "La contraseña debe tener al menos 6 caracteres"
+//            return false
+//        }
 
         return true
     }
