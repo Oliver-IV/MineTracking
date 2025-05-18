@@ -10,6 +10,7 @@ const locations = testLocations;
 
 // Definir selectedLocation para almacenar la selección
 const selectedOrigen = ref<string | null>(null);
+const selectedDestination = ref<string | null>(null);
 const departureTime = ref<string | null>(null);
 const arrivaleTime = ref<string | null>(null);
 
@@ -38,7 +39,7 @@ function goBack() {
                         </option>
                     </select>
                     <p>Select Destination</p>
-                    <select v-model="selectedOrigen" name="cargo-origen" id="cargo-origen">
+                    <select v-model="selectedDestination" name="cargo-origen" id="cargo-origen">
                         <option v-for="(location, index) in locations" :key="index" :value="location.name">
                             {{ location.name }}
                         </option>

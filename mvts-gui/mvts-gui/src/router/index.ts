@@ -11,12 +11,18 @@ import TransportedMaterialView from '@/views/TransportedMaterialView.vue';
 import CongestionsView from '@/views/CongestionsView.vue';
 import RegisterNewRouteView from '@/views/RegisterNewRouteView.vue';
 import RegisterNewVehicleView from '@/views/RegisterNewVehicleView.vue';
+import LoginView from '@/views/LoginView.vue';
 
 
 
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
     routes: [
+        {
+            path: '/login',
+            name: 'login',
+            component: LoginView
+        },
         {
             path: "/maps",
             name: "maps",
@@ -58,7 +64,7 @@ const router = createRouter({
                 {
                     path: 'routes/register',
                     name: 'registerRoute',
-                    component: RegisterNewVehicleView
+                    component: RegisterNewRouteView
                 },
                 {
                     path: 'vehicles',
