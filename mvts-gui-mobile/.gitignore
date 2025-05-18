@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Certificados SSL
+*.key
+*.key.decrypted
+*.csr
+*.crt

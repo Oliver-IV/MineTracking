@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import gui.mvts_mobile.dto.login.LoginRequestDTO
 import gui.mvts_mobile.dto.login.LoginResponseDTO
+import gui.mvts_mobile.service.ApiService
 import gui.mvts_mobile.utils.RetroFitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,12 +22,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var txtPassword: EditText
     private lateinit var txtError: TextView
     private lateinit var btnHome: Button
+    private lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
-
+        apiService = RetroFitClient.getApiService(this)
         initComponents()
         setupListeners()
     }
@@ -51,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loadLogin(data: LoginRequestDTO) {
-        val retrofitTraer = RetroFitClient.consumirApi.login(data)
+        val retrofitTraer = apiService.login(data)
         retrofitTraer.enqueue(object: Callback<LoginResponseDTO> {
             override fun onResponse(
                 call: Call<LoginResponseDTO>,

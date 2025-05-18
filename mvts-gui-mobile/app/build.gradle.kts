@@ -18,6 +18,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    packagingOptions {
+        exclude("**/**.key")
+        exclude("**/**.key.decrypted")
+        exclude("**/**.csr")
+        exclude("**/**.crt")
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
