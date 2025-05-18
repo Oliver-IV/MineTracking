@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { CarsService } from './cars.service';
-import { CreateCarDto } from './dto/create-car.dto';
-import { UpdateCarDto } from './dto/update-car.dto';
+import { CreateCarValidatedDto, UpdateCarValidatedDto } from './dto';
+import { GrpcExceptionInterceptor } from '@app/common';
 
 @Controller('cars')
+@UseInterceptors(GrpcExceptionInterceptor)
 export class CarsController {
   constructor(private readonly carsService: CarsService) {}
 
   @Post()
-  create(@Body() createCarDto: CreateCarDto) {
+  create(@Body() createCarDto: CreateCarValidatedDto) {
     return this.carsService.create(createCarDto);
   }
 
@@ -19,16 +20,17 @@ export class CarsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.carsService.findOne(+id);
+    return this.carsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCarDto: UpdateCarDto) {
-    return this.carsService.update(+id, updateCarDto);
+  update(@Param('id') id: string, @Body() updateCarDto: UpdateCarValidatedDto) {
+    console.log(id);
+    return this.carsService.update(id, updateCarDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.carsService.remove(+id);
+    return this.carsService.remove(id);
   }
 }

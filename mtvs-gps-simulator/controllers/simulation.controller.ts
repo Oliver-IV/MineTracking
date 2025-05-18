@@ -15,12 +15,20 @@ const trafficLightsConsumer = new TrafficLightsConsumer(trafficLightsService);
 
 const { simulateGoogleMapsRoute } = carService;
 const { calculateDistance, checkTrafficLights, publishLocationUpdate, } = locationService;
-const { startTrafficLightCycle, stopTrafficLightCycle } = trafficLightsService;
+const { startTrafficLightCycle, stopTrafficLightCycle, findAllTrafficLights } = trafficLightsService;
 
-function POSTstartSimulation(req: Request, res: Response) {
+async function POSTstartSimulation(req: Request, res: Response) {
     const { origin, destination } = req.body as { origin: LocationDto, destination: LocationDto };
 
     trafficLightsConsumer.start() ;
+
+    const dbTrafficLights = await findAllTrafficLights();
+
+    dbTrafficLights.forEach(trafficLight => {
+        trafficLights.push(trafficLight);
+    });
+
+    console.log(trafficLights);
 
     if (!origin || !destination) {
         res.status(400).json({ error: 'Se requieren origen y destino' });
@@ -71,7 +79,7 @@ function POSTstartSimulation(req: Request, res: Response) {
 
             // Detener todos los semáforos
             trafficLights.forEach(trafficLight => {
-                stopTrafficLightCycle(trafficLight.id);
+                stopTrafficLightCycle(trafficLight.trafficLightId);
             });
 
             console.log('Simulación completada: Llegó al destino');
@@ -100,7 +108,7 @@ function POSTstopSimulation(req: Request, res: Response) {
 
     // Detener todos los semáforos
     trafficLights.forEach(trafficLight => {
-        stopTrafficLightCycle(trafficLight.id);
+        stopTrafficLightCycle(trafficLight.trafficLightId);
     });
 
     res.json({

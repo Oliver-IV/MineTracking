@@ -242,6 +242,8 @@
                 lastUpdate: new Date().toLocaleTimeString()
             };
             
+            console.log(data);
+
             // Actualizar la tabla
             const tableBody = document.getElementById('traffic-lights-body');
             let row = document.getElementById(`tl-${data.trafficLightId}`);
@@ -251,14 +253,24 @@
                 row.id = `tl-${data.trafficLightId}`;
                 tableBody.prepend(row);
             }
+
+            let color = "UNRECOGNIZED";
+            
+            if(data.state == 0) {
+                color = "RED";
+            } else if(data.state == 1) {
+                color = "YELLOW";
+            } else if(data.state == 2) {
+                color = "GREEN";
+            }
             
             // Crear representación visual del color
-            const colorIndicator = `<span class="traffic-light ${data.color.toLowerCase()}"></span>`;
+            const colorIndicator = `<span class="traffic-light ${color.toLowerCase()}"></span>`;
             
             row.innerHTML = `
                 <td>${data.trafficLightId}</td>
                 <td>${data.active ? 'Activo' : 'Inactivo'}</td>
-                <td>${colorIndicator} ${data.color}</td>
+                <td>${colorIndicator} ${color}</td>
                 <td>${formatCycleIntervals(data.cycleIntervals)}</td>
                 <td>${new Date().toLocaleTimeString()}</td>
             `;

@@ -9,25 +9,40 @@ export class EventsController {
 
   constructor(private readonly mqttService: MqttService) { }
 
-  @MessagePattern('car_location_updates')
+  @EventPattern('car_location_updates')
   async handleCarLocationUpdate(@Payload() data: LocationMessageDto) {
     this.logger.log(`[Controller] Recibida actualización de ubicación para carID: ${data.carId}`);
     this.logger.log(`[Controller] Coordenadas: ${data.location.latitude}, ${data.location.longitude}`);
     this.mqttService.publish('cars/location', {
       carId: data.carId,
       location: data.location,
+      speed: data.speed,
+      status: data.status
     });
     return { processed: true };
   }
 
-  @MessagePattern('traffic_lights_color_updates')
+  @EventPattern('traffic_lights_color_updates')
   async handleTrafficLightsColorUpdate(@Payload() data: any) {
     this.logger.log(`[Controller] Recibida actualización de color de semáforo para carID: ${data.carId}`);
-    this.logger.log(`[Controller] Color: ${data.color}`);
+    this.logger.log(`[Controller] Color: ${data.currentState}`);
     this.mqttService.publish('traffic_lights/color', {
+      trafficLightId: data.trafficLightId,
+      state: data.currentState,
+      location: data.location,
+      cycleIntervals: data.cycleIntervals,
+      active: data.active
+    });
+    return { processed: true };
+  }
+
+  @EventPattern()
+  async handleCongestionTraffic(@Payload() data: any) {
+    this.logger.log(`[Controller] Congestión Recibida!!`);
+    this.logger.log(`[Controller] Nombre: ${data.Name}, ID: ${data.Id}`);
+    this.mqttService.publish('congestion/traffic', {
       trafficLightId: data.trafficLightId,
       color: data.color
     });
-    return { processed: true };
   }
 }

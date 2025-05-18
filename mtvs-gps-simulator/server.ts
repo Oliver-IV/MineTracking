@@ -3,10 +3,11 @@ import http from 'http';
 import "dotenv/config";
 import simulationRouter from './routers/simulation.router';
 import trafficLightsRouter from './routers/traffic-lights.router';
+import { TrafficLightsService } from './services/traffic-lights.service';
 
 const app = express();
 const server = http.createServer(app);
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.use(express.json());
 

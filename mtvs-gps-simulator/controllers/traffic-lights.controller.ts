@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { TrafficLightsService } from "../services/traffic-lights.service";
 import trafficLights from "../simulated-data/traffic-lights.simulation";
+import { State } from "../dtos/state.enum";
 
 const trafficLightsService = new TrafficLightsService();
 
@@ -23,7 +24,7 @@ function GETtrafficLightById(req: Request, res: Response) {
 function POSTstopAllTrafficLights(req: Request, res: Response) {
     trafficLights.forEach(trafficLight => {
         if (trafficLight.active) {
-            stopTrafficLightCycle(trafficLight.id);
+            stopTrafficLightCycle(trafficLight.trafficLightId);
         }
     });
 
@@ -31,7 +32,8 @@ function POSTstopAllTrafficLights(req: Request, res: Response) {
 }
 
 function POSTchangeTrafficLightColor(req: Request, res: Response) {
-    const { color } = req.body as { color: 'RED' | 'YELLOW' | 'GREEN' };
+    let { color } = req.body;
+    color = State[color as keyof typeof State];
     const trafficLight = findTrafficLightById(req.params.id);
 
     if (!trafficLight) {
@@ -39,16 +41,11 @@ function POSTchangeTrafficLightColor(req: Request, res: Response) {
         return;
     }
 
-    if (!['RED', 'YELLOW', 'GREEN'].includes(color)) {
-        res.status(400).json({ error: 'Color inválido. Debe ser RED, YELLOW o GREEN' });
-        return;
-    }
-
-    changeTrafficLightColor(trafficLight.id, color);
+    changeTrafficLightColor(trafficLight.trafficLightId, color);
 
     res.json({
         message: `Color del semáforo actualizado a ${color}`,
-        id: trafficLight.id
+        id: trafficLight.trafficLightId
     });
 }
 
