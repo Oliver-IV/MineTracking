@@ -1,9 +1,11 @@
 package gui.mvts_mobile.utils
 
 import android.content.Context
+import gui.mvts_mobile.R
 import gui.mvts_mobile.service.ApiService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
