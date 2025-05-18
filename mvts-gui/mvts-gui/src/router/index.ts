@@ -50,12 +50,12 @@ const router = createRouter({
                     component: ReportsView,
                     children: [
                         {
-                            path: '/materials',
+                            path: 'materials',
                             name: 'materials',
                             component: TransportedMaterialView,
                         },
                         {
-                            path: '/congestions',
+                            path: 'congestions',
                             name: 'congestions',
                             component: CongestionsView,
                         },
