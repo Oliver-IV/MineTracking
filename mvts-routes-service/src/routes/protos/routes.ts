@@ -12,11 +12,12 @@ export const protobufPackage = "routes_service";
 
 /** Requests */
 export interface CreateRouteDTO {
-  start: LocationDTO | undefined;
-  end: LocationDTO | undefined;
+  startId: string;
+  endId: string;
 }
 
 export interface LocationDTO {
+  id: string;
   name: string;
   latitude: number;
   longitude: number;
@@ -24,8 +25,8 @@ export interface LocationDTO {
 
 export interface UpdateRouteDTO {
   routeId: string;
-  start: LocationDTO | undefined;
-  end: LocationDTO | undefined;
+  startId: string;
+  endId: string;
 }
 
 export interface DeleteRouteDTO {
@@ -60,6 +61,10 @@ export interface DeleteRouteResponse {
   deleted: boolean;
 }
 
+export interface FindAllLocationsResponse {
+  locations: LocationDTO[];
+}
+
 export interface EmptyMessage {
 }
 
@@ -73,6 +78,8 @@ export interface RoutesServiceClient {
   updateRoute(request: UpdateRouteDTO): Observable<UptateRouteResponse>;
 
   deleteRoute(request: DeleteRouteDTO): Observable<DeleteRouteResponse>;
+
+  findAllLocations(request: EmptyMessage): Observable<FindAllLocationsResponse>;
 }
 
 export interface RoutesServiceController {
@@ -91,11 +98,15 @@ export interface RoutesServiceController {
   deleteRoute(
     request: DeleteRouteDTO,
   ): Promise<DeleteRouteResponse> | Observable<DeleteRouteResponse> | DeleteRouteResponse;
+
+  findAllLocations(
+    request: EmptyMessage,
+  ): Promise<FindAllLocationsResponse> | Observable<FindAllLocationsResponse> | FindAllLocationsResponse;
 }
 
 export function RoutesServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createRoute", "findAllRoutes", "updateRoute", "deleteRoute"];
+    const grpcMethods: string[] = ["createRoute", "findAllRoutes", "updateRoute", "deleteRoute", "findAllLocations"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("RoutesService", method)(constructor.prototype[method], method, descriptor);

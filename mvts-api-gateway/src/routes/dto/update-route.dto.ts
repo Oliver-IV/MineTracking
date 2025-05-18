@@ -1,16 +1,13 @@
-import { Type } from "class-transformer";
-import { IsOptional, ValidateNested } from "class-validator";
-import { LocationDto } from "./location.dto";
+import { IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class UpdateRouteDto {
 
+    @IsString()
     @IsOptional()
-    @ValidateNested()
-    @Type(() => LocationDto)
-    start: LocationDto;
+    startId: string
 
+    @IsString()
     @IsOptional()
-    @ValidateNested()
-    @Type(() => LocationDto)
-    end: LocationDto;
+    endId: string
+
 }

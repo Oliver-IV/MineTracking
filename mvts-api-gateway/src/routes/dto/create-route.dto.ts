@@ -1,14 +1,13 @@
-import { ValidateNested } from "class-validator";
+import { IsString, ValidateNested } from "class-validator";
 import { LocationDto } from "./location.dto";
 import { Type } from "class-transformer";
 
 export class CreateRouteDto {
 
-    @ValidateNested()
-    @Type(() => LocationDto)
-    start: LocationDto;
+    @IsString()
+    startId: string
 
-    @ValidateNested()
-    @Type(() => LocationDto)
-    end: LocationDto;
+    @IsString()
+    endId: string
+    
 }

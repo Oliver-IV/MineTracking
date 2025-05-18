@@ -17,6 +17,11 @@ export class RoutesController {
     return this.routesService.findAllRoutes();
   }
 
+  @Get("/locations")
+  findAllLocations() {
+    return this.routesService.findAllLocations();
+  }
+
   @Patch(':id')
   update(@Body() updateRouteDto: UpdateRouteDto, @Param('id') id: string) {
     return this.routesService.updateRoute(id, updateRouteDto);
