@@ -25,7 +25,6 @@ function goBack() {
                 <input type="text" placeholder="Capacity">
                 <input type="number" placeholder="Type">
                 <input type="text" placeholder="State">
-                <textarea name="description" id="" placeholder="Additiaonal Notes"></textarea>
             </div>
         </div>
     </div>
@@ -72,5 +71,6 @@ function goBack() {
     gap: 1rem;
     margin: 2rem;
     max-width: 20%;
+
 }
 </style>
