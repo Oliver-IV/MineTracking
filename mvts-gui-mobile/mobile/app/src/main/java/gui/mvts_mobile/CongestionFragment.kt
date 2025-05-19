@@ -40,7 +40,7 @@ class CongestionFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_congestion, container, false)
-        apiService = RetroFitClient.getAuthenticatedApiService(appData.token)
+        apiService = RetroFitClient.getAuthenticatedApiService(appData.token, requireContext())
 
         congestionSpinner = view.findViewById(R.id.spinner_congestion)
         btnLogCongestion = view.findViewById(R.id.btnLogCongestion)

@@ -3,6 +3,9 @@ package gui.mvts_mobile.utils
 import android.content.Context
 import gui.mvts_mobile.R
 import gui.mvts_mobile.service.ApiService
+import okhttp3.Cookie
+import okhttp3.CookieJar
+import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -16,7 +19,7 @@ import javax.net.ssl.X509TrustManager
 
 
 object RetroFitClient {
-    private const val BASE_URL = "https://tuIp:3000/"
+    private const val BASE_URL = "https://192.168.100.5:3000/"
 
 //
     fun getApiService(context: Context): ApiService {
@@ -54,26 +57,33 @@ object RetroFitClient {
 //    }
 
     fun getAuthenticatedApiService(authToken: String, context: Context): ApiService {
-        // Crear un interceptor que añada el token al header
-        val authInterceptor = Interceptor { chain ->
-            val originalRequest = chain.request()
-            if (originalRequest.url.toString().contains("/auth/login") ||
-                originalRequest.url.toString().contains("/auth/register")) {
-                return@Interceptor chain.proceed(originalRequest)
+        val cookieJar = object : CookieJar {
+            private val cookieStore = mutableMapOf<HttpUrl, List<Cookie>>()
+
+            override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
+                cookieStore[url] = cookies
             }
-            val requestWithHeader = originalRequest.newBuilder()
-                .header("auth_token", authToken)
-                .build()
-            return@Interceptor chain.proceed(requestWithHeader)
+
+            override fun loadForRequest(url: HttpUrl): List<Cookie> {
+                val cookie = Cookie.Builder()
+                    .domain("192.168.100.5") // Asegúrate que este sea el host del backend
+                    .path("/")
+                    .name("auth_token")
+                    .value(authToken)
+                    .httpOnly() // opcional: solo si quieres marcarla como HttpOnly
+                    .secure()   // importante si usas HTTPS
+                    .build()
+                return listOf(cookie)
+            }
         }
 
-        // Configurar OkHttpClient con el interceptor
-//        val okHttpClient = createTrustedClient(context,authInterceptor)
+        val okHttpClient = OkHttpClient.Builder()
+            .cookieJar(cookieJar)
+            .build()
 
-        // Construir Retrofit con el cliente HTTP personalizado
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
-//            .client(okHttpClient)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
