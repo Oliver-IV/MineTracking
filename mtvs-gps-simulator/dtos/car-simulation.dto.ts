@@ -1,3 +1,4 @@
+import { CarDto } from "./car.dto";
 import { LocationDto } from "./location.dto";
 
 export class CarSimulationDto {
@@ -11,4 +12,5 @@ export class CarSimulationDto {
     simulationId: string | null;
     intervalId: NodeJS.Timeout | null;
     isStopped: boolean;
+    car: CarDto ;
 }
