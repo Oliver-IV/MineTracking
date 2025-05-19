@@ -2,6 +2,7 @@ import { HOST_NAME } from "@/configs/configs";
 import type { CreateRouteDto } from "@/types/back/routeDto/create-route.dto";
 import type { LocationDTO } from "@/types/back/routeDto/location.dto";
 import type { Route } from "@/types/front/Route";
+import { start } from "repl";
 
 async function GETfindAllRoutes(): Promise<Route[]> {
     try {
@@ -53,15 +54,18 @@ async function POSTcreateRoute(route: CreateRouteDto): Promise<Route> {
 
 async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, endId: string }) {
     try {
-        const route = {};
+        const route = {
+            startId: "",
+            endId: ""
+        };
         if (!locationIds) {
             throw new Error("There are no locations to update");
         }
         if (locationIds.startId) {
-            route["startId"] = locationIds.startId;
+            route.startId = locationIds.startId;
         }
         if (locationIds.endId) {
-            route["endId"] = locationIds.endId;
+            route.endId = locationIds.endId;
         }
         const response = await fetch(`${HOST_NAME}/routes/${routeId}`, {
             method: 'PATCH',
