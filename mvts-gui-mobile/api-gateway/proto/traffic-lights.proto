@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package trafficLights;
+
+service TrafficLightsService {
+    rpc CreateTrafficLight (CreateTrafficLightDto) returns (TrafficLight) {}
+    rpc FindAllTrafficLights (Empty) returns (TrafficLights) {}
+    rpc FindOneTrafficLight (FindOneTrafficLightDto) returns (TrafficLight) {}
+    rpc UpdateTrafficLight (UpdateTrafficLightDto) returns (TrafficLight) {}
+    rpc RemoveTrafficLight (FindOneTrafficLightDto) returns (TrafficLight) {}
+    rpc ChangeTrafficLightState (ChangeLightStateDto) returns (TrafficLight) {}
+}
+
+message ChangeLightStateDto {
+    string trafficLightId = 1;
+    State state = 2;
+}
+
+message UpdateTrafficLightDto {
+    string trafficLightId = 1;
+    optional string name = 2;
+    optional Location location = 3;
+    optional Mode mode = 4;
+}
+
+message FindOneTrafficLightDto {
+    string id = 1;
+}
+
+message Empty {};
+
+message TrafficLights {
+    repeated TrafficLight trafficLights = 1;
+}
+
+message CreateTrafficLightDto {
+    string name = 1;
+    Location location = 2;
+    Mode mode = 3;
+}
+
+message Location {
+    string locationId = 1;
+    string latitude = 2; 
+    string longitude = 3;
+}
+
+enum State {
+    RED = 0;
+    YELLOW = 1;
+    GREEN = 2;
+}
+
+enum Mode {
+    AUTO = 0;
+    MANUAL = 1;
+}
+
+message TrafficLight{
+    string trafficLightId = 1;
+    string name = 2;
+    Location location = 3;
+    Mode mode = 4;
+    State state = 5;
+}

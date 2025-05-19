@@ -2,11 +2,13 @@ import { Request, Response } from "express";
 import { CarService } from "../services/cars.service";
 import { LocationService } from "../services/location.service";
 import { TrafficLightsService } from "../services/traffic-lights.service";
-import carSimulation from "../simulated-data/cars.simulation";
 import trafficLights from "../simulated-data/traffic-lights.simulation";
 import { LocationDto } from "../dtos/location.dto";
 import { v4 as uuidv4 } from 'uuid';
 import { TrafficLightsConsumer } from "../consumers/traffic-lights.consumer";
+import { CarDto } from "../dtos/car.dto";
+import { CarSimulationDto } from "../dtos/car-simulation.dto";
+import { simulations, simulatedDataStandard} from "../simulated-data/cars.simulation";
 
 const carService = new CarService();
 const locationService = new LocationService();
@@ -15,17 +17,29 @@ const trafficLightsConsumer = new TrafficLightsConsumer(trafficLightsService);
 
 const { simulateGoogleMapsRoute } = carService;
 const { calculateDistance, checkTrafficLights, publishLocationUpdate, } = locationService;
-const { startTrafficLightCycle, stopTrafficLightCycle } = trafficLightsService;
+const { startTrafficLightCycle, stopTrafficLightCycle, findAllTrafficLights } = trafficLightsService;
 
-function POSTstartSimulation(req: Request, res: Response) {
-    const { origin, destination } = req.body as { origin: LocationDto, destination: LocationDto };
+async function POSTstartSimulation(req: Request, res: Response) {
+    const { origin, destination, car } = req.body as { origin: LocationDto, destination: LocationDto, car: CarDto };
 
     trafficLightsConsumer.start() ;
+
+    const dbTrafficLights = await findAllTrafficLights();
+
+    dbTrafficLights.forEach(trafficLight => {
+        trafficLights.push(trafficLight);
+    });
+
+    console.log(trafficLights);
 
     if (!origin || !destination) {
         res.status(400).json({ error: 'Se requieren origen y destino' });
         return;
     }
+
+    const carSimulation = new CarSimulationDto();
+    
+    simulations.push(carSimulation);
 
     if (carSimulation.active) {
         res.status(400).json({ error: 'Ya hay una simulación en curso' });

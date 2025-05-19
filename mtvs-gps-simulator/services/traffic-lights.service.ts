@@ -4,12 +4,42 @@ import { TrafficLightDto } from "../dtos/traffic-light.dto";
 import * as amqp from 'amqplib';
 import trafficLights from "../simulated-data/traffic-lights.simulation";
 import { State } from "../dtos/state.enum";
+import { Empty, TrafficLights, TrafficLightsServiceClient } from "../generated/traffic-lights";
+import { GRPC_URL } from "../configs/grpc.configs";
+import { ChannelCredentials, ServiceError } from "@grpc/grpc-js";
+import { LocationDto } from "../dtos/location.dto";
+import * as fs from 'fs';
+import { join } from "path";
 
 export class TrafficLightsService {
 
+    private trafficLightsClient: TrafficLightsServiceClient;
+
     constructor() {
+        this.initGrpcClient();
         this.startTrafficLightCycle = this.startTrafficLightCycle.bind(this);
         this.publishTrafficLightUpdate = this.publishTrafficLightUpdate.bind(this);
+        this.findAllTrafficLights = this.findAllTrafficLights.bind(this);
+    }
+
+    private initGrpcClient() {
+        try {
+            const certOptions = {
+                cert: fs.readFileSync(join(process.cwd(), '/certs/server.crt')),
+                key: fs.readFileSync(join(process.cwd(), '/certs/server.key.decrypted'))
+            };
+            this.trafficLightsClient = new TrafficLightsServiceClient(GRPC_URL,
+                ChannelCredentials.createSsl(
+                    null,
+                    certOptions.key,
+                    certOptions.cert,
+                    { checkServerIdentity: () => undefined, rejectUnauthorized: false }
+                )
+            );
+            console.log(`Conectado al servidor gRPC en ${GRPC_URL}`);
+        } catch (error) {
+            console.error('Error al inicializar el cliente gRPC:', error);
+        }
     }
 
     async publishTrafficLightUpdate(trafficLight: TrafficLightDto): Promise<void> {
@@ -19,7 +49,7 @@ export class TrafficLightsService {
 
             await channel.assertQueue(trafficLightQueueName, { durable: true });
 
-            
+
             const message: TrafficLightColorMessageDto = {
                 timestamp: new Date().toISOString(),
                 trafficLightId: trafficLight.trafficLightId,
@@ -95,15 +125,15 @@ export class TrafficLightsService {
         }
     }
 
-    findAllTrafficLights() {
-        return trafficLights.map(tl => ({
-            id: tl.trafficLightId,
-            location: tl.location,
-            currentColor: tl.currentState,
-            active: tl.active,
-            radius: tl.radius
-        }));
-    }
+    // findAllTrafficLights() {
+    //     return trafficLights.map(tl => ({
+    //         id: tl.trafficLightId,
+    //         location: tl.location,
+    //         currentColor: tl.currentState,
+    //         active: tl.active,
+    //         radius: tl.radius
+    //     }));
+    // }
 
     findTrafficLightById(id: string) {
         return trafficLights.find(tl => tl.trafficLightId === id);
@@ -124,4 +154,50 @@ export class TrafficLightsService {
         };
     }
 
+    findAllTrafficLights(): Promise<TrafficLightDto[]> {
+        console.log("aaaaa") ;
+        console.log(this?.trafficLightsClient) ;
+        return new Promise((resolve, reject) => {
+            this.trafficLightsClient.findAllTrafficLights(
+                Empty,
+                (error: ServiceError | null, response: TrafficLights) => {
+                    if (error) {
+                        console.error('Error en findAllTrafficLights:', error.message);
+                        reject(new Error(`gRPC error: ${error.message}`));
+                        return;
+                    }
+
+                    const trafficLights: TrafficLightDto[] = [];
+
+                    response.trafficLights.forEach(tl => {
+                        if (tl.location) {
+                            const location = new LocationDto(
+                                tl.location.locationId,
+                                Number(tl.location.latitude),
+                                Number(tl.location.longitude)
+                            );
+
+                            const randomState: State = Math.floor(Math.random() * 3) as State;
+
+                            trafficLights.push(new TrafficLightDto(
+                                tl.trafficLightId,
+                                location,
+                                randomState,
+                                {
+                                    red: 20000,
+                                    yellow: 3000,
+                                    green: 15000
+                                },
+                                null,
+                                false,
+                                10
+                            ));
+                        }
+                    });
+
+                    resolve(trafficLights);
+                }
+            );
+        });
+    }
 }

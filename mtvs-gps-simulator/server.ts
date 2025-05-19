@@ -3,6 +3,7 @@ import http from 'http';
 import "dotenv/config";
 import simulationRouter from './routers/simulation.router';
 import trafficLightsRouter from './routers/traffic-lights.router';
+import { TrafficLightsService } from './services/traffic-lights.service';
 
 const app = express();
 const server = http.createServer(app);

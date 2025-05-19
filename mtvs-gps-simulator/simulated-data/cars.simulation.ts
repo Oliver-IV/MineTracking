@@ -10,11 +10,26 @@ const carSimulation: CarSimulationDto = {
     destination: null,
     route: [],
     currentRouteIndex: 0,
-    speed: 60, // km/h
+    speed: 40, // km/h
     updateInterval: 1000, // milisegundos
     simulationId: null,
     intervalId: null,
-    isStopped: false
+    isStopped: false,
+    car: 
 };
 
-export default carSimulation;
+const simulatedDataStandard = {
+    active: false,
+    destination: null,
+    route: [],
+    currentRouteIndex: 0,
+    speed: 40, // km/h
+    updateInterval: 1000, // milisegundos
+    simulationId: null,
+    intervalId: null,
+    isStopped: false,
+}
+
+const simulations: CarSimulationDto[] = [] ;
+
+export { simulations, simulatedDataStandard};

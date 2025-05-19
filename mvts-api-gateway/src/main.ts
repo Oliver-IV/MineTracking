@@ -1,9 +1,28 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import * as fs from 'fs';
+import * as https from 'https';
+import { CERT_PASS } from './configs/enviroment';
+import { JwtGuard } from './auth/guards/JwtGuard';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+
+  const httpsOptions = {
+    key: fs.readFileSync("./certs/server.key"),
+    cert: fs.readFileSync("./certs/server.crt"),
+    passphrase: CERT_PASS 
+  }
+
+  const app = await NestFactory.create(AppModule, {
+    httpsOptions
+  });
+
+  app.use(cookieParser());
+
+  app.useGlobalPipes(new ValidationPipe({transform: true}));
+  
   // app.useGlobalPipes(new ValidationPipe({
   //   whitelist: true, 
   //   forbidNonWhitelisted: true,
