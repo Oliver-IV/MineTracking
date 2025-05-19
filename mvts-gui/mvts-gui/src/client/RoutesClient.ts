@@ -1,8 +1,7 @@
 import { HOST_NAME } from "@/configs/configs";
-import { CreateRouteDto } from "@/types/back/routeDto/create-route.dto";
-import { LocationDTO } from "@/types/back/routeDto/location.dto";
-import { Route } from "@/types/front/Route";
-import { Update } from "vite/types/hmrPayload";
+import type { CreateRouteDto } from "@/types/back/routeDto/create-route.dto";
+import type { LocationDTO } from "@/types/back/routeDto/location.dto";
+import type { Route } from "@/types/front/Route";
 
 async function GETfindAllRoutes(): Promise<Route[]> {
     try {
@@ -14,6 +13,7 @@ async function GETfindAllRoutes(): Promise<Route[]> {
         return routes;
     } catch (error) {
         console.error("Failed to get routes:", error);
+        throw error ;
     }
 }
 
@@ -28,6 +28,7 @@ async function GETfindAllLocations(): Promise<LocationDTO[]> {
         return locations;
     } catch (error) {
         console.error("Failed to get routes:", error);
+        throw error ;
     }
 }
 
@@ -46,6 +47,7 @@ async function POSTcreateRoute(route: CreateRouteDto): Promise<Route> {
         return response.json();
     } catch (error) {
         console.error("Failed to get routes:", error);
+        throw error ;
     }
 }
 
@@ -74,23 +76,30 @@ async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, 
         return response.json();
     } catch (error) {
         console.error("Failed to get routes:", error);
+        throw error ;
     }
 }
 
 async function DELETEdeleteRoute(routeId: string) {
-    if (!routeId) {
-        throw new Error("There is no location to delete");
-    }
-    const response = await fetch(`${HOST_NAME}/routes/${routeId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
+    try {
+        if (!routeId) {
+            throw new Error("There is no location to delete");
         }
-    });
-    if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
+        const response = await fetch(`${HOST_NAME}/routes/${routeId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
+    } catch (error) {
+        console.error("Failed to get routes:", error) ;
+        throw error ;
     }
-    return response.json();
+    
 }
 
 export { GETfindAllRoutes, GETfindAllLocations, POSTcreateRoute, PATCHupdateRoute, DELETEdeleteRoute }
