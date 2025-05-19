@@ -10,6 +10,7 @@ import {
   RMQ_CLIENT_NAME,
   RMQ_QUEUE_NAME,
   RMQ_URI,
+  RMQ_URI_2,
   TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE,
 } from 'configs/rmq.config';
 
@@ -29,7 +30,7 @@ import {
         name: TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE,
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [RMQ_URI_2],
           queue: TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE,
         },
       },

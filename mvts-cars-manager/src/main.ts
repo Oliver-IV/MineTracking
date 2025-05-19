@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { CARS_PACKAGE_NAME } from '@app/common';
+import { CARS_PACKAGE_NAME, GRPC_URL } from '@app/common';
 import { RMQ_QUEUE_NAME, RMQ_URI } from 'configs/rmq.config';
 import * as grpc from '@grpc/grpc-js';
 import * as fs from 'fs';
@@ -32,7 +32,6 @@ async function bootstrap() {
       options: {
         protoPath: join(__dirname, '../cars.proto'),
         package: [CARS_PACKAGE_NAME,],
-        url: 'localhost:5001',
         credentials: grpc.ServerCredentials.createSsl(
           null,
           [{
@@ -40,7 +39,8 @@ async function bootstrap() {
             cert_chain: certOptions.cert,
           }],
           false
-        )
+        ),
+        url: GRPC_URL
       }
     }
   );
