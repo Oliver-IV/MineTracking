@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="@raw/server"/>
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">tuIp</domain>
+        <trust-anchors>
+            <certificates src="@raw/server"/>
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
