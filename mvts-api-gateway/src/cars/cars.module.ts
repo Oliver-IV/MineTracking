@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CarsController } from './cars.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { CARS_SERVICE } from '@app/common';
+import { CARS_SERVICE, CARS_SERVICE_URL } from '@app/common';
 import { join } from 'path';
 import { CARS_PACKAGE_NAME } from './type/cars';
 
@@ -15,7 +15,7 @@ import { CARS_PACKAGE_NAME } from './type/cars';
         options: {
           package: CARS_PACKAGE_NAME,
           protoPath: join(__dirname, '../cars.proto'),
-          url: 'localhost:5001'
+          url: CARS_SERVICE_URL
         },
       },
     ]),
