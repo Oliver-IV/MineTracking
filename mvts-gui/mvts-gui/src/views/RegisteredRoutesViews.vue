@@ -51,6 +51,7 @@ function goToRegisterRoute() {
         </div>
 
         <div v-if="filteredRoutes.length > 0" class="info-display" v-for="route in filteredRoutes" :key="route.id">
+            <p>{{ route.id }}</p>
             <p>{{ route.locations[0].name }}</p>
             <p>{{ route.locations[1].name }}</p>
 

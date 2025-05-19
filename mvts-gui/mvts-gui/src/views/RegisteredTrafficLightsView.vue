@@ -1,8 +1,29 @@
 <script setup lang="ts">
 import TrafficLightCard from '@/components/TrafficLightCard.vue';
 import { testTrafficLights } from '@/mockData/TrafficLight';
+import type { TrafficLight } from '@/types/front/TrafficLight';
 
-const trafficLights = testTrafficLights;
+import { ref, onMounted } from 'vue';
+// const trafficLights = testTrafficLights;
+
+const apiUrl = '';
+
+const trafficLights = ref<TrafficLight[]>([]);
+onMounted(async () => {
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Error fetching traffic lights: ${response.statusText}`);
+        }
+        const data: TrafficLight[] = await response.json();
+        trafficLights.value = data;
+    } catch (error) {
+        console.error('Failed to fetch traffic lights:', error);
+    }
+});
+
+
+
 </script>
 
 <template>

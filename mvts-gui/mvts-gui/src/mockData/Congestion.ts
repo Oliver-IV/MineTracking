@@ -1,4 +1,4 @@
-import type { Congestion } from '@/types/Congestion';
+import type { Congestion } from '@/types/front/Congestion';
 
 export const testCongestions: Congestion[] = [
     {

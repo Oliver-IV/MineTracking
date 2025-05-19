@@ -1,19 +1,20 @@
 <script setup lang="ts">
-
+// components
 import RecentAlertCard from '@/components/RecentCongestionAlertCard.vue';
 import Card from '@/components/Card.vue';
 import RecentDeliveryCard from '@/components/RecentDeliveryCard.vue';
-
+// mock data
 import { testCongestions } from '@/mockData/Congestion';
 import { testCart } from '@/mockData/Cart';
+// vue
 import { ref } from 'vue';
 
 const congestions = testCongestions
 const carts = testCart
 
 
-const visibleCongestions = ref(3); 
-const visibleCarts = ref(3);       
+const visibleCongestions = ref(3);
+const visibleCarts = ref(3);
 
 
 const showAllCongestions = ref(false);

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { TrafficLight } from '@/types/TrafficLight';
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 
 const props = defineProps<{
     trafficLight: TrafficLight
 }>();
 
 const actualColor = ref(props.trafficLight.state);
-
+const emit = defineEmits(['color-selected']);
 const getTrafficLightColor = (state: String) => {
     switch (state) {
         case 'green':
@@ -19,6 +19,10 @@ const getTrafficLightColor = (state: String) => {
         default:
             return '#D1D5DB';
     }
+};
+
+const selectColor = (color: string) => {
+    emit('color-selected', color);
 };
 </script>
 
@@ -33,10 +37,9 @@ const getTrafficLightColor = (state: String) => {
         <p>Mode: {{ trafficLight.mode }}</p>
         <p>Last Updated: {{ trafficLight.updatedAt }}</p>
         <div class="change-state">
-            <p>Change State:</p>
-            <div class="green"></div>
-            <div class="yellow"></div>
-            <div class="red"></div>
+            <div class="green" @click="selectColor('green')"></div>
+            <div class="yellow" @click="selectColor('yellow')"></div>
+            <div class="red" @click="selectColor('red')"></div>
         </div>
     </div>
 </template>

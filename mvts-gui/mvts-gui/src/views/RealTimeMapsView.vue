@@ -11,8 +11,8 @@ import { testCongestions } from '@/mockData/Congestion';
 import { testCart } from '@/mockData/Cart';
 import { testTrafficLights } from '@/mockData/TrafficLight';
 // types
-import type { Cart } from '@/types/Cart';
-import type { TrafficLight } from '@/types/TrafficLight';
+import type { Cart } from '@/types/front/Cart';
+import type { TrafficLight } from '@/types/front/TrafficLight';
 import TrafficLightDetails from '@/components/TrafficLightDetails.vue';
 import IconLocation from '@/components/icons/IconLocation.vue';
 
@@ -21,6 +21,30 @@ const carts = testCart;
 const trafficLights = testTrafficLights;
 const selectedCart = ref<Cart | null>(null);
 const selectedTrafficLight = ref<TrafficLight | null>(null);
+
+const newColor = ref<string>('');
+const changeTrafficLightColor = async () => {
+    if (!selectedTrafficLight.value) return;
+
+    try {
+        const response = await fetch('cambiar color apa', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                trafficLightId: selectedTrafficLight.value.id,
+                newColor: newColor.value,
+            }),
+        });
+
+        const data = await response.json();
+        selectedTrafficLight.value.state = newColor.value;
+        console.log('Color changed', data);
+    } catch (error) {
+        console.error('Error changing traffic light color', error);
+    }
+};
 </script>
 
 <template>
@@ -46,7 +70,7 @@ const selectedTrafficLight = ref<TrafficLight | null>(null);
                     <CongestionAlert :congestions="congestions" />
                     <h3>Vehicles in Transit</h3>
                     <InTransitVehicle :carts="carts" @select="selectedCart = $event" />
-                  
+
                 </template>
 
                 <template v-else>
@@ -65,6 +89,7 @@ const selectedTrafficLight = ref<TrafficLight | null>(null);
                 </template>
                 <template v-if="selectedTrafficLight">
                     <TrafficLightDetails :trafficLight="selectedTrafficLight" />
+                    <button @click="changeTrafficLightColor">Change Traffic Light</button>
                     <p @click="selectedTrafficLight = null" id="close-details">Close Details</p>
                 </template>
             </div>

@@ -1,4 +1,4 @@
-import type { TrafficLight } from '@/types/TrafficLight';
+import type { TrafficLight } from '@/types/front/TrafficLight';
 
 export const testTrafficLights: TrafficLight[] = [
     { id: 1, location: "Main St & 1st Ave", state: "green", mode: "auto", updatedAt: "2025-05-11 07:00" },

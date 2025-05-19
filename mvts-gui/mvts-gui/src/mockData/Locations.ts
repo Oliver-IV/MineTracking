@@ -1,4 +1,4 @@
-import type { Location } from '@/types/Location';
+import type { Location } from '@/types/front/Location';
 
 export const testLocations: Location[] = [{
     id: "1",

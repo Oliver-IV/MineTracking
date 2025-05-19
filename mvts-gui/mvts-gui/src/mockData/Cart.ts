@@ -1,4 +1,4 @@
-import type { Cart } from '@/types/Cart';
+import type { Cart } from '@/types/front/Cart';
 
 export const testCart: Cart[] = [
     {

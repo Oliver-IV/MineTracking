@@ -1,5 +1,5 @@
-import type { Route } from '@/types/Route';
-import type { Location } from '@/types/Location';
+import type { Route } from '@/types/front/Route';
+
 
 export const testRoutes: Route[] = [
 

@@ -18,8 +18,8 @@ const routes = [
 
 <template>
     <div class="navbar">
-        <Navbar :routes="routes" />
-        <!-- <RouterLink v-for="route in routes" :key></RouterLink> -->
+        <Navbar :routes="routes" :key="routes" />
+
         <RouterView />
     </div>
 
