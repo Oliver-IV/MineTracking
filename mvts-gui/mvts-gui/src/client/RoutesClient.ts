@@ -53,15 +53,18 @@ async function POSTcreateRoute(route: CreateRouteDto): Promise<Route> {
 
 async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, endId: string }) {
     try {
-        const route = {};
+        const route = {
+            startId: "",
+            endId: ""
+        };
         if (!locationIds) {
             throw new Error("There are no locations to update");
         }
         if (locationIds.startId) {
-            route["startId"] = locationIds.startId;
+            route.startId = locationIds.startId;
         }
         if (locationIds.endId) {
-            route["endId"] = locationIds.endId;
+            route.endId = locationIds.endId;
         }
         const response = await fetch(`${HOST_NAME}/routes/${routeId}`, {
             method: 'PATCH',
