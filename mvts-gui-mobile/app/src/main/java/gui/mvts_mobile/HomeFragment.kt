@@ -24,6 +24,7 @@ class HomeFragment : Fragment() {
 
         val user = view.findViewById<TextView>(R.id.txtUsername)
         user.text = appData.user!!.name
+//        user.text = appData.user!!.name
 
         return view
     }

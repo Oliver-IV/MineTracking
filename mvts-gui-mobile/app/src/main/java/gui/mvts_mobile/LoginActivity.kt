@@ -49,11 +49,11 @@ class LoginActivity : AppCompatActivity() {
 
             if(validateData()) {
                 val user = LoginRequestDTO(email, pass)
-//                loadLogin(user)
+                loadLogin(user)
 
-                var data = AppDataSingleton.getInstance()
-                data.user = UserDTO("123", "Monkey D. Luffy", "luffy@gmail.com")
-                data.token = "SuperSmashBros"
+//                var data = AppDataSingleton.getInstance()
+//                data.user = UserDTO("123", "Monkey D. Luffy", "luffy@gmail.com")
+//                data.token = "SuperSmashBros"
                 changeDisplay()
             }
         }
@@ -67,9 +67,15 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<LoginResponseDTO>
             ) {
                 if (response.isSuccessful && response.body() != null) {
-                    txtError.text = response.body()?.token
-                    // Una vez que el inicio de sesión es exitoso, cambiamos a la actividad principal
-//                    changeDisplay()
+                    val appData = AppDataSingleton.getInstance()
+                    appData.user = response.body()!!.user
+                    appData.token = response.body()!!.token
+
+                    // Luego navegas a la pantalla principal
+                    val homeIntent = Intent(this@LoginActivity, MainActivity::class.java)
+                    homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(homeIntent)
+                    finish()
                 } else {
                     txtError.text = "Email o contraseña incorrectos"
                 }

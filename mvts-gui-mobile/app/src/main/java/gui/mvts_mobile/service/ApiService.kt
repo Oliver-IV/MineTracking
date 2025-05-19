@@ -29,7 +29,7 @@ interface ApiService {
 
 
     //Endpoint congestion service
-    @POST("congestions/")
+    @POST("congestions")
     fun createCongestion(@Body congestionRequest: CongestionCreateDTO): Call<CongestionResponseDTO>
 
     //Endpoint route service
