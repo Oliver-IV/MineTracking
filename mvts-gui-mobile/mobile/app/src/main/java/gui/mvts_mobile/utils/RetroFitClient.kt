@@ -19,39 +19,39 @@ object RetroFitClient {
     private const val BASE_URL = "https://tuIp:3000/"
 
 //
-//    fun getApiService(context: Context): ApiService {
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(BASE_URL)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        return retrofit.create(ApiService::class.java)
-//    }
-
-    fun createTrustedClient(context: Context, authInterceptor: Interceptor): OkHttpClient{
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)
-            .apply{
-                val certificateInputStream = context.resources.openRawResource(R.raw.server)
-                val certificateFactory = CertificateFactory.getInstance("X.509")
-                val certificate = certificateFactory.generateCertificate(certificateInputStream)
-                certificateInputStream.close()
-
-                val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
-                keyStore.load(null, null)
-                keyStore.setCertificateEntry("ca", certificate)
-
-                val tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-                tmf.init(keyStore)
-
-                val sslContext = SSLContext.getInstance("TLS")
-                sslContext.init(null, tmf.trustManagers, null)
-                sslSocketFactory(sslContext.socketFactory, tmf.trustManagers[0] as X509TrustManager)
-                hostnameVerifier { hostname, _ -> hostname == "192.168.1.28" }
-            }
+    fun getApiService(context: Context): ApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-        return okHttpClient
+
+        return retrofit.create(ApiService::class.java)
     }
+
+//    fun createTrustedClient(context: Context, authInterceptor: Interceptor): OkHttpClient{
+//        val okHttpClient = OkHttpClient.Builder()
+//            .addInterceptor(authInterceptor)
+//            .apply{
+//                val certificateInputStream = context.resources.openRawResource(R.raw.server)
+//                val certificateFactory = CertificateFactory.getInstance("X.509")
+//                val certificate = certificateFactory.generateCertificate(certificateInputStream)
+//                certificateInputStream.close()
+//
+//                val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
+//                keyStore.load(null, null)
+//                keyStore.setCertificateEntry("ca", certificate)
+//
+//                val tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+//                tmf.init(keyStore)
+//
+//                val sslContext = SSLContext.getInstance("TLS")
+//                sslContext.init(null, tmf.trustManagers, null)
+//                sslSocketFactory(sslContext.socketFactory, tmf.trustManagers[0] as X509TrustManager)
+//                hostnameVerifier { hostname, _ -> hostname == "192.168.1.28" }
+//            }
+//            .build()
+//        return okHttpClient
+//    }
 
     fun getAuthenticatedApiService(authToken: String, context: Context): ApiService {
         // Crear un interceptor que añada el token al header
@@ -68,12 +68,12 @@ object RetroFitClient {
         }
 
         // Configurar OkHttpClient con el interceptor
-        val okHttpClient = createTrustedClient(context,authInterceptor)
+//        val okHttpClient = createTrustedClient(context,authInterceptor)
 
         // Construir Retrofit con el cliente HTTP personalizado
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(okHttpClient)
+//            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

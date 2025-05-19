@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="blue">#3B82F6</color>
+    <color name="colorText">#333333</color>
+    <color name="gray">#D1D5DB</color>
+    <color name="grayText">#9E9E9E</color>
+    <color name="green">#22C55E</color>
+    <color name="red">#EF4444</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="yellow">#F59E0B</color>
+    <string name="app_name">MVTS-Mobile</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <style name="Base.Theme.MVTSMobile" parent="Theme.Material3.DayNight.NoActionBar">
+        
+         <item name="colorPrimary">@color/blue</item>
+         <item name="colorSecondary">@color/gray</item>
+         <item name="colorTertiary">@color/green</item>
+    </style>
+    <style name="Theme.MVTSMobile" parent="Base.Theme.MVTSMobile"/>
+</resources>
