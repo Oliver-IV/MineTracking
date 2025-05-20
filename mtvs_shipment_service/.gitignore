@@ -9,9 +9,6 @@
 *.userprefs
 /Properties/launchSettings.json # Evitar exponer configuraciones de lanzamiento locales
 
-# Migrations that generate the database
-/Migrations/*
-
 
 # Project files (normalmente no se ignoran, pero pueden ser �tiles en ciertos flujos)
 # /mvts-congestion-service.csproj
