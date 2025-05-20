@@ -69,6 +69,31 @@ services:
       - backend
     volumes:
       - ./mvts-auth-service/certs:/usr/src/app/certs
+  congestion:
+    container_name: congestion
+    build:
+      context: ./mvts_congestion_service
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - db
+      - rmq
+    networks:
+      - backend
+    environment:
+      - ConnectionStrings__PostgreSQLConnection=Host=db;Username=postgres;Password=postgres;Database=mvts_congestions_db
+  shipment:
+    container_name: shipment
+    build:
+      context: ./mtvs_shipment_service
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - backend
+    environment:
+      - ConnectionStrings__PostgreSQLConnection=Host=db;Username=postgres;Password=postgres;Database=mvts_shipments_db
   db:
     image: postgres
     container_name: db
@@ -81,7 +106,7 @@ services:
       - backend
     environment:
       POSTGRES_PASSWORD: "postgres"
-      POSTGRES_MULTIPLE_DATABASES: mvts_traffic_lights_db, mvts_car_db, mvts_users_db
+      POSTGRES_MULTIPLE_DATABASES: mvts_users_db, mvts_congestions_db, mvts_users_db, mvts_shipments_db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
