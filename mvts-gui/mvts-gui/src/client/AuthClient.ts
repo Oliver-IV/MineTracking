@@ -19,7 +19,7 @@ async function POTSlogin(loginDto: LoginDto) {
         }
         return response.json();
     } catch (error) {
-        console.error("Er:", error);
+        console.error("Error: ", error) ;
         throw error;
     }
 }
@@ -38,7 +38,7 @@ async function POSTregister(registerUserDto: RegisterUserDto): Promise<any> {
         }
         return response.json();
     } catch (error) {
-        console.error("Error comunicating with the server:", error);
+        console.error("Error: ", error) ;
         throw error;
     }
 }
@@ -53,7 +53,7 @@ async function POSTlogout() {
         }
         return response.json();
     } catch (error) {
-        console.error("Error comunicating with the server:", error);
+        console.error("Error: ", error) ;
         throw error;
     }
 }

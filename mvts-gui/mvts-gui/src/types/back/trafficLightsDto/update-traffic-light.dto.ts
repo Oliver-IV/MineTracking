@@ -1,6 +1,6 @@
 import type { State } from "./state.enum";
 
-export interface UpdateTrafficLightValidatedDto {
+export interface UpdateTrafficLightDto {
 
   trafficLightId: string;
 

@@ -12,8 +12,8 @@ async function GETfindAllRoutes(): Promise<Route[]> {
         const routes: Route[] = await response.json();
         return routes;
     } catch (error) {
-        console.error("Failed to get routes:", error);
-        throw error ;
+        console.error("Error: ", error) ;
+        throw error;
     }
 }
 
@@ -27,8 +27,8 @@ async function GETfindAllLocations(): Promise<LocationDTO[]> {
         const locations: LocationDTO[] = await response.json();
         return locations;
     } catch (error) {
-        console.error("Failed to get routes:", error);
-        throw error ;
+        console.error("Error: ", error) ;
+        throw error;
     }
 }
 
@@ -46,8 +46,8 @@ async function POSTcreateRoute(route: CreateRouteDto): Promise<Route> {
         }
         return response.json();
     } catch (error) {
-        console.error("Failed to get routes:", error);
-        throw error ;
+        console.error("Error: ", error) ;
+        throw error;
     }
 }
 
@@ -78,8 +78,8 @@ async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, 
         }
         return response.json();
     } catch (error) {
-        console.error("Failed to get routes:", error);
-        throw error ;
+        console.error("Error: ", error) ;
+        throw error;
     }
 }
 
@@ -99,8 +99,8 @@ async function DELETEdeleteRoute(routeId: string) {
         }
         return response.json();
     } catch (error) {
-        console.error("Failed to get routes:", error) ;
-        throw error ;
+        console.error("Error: ", error) ;
+        throw error;
     }
     
 }

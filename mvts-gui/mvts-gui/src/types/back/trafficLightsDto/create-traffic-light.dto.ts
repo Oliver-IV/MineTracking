@@ -1,7 +1,7 @@
 import type { LocationDto } from "./location.dto";
 import type { Mode } from "./mode.enum";
 
-export interface CreateTrafficLightValidatedDto {
+export interface CreateTrafficLightDto {
 
     location: LocationDto;
 

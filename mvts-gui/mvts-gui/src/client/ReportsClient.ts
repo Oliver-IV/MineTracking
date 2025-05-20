@@ -10,13 +10,13 @@ async function POSTgeneratePDF(reportsDetails: ReportDetailsDTO): Promise<void> 
             body: JSON.stringify(reportsDetails),
         });
         if (!response.ok) {
-            throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+            throw new Error(`Error comunicating with the server`);
         }
         const blob = await response.blob();
         const pdfUrl = window.URL.createObjectURL(blob);
         window.open(pdfUrl, '_blank');
     } catch (error) {
-        console.error("Error comunicating with the server:", error);
+        console.error("Error: ", error) ;
         throw error;
     }
 }
