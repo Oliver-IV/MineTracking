@@ -1,30 +1,68 @@
 <script setup lang="ts">
+import { getAllCarts } from '@/client/CarsClient';
 import IconSee from '../components/icons/IconSee.vue';
 import IconEdit from '@/components/icons/IconEdit.vue';
 import IconTrash from '@/components/icons/IconTrash.vue';
 
 import { testCart } from '@/mockData/Cart';
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 
+// Define una interfaz para el tipo de carrito
+interface Cart {
+    id: string;
+    name: string;
+    type: string;
+    capacity: string;
+    state: string;
+}
+
 const router = useRouter();
-
-const carts = testCart;
-
+const loaded = ref(false);
+const carts = ref<Cart[]>([]);
 const searchVehicle = ref('');
 const searchState = ref('');
+const loading = ref(true);
+
+async function loadCarts() {
+    try {
+        loading.value = true;
+        const loadedCarts = await getAllCarts();
+        console.log(loadedCarts)
+        carts.value = loadedCarts.map(cart => {
+            return {
+                id: cart.id,
+                name: cart.name,
+                type: cart.type.toLocaleString(),
+                capacity: cart.capacity.value + ' ' + cart.capacity.measurementUnit,
+                state: "NUEVO"
+            }
+        });
+        loaded.value = true;
+    } catch (error) {
+        console.error("Error loading carts:", error);
+    } finally {
+        loading.value = false;
+    }
+}
 
 const filteredCarts = computed(() => {
-    return carts.filter(cart => {
-        const matchesVehicle = searchVehicle.value === '' || cart.name.toLowerCase().includes(searchVehicle.value.toLowerCase());
-        const matchesState = searchState.value === '' || cart.state.toLowerCase().includes(searchState.value.toLowerCase());
+    return carts.value.filter(cart => {
+        const matchesVehicle = searchVehicle.value === '' || 
+                              cart.name.toLowerCase().includes(searchVehicle.value.toLowerCase());
+        const matchesState = searchState.value === '' || 
+                            cart.state.toLowerCase().includes(searchState.value.toLowerCase());
         return matchesVehicle && matchesState;
-    })
-})
+    });
+});
 
 function goToRegisterRoute() {
     router.push({ name: 'registerVehicle' });
 }
+
+onMounted(() => {
+    loadCarts();
+});
 </script>
 
 <template>
@@ -48,18 +86,28 @@ function goToRegisterRoute() {
             <p>Actions</p>
         </div>
 
-        <div class="info-display" v-for="cart in filteredCarts" :key="cart.id">
-            <p>{{ cart.id }}</p>
-            <p>{{ cart.name }}</p>
-            <p>{{ cart.type }}</p>
-            <p>{{ cart.capacity }}</p>
-            <p>{{ cart.state }}</p>
-            <p class="action-icons">
-                <IconSee />
-                <IconEdit />
-                <IconTrash />
-            </p>
+        <div v-if="loading" class="loading-container">
+            <p>Loading vehicles...</p>
         </div>
+
+        <div v-else-if="filteredCarts.length === 0" class="empty-container">
+            <p>No vehicles found</p>
+        </div>
+
+        <template v-else>
+            <div class="info-display" v-for="cart in filteredCarts" :key="cart.id">
+                <p>{{ cart.id }}</p>
+                <p>{{ cart.name }}</p>
+                <p>{{ cart.type }}</p>
+                <p>{{ cart.capacity }}</p>
+                <p>{{ cart.state }}</p>
+                <p class="action-icons">
+                    <IconSee />
+                    <IconEdit />
+                    <IconTrash />
+                </p>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -72,7 +120,6 @@ function goToRegisterRoute() {
     padding: 1rem;
     margin-top: 2%;
 }
-
 
 .header {
     display: flex;
@@ -89,7 +136,6 @@ function goToRegisterRoute() {
     height: 40px;
     padding: 0 15px;
 }
-
 
 .filter-bar {
     display: flex;
@@ -121,7 +167,6 @@ function goToRegisterRoute() {
     margin: 0 5px;
 }
 
-
 .info-display {
     display: flex;
     justify-content: space-between;
@@ -143,12 +188,19 @@ function goToRegisterRoute() {
     align-items: center;
 }
 
-
 .action-icons {
     display: flex;
     gap: 10px;
     justify-content: center;
     align-items: center;
+}
+
+.loading-container, .empty-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    font-size: 1.1rem;
+    color: #6b7280;
 }
 
 @media (max-width: 768px) {
