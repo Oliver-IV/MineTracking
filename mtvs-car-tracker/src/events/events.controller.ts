@@ -17,7 +17,8 @@ export class EventsController {
       carId: data.carId,
       location: data.location,
       speed: data.speed,
-      status: data.status
+      status: data.status,
+      car: data.car,
     });
     return { processed: true };
   }

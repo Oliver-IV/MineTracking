@@ -27,12 +27,9 @@ async function POSTstartSimulation(req: Request, res: Response) {
     trafficLightsConsumer.start();
 
     const dbTrafficLights = await findAllTrafficLights();
-
     dbTrafficLights.forEach(trafficLight => {
         trafficLights.push(trafficLight);
     });
-
-    console.log(trafficLights);
 
     if (!origin || !destination) {
         res.status(400).json({ error: 'Se requieren origen y destino' });
@@ -46,11 +43,11 @@ async function POSTstartSimulation(req: Request, res: Response) {
     carSimulation.isStopped = false;
     carSimulation.intervalId = null;
     carSimulation.simulationId = uuidv4();
-    carSimulation.currentRouteIndex = 0;
     carSimulation.route = simulateGoogleMapsRoute(origin, destination);
     carSimulation.active = true;
     carSimulation.currentLocation = origin;
     carSimulation.destination = destination;
+    carSimulation.currentRouteIndex = 0;
 
     simulations.push(carSimulation);
 
@@ -59,34 +56,51 @@ async function POSTstartSimulation(req: Request, res: Response) {
         trafficLights.forEach(trafficLight => {
             startTrafficLightCycle(trafficLight);
         });
+        trafficLightsSimulationStarted = true;
     }
-
 
     // Iniciar simulación con intervalos para actualizar la ubicación
     carSimulation.intervalId = setInterval(async () => {
-        if (carSimulation.currentRouteIndex < carSimulation.route.length - 1) {
-            // Verificar semáforos cercanos
-            const nearRedLight = checkTrafficLights(carSimulation.currentLocation);
+        if (!carSimulation.active) {
+            clearInterval(carSimulation.intervalId!);
+            return;
+        }
 
-            if (nearRedLight && !carSimulation.isStopped) {
-                // Detener el auto
-                carSimulation.isStopped = true;
-                await publishLocationUpdate(carSimulation.currentLocation, 0, 'STOPPED', carSimulation.car.carId);
-            } else if (!nearRedLight) {
-                // Mover el auto
-                carSimulation.isStopped = false;
-                carSimulation.currentRouteIndex++;
-                carSimulation.currentLocation = carSimulation.route[carSimulation.currentRouteIndex];
-                await publishLocationUpdate(carSimulation.currentLocation, carSimulation.speed, 'MOVING', carSimulation.car.carId);
-            }
-        } else {
-            // Llegamos al destino, detener la simulación
-            if (carSimulation.intervalId) {
-                clearInterval(carSimulation.intervalId);
-            }
+        // Obtener la próxima ubicación en la ruta
+        const nextIndex = carSimulation.currentRouteIndex + 1;
+        if (nextIndex >= carSimulation.route.length) {
+            // Llegamos al destino
             carSimulation.active = false;
+            clearInterval(carSimulation.intervalId!);
+            await publishLocationUpdate(carSimulation.currentLocation, 0, 'STOPPED', carSimulation.car.carId);
+            console.log('Simulación de vehículo completada: Llegó al destino');
+            return;
+        }
 
-            console.log('Simulación de vehiculo completada: Llegó al destino');
+        const nextLocation = carSimulation.route[nextIndex];
+        
+        // Verificar semáforos en la dirección del movimiento
+        const { shouldStop, nearestLight } = checkTrafficLights(
+            carSimulation.currentLocation, 
+            nextLocation
+        );
+
+        if (shouldStop && !carSimulation.isStopped) {
+            // Detener el auto
+            carSimulation.isStopped = true;
+            await publishLocationUpdate(carSimulation.currentLocation, 0, 'STOPPED', carSimulation.car.carId);
+            console.log(`Vehículo ${carSimulation.car.carId} detenido por semáforo ${nearestLight?.trafficLightId}`);
+        } else if (!shouldStop && carSimulation.isStopped) {
+            // Reanudar movimiento
+            carSimulation.isStopped = false;
+            carSimulation.currentRouteIndex++;
+            carSimulation.currentLocation = carSimulation.route[carSimulation.currentRouteIndex];
+            await publishLocationUpdate(carSimulation.currentLocation, carSimulation.speed, 'MOVING', carSimulation.car.carId);
+        } else if (!carSimulation.isStopped) {
+            // Continuar movimiento normal
+            carSimulation.currentRouteIndex++;
+            carSimulation.currentLocation = carSimulation.route[carSimulation.currentRouteIndex];
+            await publishLocationUpdate(carSimulation.currentLocation, carSimulation.speed, 'MOVING', carSimulation.car.carId);
         }
     }, carSimulation.updateInterval);
 

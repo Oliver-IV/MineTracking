@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import mqtt from 'mqtt';
-import type { TrafficLight } from '@/types/front/TrafficLight';
+import type { LocationMessageDto } from '@/types/back/carRoute/location-message.dto';
 
-export const useTrafficLightsStore = defineStore('trafficLights', {
+export const useVehiclesStore = defineStore('vehicles', {
   state: () => ({
-    trafficLights: {} as Record<string, TrafficLight>,
+    vehicles: {} as Record<string, LocationMessageDto>,
     client: null as mqtt.MqttClient | null,
     connectionStatus: 'disconnected' as 'connected' | 'disconnected',
   }),
@@ -16,10 +16,8 @@ export const useTrafficLightsStore = defineStore('trafficLights', {
           username: 'mosquitto',
           password: 'compaoli123'
         },
-        topics: ['traffic_lights/color']
+        topics: ['cars/location']
       };
-
-      if (this.client) return; // Evitar múltiples conexiones
 
       this.client = mqtt.connect(mqttConfig.url, mqttConfig.options);
 
@@ -33,8 +31,8 @@ export const useTrafficLightsStore = defineStore('trafficLights', {
       this.client.on('message', (topic, message) => {
         try {
           const data = JSON.parse(message.toString());
-          if (topic === 'traffic_lights/color') {
-            this.updateTrafficLight(data);
+          if (topic === 'cars/location') {
+            this.updateVehicle(data);
           }
         } catch (e) {
           console.error('Error parseando mensaje:', e);
@@ -47,26 +45,15 @@ export const useTrafficLightsStore = defineStore('trafficLights', {
       });
     },
     
-    updateTrafficLight(data: any) {
-      const tlId = data.trafficLightId;
-      this.trafficLights = {
-        ...this.trafficLights,
-        [tlId]: {
+    updateVehicle(data: LocationMessageDto) {
+      const vehicleId = data.carId;
+      this.vehicles = {
+        ...this.vehicles,
+        [vehicleId]: {
           ...data,
-          id: tlId,
-          state: this.getLightStateString(data.state),
-          lastUpdate: data.lastUpdate || new Date().toISOString(),
+          timestamp: data.timestamp || new Date().toISOString()
         }
       };
-    },
-    
-    getLightStateString(state: number): string {
-      switch (state) {
-        case 0: return 'RED';
-        case 1: return 'YELLOW';
-        case 2: return 'GREEN';
-        default: return 'UNKNOWN';
-      }
     },
     
     disconnectMqtt() {

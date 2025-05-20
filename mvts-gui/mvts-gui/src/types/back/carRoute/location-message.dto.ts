@@ -1,7 +1,7 @@
-import { CarDto } from "./car.dto";
-import { LocationDto } from "./location.dto";
+import type { CarDto } from "./car.dto";
+import type { LocationDto } from "./location.dto";
 
-export class LocationMessageDto {
+export interface LocationMessageDto {
     timestamp: string;
     location: LocationDto;
     carId: string;

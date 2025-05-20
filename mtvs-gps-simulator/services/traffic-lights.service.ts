@@ -192,7 +192,7 @@ export class TrafficLightsService {
                                 },
                                 null,
                                 false,
-                                10
+                                50
                             ));
                         }
                     });
