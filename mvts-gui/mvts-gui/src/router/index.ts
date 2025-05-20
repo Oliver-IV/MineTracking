@@ -13,6 +13,7 @@ import RegisteredVehiclesView from '@/views/RegisteredVehiclesView.vue'
 import RegisterNewVehicleView from '@/views/RegisterNewVehicleView.vue'
 import RegisteredTrafficLightsView from '@/views/RegisteredTrafficLightsView.vue'
 import RegisteredAddressesView from '@/views/RegisteredAddressesView.vue'
+import CreateAccountView from '@/views/CreateAccountView.vue'
 
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,11 @@ const router = createRouter({
             path: '/login',
             name: 'login',
             component: LoginView,
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: CreateAccountView,
         },
         {
             path: '/home',

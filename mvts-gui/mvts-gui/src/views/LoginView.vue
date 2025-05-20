@@ -7,24 +7,24 @@ const username = ref('');
 const password = ref('');
 const message = ref('');
 
-const router = useRouter()
+const router = useRouter();
 
 async function login() {
-  // if (username.value === 'admin' && password.value === '1234') {
-  //   router.push('/home') // o cualquier ruta dentro del layout
-  // } else {
-  //   message.value = 'Username or password incorrect.'
-  // }
   const loginResponse = await POTSlogin({
     email: username.value,
     password: password.value
-  })
+  });
+
   if (loginResponse.success) {
-    router.push('/home') // o cualquier ruta dentro del layout
+    router.push('/home');
   } else {
-    message.value = 'Username or password incorrect.'
+    message.value = 'Username or password incorrect.';
   }
 }
+
+const goToRegister = () => {
+  router.push('/register');
+};
 </script>
 
 <template>
@@ -34,6 +34,8 @@ async function login() {
     <input v-model="password" type="password" placeholder="Password" />
     <button @click="login">Entrar</button>
     <p class="message">{{ message }}</p>
+
+    <p>New user? <span @click="goToRegister" class="register-link">Register Nigga</span></p>
   </div>
 </template>
 
@@ -81,5 +83,15 @@ async function login() {
   text-align: center;
   margin-top: 15px;
   color: red;
+}
+
+.register-link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.register-link:hover {
+  color: #0056b3;
 }
 </style>
