@@ -25,6 +25,9 @@ namespace mvts_congestion_service.Utils.rabbitmq
             return new ConnectionFactory
             {
                 HostName = _rabbitSettings.Host,
+                Port = 5672,
+                UserName = _rabbitSettings.Username, 
+                Password = _rabbitSettings.Password
             };
         }
 
