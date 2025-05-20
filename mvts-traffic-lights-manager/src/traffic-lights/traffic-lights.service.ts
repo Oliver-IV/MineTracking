@@ -46,23 +46,24 @@ export class TrafficLightsService {
   async create(
     createTrafficLightDto: CreateTrafficLightDto,
   ): Promise<TrafficLight> {
-    if (!createTrafficLightDto.location) {
+    const {location} = createTrafficLightDto;
+    if (!location) {
       throw new RpcException({
         code: status.INVALID_ARGUMENT,
         message: 'The location must be defined',
       });
     }
-    const location = await this.locationService.findById(
-      createTrafficLightDto.location.locationId) ;
-    if (!location) {
+    const existingLocation = await this.locationService.findById(
+      location.locationId) ;
+    if (existingLocation) {
       throw new RpcException({
-        code: status.NOT_FOUND,
-        message: 'Location for traffic light not found',
+        code: status.ALREADY_EXISTS,
+        message: 'Traffic light at that location already exists',
       });
     }
     const trafficLightId = await this.generateId();
     const trafficLight: TrafficLightEntity = this.trafficLightRepository.create(
-      { ...createTrafficLightDto, trafficLightId, state: State.RED, location },
+      { ...createTrafficLightDto, trafficLightId, state: State.RED, location:{...location,locationId: trafficLightId} },
     );
     const savedTrafficLight =
       await this.trafficLightRepository.save(trafficLight);

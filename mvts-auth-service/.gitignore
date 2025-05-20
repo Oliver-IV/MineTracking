@@ -1,3 +1,6 @@
+#ssl
+/certs
+
 # compiled output
 /dist
 /node_modules

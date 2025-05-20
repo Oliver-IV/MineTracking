@@ -10,6 +10,11 @@ services:
     networks:
       - frontend
       - backend
+    volumes:
+      - ./mvts-api-gateway/certs:/usr/src/app/certs:ro
+      # - ./mvts-api-gateway/src/auth/certs:/usr/src/app/certs/auth:ro
+      # - ./mvts-api-gateway/src/cars/certs:/usr/src/app/certs/cars:ro
+      # - ./mvts-api-gateway/src/traffic-lights/certs:/usr/src/app/certs/traffic-lights:ro
   cars-manager:
     container_name: cars-manager
     build:
@@ -18,8 +23,12 @@ services:
     restart: always
     env_file:
       - ./mvts-cars-manager/.env
-    ports:
-      - '5001:5000'
+    expose:
+      - "5000"
+    volumes:
+      - ./mvts-cars-manager/certs:/usr/src/app/certs
+    # ports:
+    #   - '5001:5000'
     depends_on:
       - db
       - rmq
@@ -36,10 +45,30 @@ services:
     depends_on:
       - db
       - rmq
-    ports:
-      - '5002:5000'
+    expose:
+      - "5000"
+    volumes:
+      - ./mvts-traffic-lights-manager/certs:/usr/src/app/certs
+    # ports:
+    #   - '5002:5000'
     networks:
       - backend
+  auth:
+    container_name: auth
+    build:
+      context: ./mvts-auth-service
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./mvts-auth-service/.env
+    depends_on:
+      - db
+    expose:
+      - "5000"
+    networks:
+      - backend
+    volumes:
+      - ./mvts-auth-service/certs:/usr/src/app/certs
   db:
     image: postgres
     container_name: db
@@ -52,7 +81,7 @@ services:
       - backend
     environment:
       POSTGRES_PASSWORD: "postgres"
-      POSTGRES_MULTIPLE_DATABASES: mvts_traffic_lights_db, mvts_car_db
+      POSTGRES_MULTIPLE_DATABASES: mvts_traffic_lights_db, mvts_car_db, mvts_users_db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
