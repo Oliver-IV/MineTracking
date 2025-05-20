@@ -16,16 +16,17 @@ namespace mvts_congestion_service.Models
         public string? Name { get; set; }
         [Column("latitude")]
         [Required]
-        public float Lat { get; set; }
+        public double Lat { get; set; }
         [Column("longitude")]
         [Required]
-        public float Lng { get; set; }
+        public double Lng { get; set; }
 
         [Column("created_at", TypeName = "timestamp without time zone")]
         
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+
         [Column("type")]
-        public CongestionType Type { get; set; } = CongestionType.TrafficJam;
+        public CongestionType Type { get; set; } = CongestionType.Unknown;
     }
 }

@@ -2,6 +2,7 @@
 {
     public enum CongestionType
     {
+
         Unknown = 0,
         TrafficJam = 1,
         RoadBlock = 2,
