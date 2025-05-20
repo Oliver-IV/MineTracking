@@ -2,47 +2,46 @@
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import type { CreateCarDto } from '@/types/back/carDto/create-car.dto';
+import { MeasurementUnit } from '@/types/back/carDto/measurement-unit';
+import { CarType } from '@/types/back/carDto/cart.type';
+import { createCar } from '@/client/CarsClient';
+
 
 const router = useRouter();
 
-
 const name = ref('');
-const capacity = ref('');
+const capacityId = ref('');
+const measurementUnit = ref(0);
 const type = ref(0);
-const state = ref('');
-async function registerVehicle() {
-    const vehicleData = {
+const capacityValue = ref(0);
+const state = ref(''); async function registerVehicle() {
+    const vehicleData: CreateCarDto = {
         name: name.value,
-        capacity: capacity.value,
+        capacity: {
+            id: 0,
+            measurementUnit: measurementUnit.value,
+            value: capacityValue.value
+        },
         type: type.value,
         state: state.value
     };
 
     try {
-        const response = await fetch(' ', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(vehicleData)
-        });
-
-        if (!response.ok) {
-            throw new Error('NAH FAM');
-        }
-
-        const result = await response.json();
+        const result = await createCar(vehicleData);
         console.log('Vehicle registered:', result);
-        // Redireccionar o mostrar mensaje de éxito
+
     } catch (error) {
         console.error('Registration failed:', error);
     }
 }
 
+
 function goBack() {
     router.back();
 }
 </script>
+
 <template>
     <div class="main-layout">
         <div class="container">
@@ -57,14 +56,25 @@ function goBack() {
             <div class="car-inforamtion">
                 <h2>Vehicle Details</h2>
                 <input type="text" placeholder="Name" v-model="name" />
-                <input type="text" placeholder="Capacity" v-model="capacity" />
-                <input type="number" placeholder="Type" v-model="type" />
-                <input type="text" placeholder="State" v-model="state" />
+
+
+                <select v-model="measurementUnit">
+                    <option :value="0">Kilograms (KG)</option>
+                    <option :value="1">Tons (TON)</option>
+                    <option :value="2">Kilotons (KTON)</option>
+                </select>
+
+                <input type="number" min="1" placeholder="Capacity" v-model="capacityValue">
+                <select v-model="type">
+                    <option :value="0">Heavy</option>
+                    <option :value="1">Medium</option>
+                    <option :value="2">Light</option>
+                    <option :value="-1">UNRECOGNIZED</option>
+
+                </select>
             </div>
         </div>
     </div>
-
-
 </template>
 
 <style scoped>
