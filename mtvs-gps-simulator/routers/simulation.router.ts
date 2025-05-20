@@ -7,11 +7,11 @@ simulationRouter.post('/start', async (req, res) => {
     await POSTstartSimulation(req, res);
 }) ;
 
-simulationRouter.post('/stop', (req, res) => {
+simulationRouter.post('/stop/:id', (req, res) => {
     POSTstopSimulation(req, res);
 }) ;
 
-simulationRouter.get('/status', (req, res) => {
+simulationRouter.get('/status:id', (req, res) => {
     GETsimulationStatus(req, res);
 })
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { TrafficLight } from '@/types/TrafficLight';
+import type { TrafficLight } from '@/types/front/TrafficLight';
+
 
 const props = defineProps<{
     trafficLights: TrafficLight[];
@@ -7,11 +8,11 @@ const props = defineProps<{
 
 const getTrafficLightColor = (state: String) => {
     switch (state) {
-        case 'green':
+        case 'GREEN':
             return '#22C55E';
-        case 'yellow':
+        case 'YELLOW':
             return '#F59E0B';
-        case 'red':
+        case 'RED':
             return '#EF4444';
         default:
             return '#D1D5DB';
@@ -27,8 +28,7 @@ const getTrafficLightColor = (state: String) => {
             </div>
         </div>
         <p>State: {{ trafficLight.state }} </p>
-        <p>Mode: {{ trafficLight.mode }}</p>
-        <p>Last Updated: {{ trafficLight.updatedAt }}</p>
+        <p>Last Updated: {{ trafficLight.lastUpdate }}</p>
     </div>
 </template>
 

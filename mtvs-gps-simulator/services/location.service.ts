@@ -2,7 +2,7 @@ import { carQueueName, rabbitMqUrl } from "../configs/rabbitmq.config";
 import { LocationMessageDto } from "../dtos/location-message.dto";
 import { LocationDto } from "../dtos/location.dto";
 import { State } from "../dtos/state.enum";
-import { carSimulation } from "../simulated-data/cars.simulation";
+import { simulations } from "../simulated-data/cars.simulation";
 import trafficLights from "../simulated-data/traffic-lights.simulation";
 import * as amqp from 'amqplib';
 
@@ -48,12 +48,15 @@ export class LocationService {
 
             await channel.assertQueue(carQueueName, { durable: true });
 
+            const simulation = simulations.find(simulation => simulation.car.carId === carId);
+
             const message: LocationMessageDto = {
                 timestamp: new Date().toISOString(),
                 location: location,
                 carId: carId,
                 speed: speed,
-                status: status
+                status: status,
+                car: simulation?.car
             };
 
             channel.sendToQueue(carQueueName, Buffer.from(JSON.stringify({

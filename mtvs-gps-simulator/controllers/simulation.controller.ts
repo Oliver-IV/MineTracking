@@ -8,12 +8,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { TrafficLightsConsumer } from "../consumers/traffic-lights.consumer";
 import { CarDto } from "../dtos/car.dto";
 import { CarSimulationDto } from "../dtos/car-simulation.dto";
-import { simulations, simulatedDataStandard} from "../simulated-data/cars.simulation";
+import { simulations } from "../simulated-data/cars.simulation";
 
 const carService = new CarService();
 const locationService = new LocationService();
 const trafficLightsService = new TrafficLightsService();
 const trafficLightsConsumer = new TrafficLightsConsumer(trafficLightsService);
+
+var trafficLightsSimulationStarted = false;
 
 const { simulateGoogleMapsRoute } = carService;
 const { calculateDistance, checkTrafficLights, publishLocationUpdate, } = locationService;
@@ -22,7 +24,7 @@ const { startTrafficLightCycle, stopTrafficLightCycle, findAllTrafficLights } = 
 async function POSTstartSimulation(req: Request, res: Response) {
     const { origin, destination, car } = req.body as { origin: LocationDto, destination: LocationDto, car: CarDto };
 
-    trafficLightsConsumer.start() ;
+    trafficLightsConsumer.start();
 
     const dbTrafficLights = await findAllTrafficLights();
 
@@ -38,26 +40,27 @@ async function POSTstartSimulation(req: Request, res: Response) {
     }
 
     const carSimulation = new CarSimulationDto();
-    
-    simulations.push(carSimulation);
-
-    if (carSimulation.active) {
-        res.status(400).json({ error: 'Ya hay una simulación en curso' });
-        return;
-    }
-
-    // Iniciar todos los semáforos
-    trafficLights.forEach(trafficLight => {
-        startTrafficLightCycle(trafficLight);
-    });
-
+    carSimulation.car = car;
+    carSimulation.speed = 40;
+    carSimulation.updateInterval = 1000;
+    carSimulation.isStopped = false;
+    carSimulation.intervalId = null;
+    carSimulation.simulationId = uuidv4();
+    carSimulation.currentRouteIndex = 0;
+    carSimulation.route = simulateGoogleMapsRoute(origin, destination);
+    carSimulation.active = true;
     carSimulation.currentLocation = origin;
     carSimulation.destination = destination;
-    carSimulation.route = simulateGoogleMapsRoute(origin, destination);
-    carSimulation.currentRouteIndex = 0;
-    carSimulation.active = true;
-    carSimulation.simulationId = uuidv4();
-    carSimulation.isStopped = false;
+
+    simulations.push(carSimulation);
+
+    // Iniciar todos los semáforos
+    if (!trafficLightsSimulationStarted) {
+        trafficLights.forEach(trafficLight => {
+            startTrafficLightCycle(trafficLight);
+        });
+    }
+
 
     // Iniciar simulación con intervalos para actualizar la ubicación
     carSimulation.intervalId = setInterval(async () => {
@@ -68,13 +71,13 @@ async function POSTstartSimulation(req: Request, res: Response) {
             if (nearRedLight && !carSimulation.isStopped) {
                 // Detener el auto
                 carSimulation.isStopped = true;
-                await publishLocationUpdate(carSimulation.currentLocation, 0, 'STOPPED');
+                await publishLocationUpdate(carSimulation.currentLocation, 0, 'STOPPED', carSimulation.car.carId);
             } else if (!nearRedLight) {
                 // Mover el auto
                 carSimulation.isStopped = false;
                 carSimulation.currentRouteIndex++;
                 carSimulation.currentLocation = carSimulation.route[carSimulation.currentRouteIndex];
-                await publishLocationUpdate(carSimulation.currentLocation, carSimulation.speed, 'MOVING');
+                await publishLocationUpdate(carSimulation.currentLocation, carSimulation.speed, 'MOVING', carSimulation.car.carId);
             }
         } else {
             // Llegamos al destino, detener la simulación
@@ -83,12 +86,7 @@ async function POSTstartSimulation(req: Request, res: Response) {
             }
             carSimulation.active = false;
 
-            // Detener todos los semáforos
-            trafficLights.forEach(trafficLight => {
-                stopTrafficLightCycle(trafficLight.trafficLightId);
-            });
-
-            console.log('Simulación completada: Llegó al destino');
+            console.log('Simulación de vehiculo completada: Llegó al destino');
         }
     }, carSimulation.updateInterval);
 
@@ -99,31 +97,44 @@ async function POSTstartSimulation(req: Request, res: Response) {
 }
 
 function POSTstopSimulation(req: Request, res: Response) {
-    if (!carSimulation.active) {
-        res.status(400).json({ error: 'No hay simulación en curso' });
-        return;
+    const simulationId = req.params.id;
+    const carSimulation = simulations.find(simulation => simulation.simulationId === simulationId);
+    if (carSimulation) {
+        if (!carSimulation.active) {
+            res.status(400).json({ error: 'No hay simulación en curso' });
+            return;
+        }
+
+        if (carSimulation.intervalId) {
+            clearInterval(carSimulation.intervalId);
+        }
+
+        trafficLightsConsumer.stop();
+
+        carSimulation.active = false;
+
+        // Detener todos los semáforos
+        trafficLights.forEach(trafficLight => {
+            stopTrafficLightCycle(trafficLight.trafficLightId);
+        });
+
+        res.json({
+            message: 'Simulación detenida',
+            simulationId: carSimulation.simulationId
+        });
+    } else {
+        res.status(404).json({ error: 'Simulación no encontrada' });
     }
 
-    if (carSimulation.intervalId) {
-        clearInterval(carSimulation.intervalId);
-    }
-
-    trafficLightsConsumer.stop() ;
-
-    carSimulation.active = false;
-
-    // Detener todos los semáforos
-    trafficLights.forEach(trafficLight => {
-        stopTrafficLightCycle(trafficLight.trafficLightId);
-    });
-
-    res.json({
-        message: 'Simulación detenida',
-        simulationId: carSimulation.simulationId
-    });
 }
 
 function GETsimulationStatus(req: Request, res: Response) {
+    const simulationId = req.params.id;
+    const carSimulation = simulations.find(simulation => simulation.simulationId === simulationId);
+    if (!carSimulation) {
+        res.status(404).json({ error: 'Simulación no encontrada' });
+        return;
+    }
     res.json({
         active: carSimulation.active,
         currentLocation: carSimulation.currentLocation,

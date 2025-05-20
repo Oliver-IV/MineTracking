@@ -31,7 +31,8 @@ export class EventsController {
       state: data.currentState,
       location: data.location,
       cycleIntervals: data.cycleIntervals,
-      active: data.active
+      active: data.active,
+      lastUpdate: new Date().toLocaleTimeString().split('GMT')[0].trim()
     });
     return { processed: true };
   }
