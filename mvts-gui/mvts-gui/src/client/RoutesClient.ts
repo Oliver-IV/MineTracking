@@ -44,14 +44,15 @@ async function POSTcreateRoute(route: CreateRouteDto): Promise<Route> {
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
-        return response.json();
+        const createdRoute: Route = await response.json();
+        return createdRoute;
     } catch (error) {
         console.error("Error: ", error) ;
         throw error;
     }
 }
 
-async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, endId: string }) {
+async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, endId: string }) : Promise<Route> {
     try {
         const route = {
             startId: "",
@@ -74,9 +75,10 @@ async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, 
             body: JSON.stringify(route)
         });
         if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
+            throw new Error(`Error updating route`);
         }
-        return response.json();
+        const updatedRoute: Route = await response.json();
+        return updatedRoute;
     } catch (error) {
         console.error("Error: ", error) ;
         throw error;
@@ -95,7 +97,7 @@ async function DELETEdeleteRoute(routeId: string) {
             }
         });
         if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
+            throw new Error(`Error deleting route`);
         }
         return response.json();
     } catch (error) {

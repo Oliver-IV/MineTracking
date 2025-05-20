@@ -1,5 +1,6 @@
 import { HOST_NAME } from "@/configs/configs";
 import type { CreateTrafficLightDto } from "@/types/back/trafficLightsDto/create-traffic-light.dto";
+import type { TrafficLight } from "@/types/back/trafficLightsDto/traffic-light.dto";
 import type { UpdateTrafficLightDto } from "@/types/back/trafficLightsDto/update-traffic-light.dto";
 
 async function POSTcreateTrafficLight(createTrafficLightDto: CreateTrafficLightDto) {
@@ -14,7 +15,8 @@ async function POSTcreateTrafficLight(createTrafficLightDto: CreateTrafficLightD
         if (!response.ok) {
             throw new Error("Error connecting to the server");;
         }
-        return response.json();
+        const trafficLight : TrafficLight = await response.json();
+        return trafficLight;
     } catch (error) {
         console.error("Error: ", error) ;
         throw error;
@@ -27,7 +29,8 @@ async function GETgetAllTrafficLights() {
         if (!response.ok) {
             throw new Error("Error connecting to the server");;
         }
-        return response.json();
+        const trafficLights : TrafficLight[] = await response.json();
+        return trafficLights;
     } catch (error) {
         console.error("Error: ", error) ;
         throw error;
@@ -42,7 +45,8 @@ async function DELETEdeleteTrafficLight(trafficLightId: string) {
         if (!response.ok) {
             throw new Error("Error connecting to the server");;
         }
-        return response.json();
+        const trafficLight : TrafficLight = await response.json();
+        return trafficLight;
     } catch (error) {
         console.error("Error: ", error) ;
         throw error;
