@@ -1,0 +1,158 @@
+[
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_ic_email.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\ic_email.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\layout_fragment_congestion_load.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\layout\\fragment_congestion_load.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\layout_fragment_shipment_load.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\layout\\fragment_shipment_load.xml"
+    },
+    {
+        "merged": "gui.mvts_mobile.app-debug-34:/layout_fragment_congestion.xml.flat",
+        "source": "gui.mvts_mobile.app-main-36:/layout/fragment_congestion.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-hdpi_luffy.jpg.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-hdpi\\luffy.jpg"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_ic_profile.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\ic_profile.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_social.png.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\social.png"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_circle_btn.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\circle_btn.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\layout_fragment_congestion.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\layout\\fragment_congestion.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_circle_logo.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\circle_logo.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\raw_server_crt.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\raw\\server_crt"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_border_txt.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\border_txt.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\menu_menu_nav.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\menu\\menu_nav.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\layout_activity_login.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_ic_shipment.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\ic_shipment.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_ic_conges.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\ic_conges.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_ic_home.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\ic_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\layout_fragment_shipment.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\layout\\fragment_shipment.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_spinner_background.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\spinner_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\drawable_ic_lock.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\drawable\\ic_lock.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\layout_fragment_home.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\layout\\fragment_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-debug-34:\\layout_activity_notification.xml.flat",
+        "source": "C:\\Users\\karim\\.gradle\\daemon\\8.11.1\\gui.mvts_mobile.app-main-36:\\layout\\activity_notification.xml"
+    }
+]

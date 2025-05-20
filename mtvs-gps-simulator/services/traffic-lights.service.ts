@@ -8,6 +8,8 @@ import { Empty, TrafficLights, TrafficLightsServiceClient } from "../generated/t
 import { GRPC_URL } from "../configs/grpc.configs";
 import { ChannelCredentials, ServiceError } from "@grpc/grpc-js";
 import { LocationDto } from "../dtos/location.dto";
+import * as fs from 'fs';
+import { join } from "path";
 
 export class TrafficLightsService {
 
@@ -17,11 +19,27 @@ export class TrafficLightsService {
         this.initGrpcClient();
         this.startTrafficLightCycle = this.startTrafficLightCycle.bind(this);
         this.publishTrafficLightUpdate = this.publishTrafficLightUpdate.bind(this);
+        this.findAllTrafficLights = this.findAllTrafficLights.bind(this);
     }
 
     private initGrpcClient() {
-        this.trafficLightsClient = new TrafficLightsServiceClient(GRPC_URL, ChannelCredentials.createInsecure());
-        console.log(`Conectado al servidor gRPC en ${GRPC_URL}`);
+        try {
+            const certOptions = {
+                cert: fs.readFileSync(join(process.cwd(), '/certs/server.crt')),
+                key: fs.readFileSync(join(process.cwd(), '/certs/server.key.decrypted'))
+            };
+            this.trafficLightsClient = new TrafficLightsServiceClient(GRPC_URL,
+                ChannelCredentials.createSsl(
+                    null,
+                    certOptions.key,
+                    certOptions.cert,
+                    { checkServerIdentity: () => undefined, rejectUnauthorized: false }
+                )
+            );
+            console.log(`Conectado al servidor gRPC en ${GRPC_URL}`);
+        } catch (error) {
+            console.error('Error al inicializar el cliente gRPC:', error);
+        }
     }
 
     async publishTrafficLightUpdate(trafficLight: TrafficLightDto): Promise<void> {
@@ -137,6 +155,8 @@ export class TrafficLightsService {
     }
 
     findAllTrafficLights(): Promise<TrafficLightDto[]> {
+        console.log("aaaaa") ;
+        console.log(this?.trafficLightsClient) ;
         return new Promise((resolve, reject) => {
             this.trafficLightsClient.findAllTrafficLights(
                 Empty,
@@ -146,19 +166,19 @@ export class TrafficLightsService {
                         reject(new Error(`gRPC error: ${error.message}`));
                         return;
                     }
-    
+
                     const trafficLights: TrafficLightDto[] = [];
-                    
+
                     response.trafficLights.forEach(tl => {
                         if (tl.location) {
                             const location = new LocationDto(
-                                tl.location.locationId, 
-                                Number(tl.location.latitude), 
+                                tl.location.locationId,
+                                Number(tl.location.latitude),
                                 Number(tl.location.longitude)
                             );
-                            
+
                             const randomState: State = Math.floor(Math.random() * 3) as State;
-                            
+
                             trafficLights.push(new TrafficLightDto(
                                 tl.trafficLightId,
                                 location,
@@ -170,14 +190,14 @@ export class TrafficLightsService {
                                 },
                                 null,
                                 false,
-                                50
+                                10
                             ));
                         }
                     });
-                    
+
                     resolve(trafficLights);
                 }
             );
-        }); 
+        });
     }
 }

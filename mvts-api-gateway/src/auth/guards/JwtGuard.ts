@@ -18,6 +18,7 @@ export class JwtGuard implements CanActivate {
                 return true;
             throw new HttpException("Login required", HttpStatus.UNAUTHORIZED);
         }
+        console.log("ENTRO CON TOKEN");
         try {
             const tokenResponse = await this.authService.verifyToken({token: token});
             if (tokenResponse.isValid) {

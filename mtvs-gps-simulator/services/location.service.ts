@@ -2,7 +2,7 @@ import { carQueueName, rabbitMqUrl } from "../configs/rabbitmq.config";
 import { LocationMessageDto } from "../dtos/location-message.dto";
 import { LocationDto } from "../dtos/location.dto";
 import { State } from "../dtos/state.enum";
-import carSimulation from "../simulated-data/cars.simulation";
+import { carSimulation } from "../simulated-data/cars.simulation";
 import trafficLights from "../simulated-data/traffic-lights.simulation";
 import * as amqp from 'amqplib';
 
@@ -41,7 +41,7 @@ export class LocationService {
         return false; // No hay semáforos en rojo/amarillo cerca
     }
 
-    async publishLocationUpdate(location: LocationDto, speed: number, status: 'MOVING' | 'STOPPED'): Promise<void> {
+    async publishLocationUpdate(location: LocationDto, speed: number, status: 'MOVING' | 'STOPPED', carId: string): Promise<void> {
         try {
             const connection = await amqp.connect(rabbitMqUrl);
             const channel = await connection.createChannel();
@@ -51,7 +51,7 @@ export class LocationService {
             const message: LocationMessageDto = {
                 timestamp: new Date().toISOString(),
                 location: location,
-                carId: carSimulation.simulationId as string,
+                carId: carId,
                 speed: speed,
                 status: status
             };

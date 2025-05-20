@@ -52,22 +52,15 @@ export class TrafficLightsService {
         message: 'The location must be defined',
       });
     }
-    const { latitude, longitude } = createTrafficLightDto.location;
-    let location: LocationEntity | null =
-      await this.locationService.findByCoordinates(latitude, longitude);
-
-    if (location) {
+    const location = await this.locationService.findById(
+      createTrafficLightDto.location.locationId) ;
+    if (!location) {
       throw new RpcException({
-        code: status.ALREADY_EXISTS,
-        message: 'Traffic light at that location already exists',
+        code: status.NOT_FOUND,
+        message: 'Location for traffic light not found',
       });
     }
     const trafficLightId = await this.generateId();
-    location = {
-      locationId: trafficLightId,
-      latitude,
-      longitude,
-    };
     const trafficLight: TrafficLightEntity = this.trafficLightRepository.create(
       { ...createTrafficLightDto, trafficLightId, state: State.RED, location },
     );

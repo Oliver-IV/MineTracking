@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ShipmentFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="30dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+
+    <!-- Título -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Asignar cargamento"
+        android:textColor="@color/blue"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <!-- Vehicles -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:text="Vehículos disponibles"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/spinner_background"
+            android:padding="2dp">
+
+            <Spinner
+                android:id="@+id/spinner_vehicles"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@android:color/white"
+                android:backgroundTint="@android:color/transparent" />
+        </LinearLayout>
+
+    <!-- Materials -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:text="Materiales disponibles"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/spinner_background"
+            android:padding="2dp">
+
+            <Spinner
+                android:id="@+id/spinner_materials"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:spinnerMode="dropdown"
+                android:popupBackground="@android:color/white"
+                android:backgroundTint="@android:color/transparent" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/txtCantidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:hint="Cantidad"
+            android:inputType="numberDecimal"
+            android:padding="15dp"
+            android:textColorHint="#757575"
+            android:textSize="18sp" />
+
+    <!-- Routes -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:text="Rutas"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:background="@drawable/spinner_background"
+        android:padding="2dp">
+
+        <Spinner
+            android:id="@+id/spinner_routes"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:spinnerMode="dropdown"
+            android:popupBackground="@android:color/white"
+            android:backgroundTint="@android:color/transparent" />
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/btnLogCongestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/circle_btn"
+            android:paddingVertical="12dp"
+            android:text="Registrar congestión"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+</FrameLayout>
