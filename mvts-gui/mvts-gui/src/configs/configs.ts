@@ -1,3 +1,3 @@
-const HOST_NAME = "localhost" ;
+const HOST_NAME = "https://localhost" ;
 
 export { HOST_NAME } ;
