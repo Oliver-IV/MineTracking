@@ -51,7 +51,6 @@ async function POSTstartSimulation(req: Request, res: Response) {
 
     simulations.push(carSimulation);
 
-    // Iniciar todos los semáforos
     if (!trafficLightsSimulationStarted) {
         trafficLights.forEach(trafficLight => {
             startTrafficLightCycle(trafficLight);
@@ -59,17 +58,14 @@ async function POSTstartSimulation(req: Request, res: Response) {
         trafficLightsSimulationStarted = true;
     }
 
-    // Iniciar simulación con intervalos para actualizar la ubicación
     carSimulation.intervalId = setInterval(async () => {
         if (!carSimulation.active) {
             clearInterval(carSimulation.intervalId!);
             return;
         }
 
-        // Obtener la próxima ubicación en la ruta
         const nextIndex = carSimulation.currentRouteIndex + 1;
         if (nextIndex >= carSimulation.route.length) {
-            // Llegamos al destino
             carSimulation.active = false;
             clearInterval(carSimulation.intervalId!);
             await publishLocationUpdate(carSimulation.currentLocation, 0, 'STOPPED', carSimulation.car.carId);
@@ -79,25 +75,21 @@ async function POSTstartSimulation(req: Request, res: Response) {
 
         const nextLocation = carSimulation.route[nextIndex];
         
-        // Verificar semáforos en la dirección del movimiento
         const { shouldStop, nearestLight } = checkTrafficLights(
             carSimulation.currentLocation, 
             nextLocation
         );
 
         if (shouldStop && !carSimulation.isStopped) {
-            // Detener el auto
             carSimulation.isStopped = true;
             await publishLocationUpdate(carSimulation.currentLocation, 0, 'STOPPED', carSimulation.car.carId);
             console.log(`Vehículo ${carSimulation.car.carId} detenido por semáforo ${nearestLight?.trafficLightId}`);
         } else if (!shouldStop && carSimulation.isStopped) {
-            // Reanudar movimiento
             carSimulation.isStopped = false;
             carSimulation.currentRouteIndex++;
             carSimulation.currentLocation = carSimulation.route[carSimulation.currentRouteIndex];
             await publishLocationUpdate(carSimulation.currentLocation, carSimulation.speed, 'MOVING', carSimulation.car.carId);
         } else if (!carSimulation.isStopped) {
-            // Continuar movimiento normal
             carSimulation.currentRouteIndex++;
             carSimulation.currentLocation = carSimulation.route[carSimulation.currentRouteIndex];
             await publishLocationUpdate(carSimulation.currentLocation, carSimulation.speed, 'MOVING', carSimulation.car.carId);
@@ -127,7 +119,6 @@ function POSTstopSimulation(req: Request, res: Response) {
 
         carSimulation.active = false;
 
-        // Detener todos los semáforos
         trafficLights.forEach(trafficLight => {
             stopTrafficLightCycle(trafficLight.trafficLightId);
         });

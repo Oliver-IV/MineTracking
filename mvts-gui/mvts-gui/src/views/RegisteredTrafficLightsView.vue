@@ -10,8 +10,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  // No desconectes aquí si quieres mantener la conexión
-  // trafficLightsStore.disconnectMqtt();
 });
 </script>
 

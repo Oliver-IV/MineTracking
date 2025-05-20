@@ -4,18 +4,15 @@ import { useVehiclesStore } from '@/stores/vehicles';
 import { useTrafficLightsStore } from '@/stores/trafficLights';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-// components
 import CongestionAlert from '@/components/CongestionAlert.vue';
 import InTransitVehicle from '@/components/InTransitVehicle.vue';
 import CartDetails from '@/components/CartDetails.vue';
 import TrafficLightPill from '@/components/TrafficLightPill.vue';
 import TrafficLightDetails from '@/components/TrafficLightDetails.vue';
 import IconLocation from '@/components/icons/IconLocation.vue';
-// mock data
 import { testCongestions } from '@/mockData/Congestion';
 import { testCart } from '@/mockData/Cart';
 import { testTrafficLights } from '@/mockData/TrafficLight';
-// types
 import type { Cart } from '@/types/front/Cart';
 import type { TrafficLight } from '@/types/front/TrafficLight';
 
@@ -25,18 +22,15 @@ const trafficLights = testTrafficLights;
 const selectedCart = ref<Cart | null>(null);
 const selectedTrafficLight = ref<TrafficLight | null>(null);
 
-// Stores
 const vehiclesStore = useVehiclesStore();
 const trafficLightsStore = useTrafficLightsStore();
 
-// Mapa y marcadores
 const mapContainer = ref<HTMLElement | null>(null);
 let map: L.Map | null = null;
 const carMarkers = ref<Record<string, L.Marker>>({});
 const trafficLightMarkers = ref<Record<string, L.Marker>>({});
 const carRoutes = ref<Record<string, L.Polyline>>({});
 
-// Iconos personalizados
 const carIcon = L.icon({
   iconUrl: 'https://cdn2.iconfinder.com/data/icons/funtime-mechanics/60/001_013_railroad_wagon_train_vehicle_delivery_logistics_cargo-512.png', // Icono de carrito
   iconSize: [32, 32],
@@ -86,12 +80,10 @@ function initMap() {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  // Escuchar cambios en los vehículos
   watch(() => vehiclesStore.vehicles, (newVehicles) => {
     updateVehiclesOnMap(newVehicles);
   }, { deep: true });
 
-  // Escuchar cambios en los semáforos
   watch(() => trafficLightsStore.trafficLights, (newTrafficLights) => {
     updateTrafficLightsOnMap(newTrafficLights);
   }, { deep: true });
@@ -103,7 +95,6 @@ function updateVehiclesOnMap(vehicles: Record<string, any>) {
   Object.entries(vehicles).forEach(([vehicleId, vehicleData]) => {
     const latLng = L.latLng(vehicleData.location.latitude, vehicleData.location.longitude);
 
-    // Crear o actualizar marcador
     if (!carMarkers.value[vehicleId]) {
       carMarkers.value[vehicleId] = L.marker(latLng, {
         icon: carIcon,
@@ -119,10 +110,8 @@ function updateVehiclesOnMap(vehicles: Record<string, any>) {
       carMarkers.value[vehicleId].setLatLng(latLng);
     }
 
-    // Actualizar ruta
     carRoutes.value[vehicleId].addLatLng(latLng);
 
-    // Actualizar popup
     carMarkers.value[vehicleId].bindPopup(`
       <b>Vehículo ${vehicleId}</b><br>
       <img src="https://cdn-icons-png.flaticon.com/512/744/744465.png" width="24"/><br>

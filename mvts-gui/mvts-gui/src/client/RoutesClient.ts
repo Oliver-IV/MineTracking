@@ -1,9 +1,9 @@
 import { HOST_NAME } from "@/configs/configs";
 import type { CreateRouteDto } from "@/types/back/routeDto/create-route.dto";
 import type { LocationDTO } from "@/types/back/routeDto/location.dto";
-import type { Route } from "@/types/front/Route";
+import type { RouteDto } from "@/types/back/routeDto/route.dto";
 
-async function GETfindAllRoutes(): Promise<Route[]> {
+async function GETfindAllRoutes(): Promise<RouteDto[]> {
     try {
         const response = await fetch(`${HOST_NAME}/routes`, {
             method: 'GET',
@@ -12,8 +12,8 @@ async function GETfindAllRoutes(): Promise<Route[]> {
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
-        const routes: Route[] = await response.json();
-        return routes;
+        const jsonResponse = await response.json();
+        return jsonResponse.routes;
     } catch (error) {
         console.error("Error: ", error) ;
         throw error;
@@ -30,15 +30,16 @@ async function GETfindAllLocations(): Promise<LocationDTO[]> {
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
-        const locations: LocationDTO[] = await response.json();
-        return locations;
+        const jsonReponse = await response.json();
+        console.log(jsonReponse)
+        return jsonReponse.locations;
     } catch (error) {
         console.error("Error: ", error) ;
         throw error;
     }
 }
 
-async function POSTcreateRoute(route: CreateRouteDto): Promise<Route> {
+async function POSTcreateRoute(route: CreateRouteDto): Promise<RouteDto> {
     try {
         const response = await fetch(`${HOST_NAME}/routes`, {
             method: 'POST',
@@ -51,7 +52,7 @@ async function POSTcreateRoute(route: CreateRouteDto): Promise<Route> {
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
-        const createdRoute: Route = await response.json();
+        const createdRoute: RouteDto = await response.json();
         return createdRoute;
     } catch (error) {
         console.error("Error: ", error) ;
@@ -59,7 +60,7 @@ async function POSTcreateRoute(route: CreateRouteDto): Promise<Route> {
     }
 }
 
-async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, endId: string }) : Promise<Route> {
+async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, endId: string }) : Promise<RouteDto> {
     try {
         const route = {
             startId: "",
@@ -85,7 +86,7 @@ async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, 
         if (!response.ok) {
             throw new Error(`Error updating route`);
         }
-        const updatedRoute: Route = await response.json();
+        const updatedRoute: RouteDto = await response.json();
         return updatedRoute;
     } catch (error) {
         console.error("Error: ", error) ;

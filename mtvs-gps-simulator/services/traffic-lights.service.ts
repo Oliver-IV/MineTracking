@@ -78,7 +78,6 @@ export class TrafficLightsService {
         if (trafficLight.active) return;
 
         trafficLight.active = true;
-        // Función para ciclar por los colores del semáforo
         const cycleColor = async () => {
             switch (trafficLight.currentState) {
                 case State.RED:

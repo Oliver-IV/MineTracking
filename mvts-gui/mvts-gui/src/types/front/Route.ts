@@ -1,4 +1,4 @@
-import type { Location } from '@/types/Location';
+import type { Location } from "./Location"
 
 export interface Route {
     id: number

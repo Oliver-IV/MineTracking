@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import type { Cart } from '@/types/front/Cart';
 import IconAlert from './icons/IconAlert.vue';
-import type { Cart } from "@/types/Cart";
 import IconMineCart from './icons/IconMineCart.vue';
 
 const props = defineProps<{

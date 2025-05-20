@@ -39,7 +39,6 @@ export class LocationService {
             if (trafficLight.currentState === State.RED || trafficLight.currentState === State.YELLOW) {
                 const distance = this.calculateDistance(carLocation, trafficLight.location);
                 
-                // Verificar si el semáforo está en la dirección del movimiento (si se proporciona dirección)
                 if (!carDirection || this.isInDirection(carLocation, carDirection, trafficLight.location)) {
                     if (distance <= trafficLight.radius && distance < minDistance) {
                         shouldStop = true;
@@ -54,18 +53,16 @@ export class LocationService {
     }
 
     private isInDirection(currentLocation: LocationDto, nextLocation: LocationDto, trafficLightLocation: LocationDto): boolean {
-        // Calcular el vector de dirección del vehículo
+        
         const dxVehicle = nextLocation.longitude - currentLocation.longitude;
         const dyVehicle = nextLocation.latitude - currentLocation.latitude;
         
-        // Calcular vector hacia el semáforo
         const dxToLight = trafficLightLocation.longitude - currentLocation.longitude;
         const dyToLight = trafficLightLocation.latitude - currentLocation.latitude;
         
-        // Calcular el producto punto para determinar si están en la misma dirección
         const dotProduct = dxVehicle * dxToLight + dyVehicle * dyToLight;
         
-        return dotProduct > 0; // Solo considerar semáforos en la dirección del movimiento
+        return dotProduct > 0;
     }
     async publishLocationUpdate(location: LocationDto, speed: number, status: 'MOVING' | 'STOPPED', carId: string): Promise<void> {
         try {

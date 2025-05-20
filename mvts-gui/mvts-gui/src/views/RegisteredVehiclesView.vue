@@ -8,7 +8,6 @@ import { testCart } from '@/mockData/Cart';
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 
-// Define una interfaz para el tipo de carrito
 interface Cart {
     id: string;
     name: string;

@@ -2,33 +2,68 @@
 import IconSee from '../components/icons/IconSee.vue';
 import IconEdit from '@/components/icons/IconEdit.vue';
 import IconTrash from '@/components/icons/IconTrash.vue';
-
-import { testCart } from '@/mockData/Cart';
-import { testRoutes } from '@/mockData/Routes';
-
-import { ref, computed } from 'vue';
-
-
+import { DELETEdeleteRoute, GETfindAllRoutes } from '@/client/RoutesClient'; // Asumo que crearás este cliente
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import type { RouteDto } from '@/types/back/routeDto/route.dto';
 
 const router = useRouter();
-
-const routes = testRoutes;
+const loaded = ref(false);
+const routes = ref<RouteDto[]>([]);
 const searchDeparture = ref('');
 const searchDestination = ref('');
+const loading = ref(true);
+
+async function loadRoutes() {
+    try {
+        loading.value = true;
+        const loadedRoutes = await GETfindAllRoutes();
+        console.log(loadedRoutes);
+        routes.value = loadedRoutes ;
+        loaded.value = true;
+    } catch (error) {
+        console.error("Error loading routes:", error);
+    } finally {
+        loading.value = false;
+    }
+}
 
 const filteredRoutes = computed(() => {
-    return routes.filter(route => {
-        const matchesDeparture = searchDeparture.value === '' || route.locations[0].name.toLowerCase().includes(searchDeparture.value.toLowerCase());
-        const matchesDestination = searchDestination.value === '' || route.locations[1].name.toLowerCase().includes(searchDestination.value.toLowerCase());
+    return routes.value.filter(route => {
+        const matchesDeparture = searchDeparture.value === '' || 
+                               route.start.name.toLowerCase().includes(searchDeparture.value.toLowerCase());
+        const matchesDestination = searchDestination.value === '' || 
+                                 route.end.name.toLowerCase().includes(searchDestination.value.toLowerCase());
         return matchesDeparture && matchesDestination;
-    })
-})
-
+    });
+});
 
 function goToRegisterRoute() {
     router.push({ name: 'registerRoute' });
 }
+
+function viewRouteDetails(routeId: string) {
+    router.push({ name: 'routeDetails', params: { id: routeId } });
+}
+
+function editRoute(routeId: string) {
+    router.push({ name: 'editRoute', params: { id: routeId } });
+}
+
+async function deleteRoute(routeId: string) {
+    if (confirm('Are you sure you want to delete this route?')) {
+        try {
+            await DELETEdeleteRoute(routeId);
+            routes.value = routes.value.filter(route => route.routeId !== routeId);
+        } catch (error) {
+            console.error("Error deleting route:", error);
+        }
+    }
+}
+
+onMounted(() => {
+    loadRoutes();
+});
 </script>
 
 <template>
@@ -50,17 +85,26 @@ function goToRegisterRoute() {
             <p>Actions</p>
         </div>
 
-        <div v-if="filteredRoutes.length > 0" class="info-display" v-for="route in filteredRoutes" :key="route.id">
-            <p>{{ route.id }}</p>
-            <p>{{ route.locations[0].name }}</p>
-            <p>{{ route.locations[1].name }}</p>
-
-            <p class="action-icons">
-                <IconSee />
-                <IconEdit />
-                <IconTrash />
-            </p>
+        <div v-if="loading" class="loading-container">
+            <p>Loading routes...</p>
         </div>
+
+        <div v-else-if="filteredRoutes.length === 0" class="empty-container">
+            <p>No routes found</p>
+        </div>
+
+        <template v-else>
+            <div class="info-display" v-for="route in filteredRoutes" :key="route.routeId">
+                <p>{{ route.routeId }}</p>
+                <p>{{ route.start.name }}</p>
+                <p>{{ route.end.name }}</p>
+                <p class="action-icons">
+                    <IconSee @click="viewRouteDetails(route.routeId)" class="clickable-icon" />
+                    <IconEdit @click="editRoute(route.routeId)" class="clickable-icon" />
+                    <IconTrash @click="deleteRoute(route.routeId)" class="clickable-icon" />
+                </p>
+            </div>
+        </template>
     </div>
 </template>
 

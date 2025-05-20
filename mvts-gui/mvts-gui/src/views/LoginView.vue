@@ -35,7 +35,7 @@ const goToRegister = () => {
     <button @click="login">Entrar</button>
     <p class="message">{{ message }}</p>
 
-    <p>New user? <span @click="goToRegister" class="register-link">Register Nigga</span></p>
+    <p>New user? <span @click="goToRegister" class="register-link">Register</span></p>
   </div>
 </template>
 

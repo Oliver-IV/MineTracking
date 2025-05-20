@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TrafficLight } from '@/types/TrafficLight';
+import type { TrafficLight } from '@/types/front/TrafficLight';
 import IconTrafficLight from './icons/IconTrafficLight.vue';
 
 const props = defineProps<{

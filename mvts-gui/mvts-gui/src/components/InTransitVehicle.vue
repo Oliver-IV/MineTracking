@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { LocationMessageDto } from '@/types/dto/LocationMessageDto';
+import type { LocationMessageDto } from '@/types/back/carRoute/location-message.dto';
 import IconMineCart from './icons/IconMineCart.vue';
 
 const props = defineProps<{

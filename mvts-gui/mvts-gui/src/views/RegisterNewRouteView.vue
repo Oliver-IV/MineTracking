@@ -1,23 +1,71 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
-import { testLocations } from '@/mockData/Locations';
+import type { LocationDTO } from '@/types/back/routeDto/location.dto';
+import { GETfindAllLocations, POSTcreateRoute } from '@/client/RoutesClient';
 
-// Usar el router
 const router = useRouter();
-const locations = testLocations;
+const locations = ref<LocationDTO[]>();
+const loaded = ref(false);
+const loading = ref(true);
 
-// Definir selectedLocation para almacenar la selección
 const selectedOrigen = ref<string | null>(null);
 const selectedDestination = ref<string | null>(null);
 const departureTime = ref<string | null>(null);
 const arrivaleTime = ref<string | null>(null);
 
-// Función para volver atrás
 function goBack() {
     router.back();
 }
+
+async function loadLocations() {
+    try {
+        loading.value = true;
+        const loadedLocations = await GETfindAllLocations();
+        console.log(loadedLocations);
+        locations.value = loadedLocations ;
+        loaded.value = true;
+    } catch (error) {
+        console.error("Error loading locations:", error);
+    } finally {
+        loading.value = false;
+    }
+}
+
+async function registerRoute() {
+    if (!selectedOrigen.value || !selectedDestination.value) {
+        alert("Please select both an origin and a destination.");
+        return;
+    }
+
+    const startLocation = locations.value?.find(loc => loc.name === selectedOrigen.value);
+    const endLocation = locations.value?.find(loc => loc.name === selectedDestination.value);
+
+    if (!startLocation || !endLocation) {
+        alert("Invalid origin or destination selected.");
+        return;
+    }
+
+    try {
+        const postResponse = await POSTcreateRoute({
+            startId: startLocation.id,
+            endId: endLocation.id
+        });
+
+        console.log("Route created successfully:", postResponse);
+        alert("Route created successfully!");
+        router.push('/routes');
+    } catch (error) {
+        console.error("Error creating route:", error);
+        alert("Failed to create route.");
+    }
+}
+
+onMounted(() => {
+    loadLocations();
+});
+
 </script>
 
 <template>
@@ -26,7 +74,7 @@ function goBack() {
             <h1>Create New Route</h1>
             <div class="button-container">
                 <button @click="goBack" class="back-button">Back</button>
-                <button class="register-button">Register</button>
+                <button class="register-button" @click="registerRoute">Register</button>
             </div>
         </div>
         <div class="container">
@@ -44,10 +92,6 @@ function goBack() {
                             {{ location.name }}
                         </option>
                     </select>
-                    <p>Select Departure Time</p>
-                    <input type="time" v-model="departureTime" id="departure-time" name="departure-time">
-                    <p>Estimated Arrival Time</p>
-                    <input type="time" v-model="arrivaleTime" id="departure-time" name="departure-time">
                 </div>
             </div>
             <div class="map">
@@ -111,6 +155,7 @@ function goBack() {
     border: solid 1px #D1D5DB;
     border-radius: 20px;
     padding: 1rem;
+    padding-bottom: 2rem;
 
 }
 
