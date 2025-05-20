@@ -19,12 +19,12 @@ const state = ref(''); async function registerVehicle() {
     const vehicleData: CreateCarDto = {
         name: name.value,
         capacity: {
-            id: 0,
+            capacityId: "0",
             measurementUnit: measurementUnit.value,
             value: capacityValue.value
         },
         type: type.value,
-        state: state.value
+        state: 0
     };
 
     try {

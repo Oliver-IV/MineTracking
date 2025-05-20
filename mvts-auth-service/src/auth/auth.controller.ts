@@ -20,6 +20,7 @@ export class AuthController implements UsersServiceController {
     }
 
     login(request: LoginDTO): Promise<LoginResponse> {
+        console.log(request);
         return this.usersService.login(request);
     }
 

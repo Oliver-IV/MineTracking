@@ -4,6 +4,7 @@ async function POSTgeneratePDF(reportsDetails: ReportDetailsDTO): Promise<void> 
     try {
         const response = await fetch(`${HOST_NAME}/api/reports/generatePDF`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },

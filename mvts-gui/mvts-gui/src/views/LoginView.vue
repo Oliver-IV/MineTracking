@@ -1,4 +1,5 @@
 <script setup>
+import { POTSlogin } from '@/client/AuthClient';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -8,8 +9,17 @@ const message = ref('');
 
 const router = useRouter()
 
-function login() {
-  if (username.value === 'admin' && password.value === '1234') {
+async function login() {
+  // if (username.value === 'admin' && password.value === '1234') {
+  //   router.push('/home') // o cualquier ruta dentro del layout
+  // } else {
+  //   message.value = 'Username or password incorrect.'
+  // }
+  const loginResponse = await POTSlogin({
+    email: username.value,
+    password: password.value
+  })
+  if (loginResponse.success) {
     router.push('/home') // o cualquier ruta dentro del layout
   } else {
     message.value = 'Username or password incorrect.'

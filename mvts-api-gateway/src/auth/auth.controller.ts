@@ -12,9 +12,10 @@ export class AuthController {
 
     @Post('login')
     async login(@Body() loginDto: LoginDto, @Res() res: Response) {
+        console.log(loginDto);
         const response = await this.authService.login(loginDto);
         res.cookie('auth_token', response.token, {
-            httpOnly: false,
+            httpOnly: true,
             secure: true,
             sameSite: 'none',
             expires: new Date(Date.now() + 3600000),

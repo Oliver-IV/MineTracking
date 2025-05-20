@@ -5,7 +5,10 @@ import type { Route } from "@/types/front/Route";
 
 async function GETfindAllRoutes(): Promise<Route[]> {
     try {
-        const response = await fetch(`${HOST_NAME}/routes`);
+        const response = await fetch(`${HOST_NAME}/routes`, {
+            method: 'GET',
+            credentials: "include",
+        });
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
@@ -20,7 +23,10 @@ async function GETfindAllRoutes(): Promise<Route[]> {
 
 async function GETfindAllLocations(): Promise<LocationDTO[]> {
     try {
-        const response = await fetch(`${HOST_NAME}/routes/locations`);
+        const response = await fetch(`${HOST_NAME}/routes/locations`, {
+            method: 'GET',
+            credentials: "include",
+        });
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
@@ -36,6 +42,7 @@ async function POSTcreateRoute(route: CreateRouteDto): Promise<Route> {
     try {
         const response = await fetch(`${HOST_NAME}/routes`, {
             method: 'POST',
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -69,6 +76,7 @@ async function PATCHupdateRoute(routeId: string,locationIds: { startId: string, 
         }
         const response = await fetch(`${HOST_NAME}/routes/${routeId}`, {
             method: 'PATCH',
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -92,6 +100,7 @@ async function DELETEdeleteRoute(routeId: string) {
         }
         const response = await fetch(`${HOST_NAME}/routes/${routeId}`, {
             method: 'DELETE',
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
             }

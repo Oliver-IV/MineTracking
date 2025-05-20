@@ -5,7 +5,10 @@ import type { CreateCarDto } from "@/types/back/carDto/create-car.dto";
 
 async function getAllCarts(): Promise<CarDto[]> {
     try {
-        const response = await fetch(`${HOST_NAME}/cars`);
+        const response = await fetch(`${HOST_NAME}/cars`, {
+            method: 'GET',
+            credentials: "include",
+        });
         if (!response.ok) {
             throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
         }
@@ -21,6 +24,7 @@ export async function createCar(car: CreateCarDto): Promise<CreateCarDto> {
     try {
         const response = await fetch(`${HOST_NAME}/cars`, {
             method: 'POST',
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
             },

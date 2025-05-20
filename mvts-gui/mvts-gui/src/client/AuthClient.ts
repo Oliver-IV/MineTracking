@@ -6,6 +6,7 @@ async function POTSlogin(loginDto: LoginDto) {
     try {
         const response = await fetch(`${HOST_NAME}/auth/login`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -30,6 +31,7 @@ async function POSTregister(registerUserDto: RegisterUserDto): Promise<any> {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                credentials: "include",
             },
             body: JSON.stringify(registerUserDto),
         });
@@ -46,7 +48,8 @@ async function POSTregister(registerUserDto: RegisterUserDto): Promise<any> {
 async function POSTlogout() {
     try {
         const response = await fetch(`${HOST_NAME}/auth/logout`, {
-            method: "POST"
+            method: "POST",
+            credentials: "include",
         });
         if (!response.ok) {
             throw new Error("Error logging out");

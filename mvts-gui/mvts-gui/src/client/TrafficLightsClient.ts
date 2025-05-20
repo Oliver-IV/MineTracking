@@ -7,6 +7,7 @@ async function POSTcreateTrafficLight(createTrafficLightDto: CreateTrafficLightD
     try {
         const response = await fetch(`${HOST_NAME}/trafficLights`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -25,7 +26,10 @@ async function POSTcreateTrafficLight(createTrafficLightDto: CreateTrafficLightD
 
 async function GETgetAllTrafficLights() {
     try {
-        const response = await fetch(`${HOST_NAME}/trafficLights`);
+        const response = await fetch(`${HOST_NAME}/trafficLights`, {
+            method: "GET",
+            credentials: "include",
+        });
         if (!response.ok) {
             throw new Error("Error connecting to the server");;
         }
@@ -40,7 +44,8 @@ async function GETgetAllTrafficLights() {
 async function DELETEdeleteTrafficLight(trafficLightId: string) {
     try {
         const response = await fetch(`${HOST_NAME}/trafficLights/ ${trafficLightId}`, {
-            method: "DELETE"
+            method: "DELETE",
+            credentials: "include",
         }) ;
         if (!response.ok) {
             throw new Error("Error connecting to the server");;
@@ -57,6 +62,7 @@ async function PATCHupdateTrafficLight(trafficLightId: string, updateTrafficLigh
     try {
         const response = await fetch(`${HOST_NAME}/trafficLights/${trafficLightId}`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -76,6 +82,7 @@ async function PATCHupdateTrafficLightState(trafficLightId: string, updateTraffi
     try {
         const response = await fetch(`${HOST_NAME}/trafficLights/${trafficLightId}/state`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
