@@ -11,6 +11,7 @@ namespace mvts_congestion_service.Mappers
                 Lat = dto.Lat,
                 Lng = dto.Lng,
                 Name = dto.Name,
+                Type = (CongestionType)dto.Type,
             };
         }
         public static CongestionDTO ToDTO(this Congestion entity)
@@ -22,7 +23,7 @@ namespace mvts_congestion_service.Mappers
                 Lat = entity.Lat,
                 Lng = entity.Lng,
                 CreatedAt = entity.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ssZ"),
-                //Type = entity.Type.ToString(),
+                Type = (int)entity.Type,
             };
         }
 

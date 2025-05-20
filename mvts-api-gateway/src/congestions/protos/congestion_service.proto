@@ -15,8 +15,9 @@ message ListCongestionDTO {
 
 message CongestionCreateDTO {
 	string name = 1;
-	float lat = 2;
-	float lng = 3;
+	int32 type = 2; 
+	double lat = 3;
+	double lng = 4;
 }
 
 message EmptyMessage {
@@ -33,9 +34,10 @@ message CongestionByIdDTO {
 message CongestionDTO {
 	int32 id = 1;
 	string name = 2;
-	float lat = 3;
-	float lng = 4;
-	string created_at = 5;
+	int32 type = 3; 
+	double lat = 4;
+	double lng = 5;
+	string created_at = 6;
 }
 
 message ErrorResponse  {
