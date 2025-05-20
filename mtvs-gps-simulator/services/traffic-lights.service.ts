@@ -78,22 +78,23 @@ export class TrafficLightsService {
         if (trafficLight.active) return;
 
         trafficLight.active = true;
-
-        // Función para ciclar por los colores del semáforo
         const cycleColor = async () => {
             switch (trafficLight.currentState) {
                 case State.RED:
                     trafficLight.currentState = State.GREEN;
+                    trafficLight.lastUpdate = new Date().toString().split('GMT')[0].trim();;
                     await this.publishTrafficLightUpdate(trafficLight);
                     trafficLight.intervalId = setTimeout(cycleColor, trafficLight.cycleIntervals.green);
                     break;
                 case State.GREEN:
                     trafficLight.currentState = State.YELLOW;
+                    trafficLight.lastUpdate = new Date().toString().split('GMT')[0].trim();;
                     await this.publishTrafficLightUpdate(trafficLight);
                     trafficLight.intervalId = setTimeout(cycleColor, trafficLight.cycleIntervals.yellow);
                     break;
                 case State.YELLOW:
                     trafficLight.currentState = State.RED;
+                    trafficLight.lastUpdate = new Date().toString().split('GMT')[0].trim();;
                     await this.publishTrafficLightUpdate(trafficLight);
                     trafficLight.intervalId = setTimeout(cycleColor, trafficLight.cycleIntervals.red);
                     break;
@@ -155,8 +156,8 @@ export class TrafficLightsService {
     }
 
     findAllTrafficLights(): Promise<TrafficLightDto[]> {
-        console.log("aaaaa") ;
-        console.log(this?.trafficLightsClient) ;
+        console.log("aaaaa");
+        console.log(this?.trafficLightsClient);
         return new Promise((resolve, reject) => {
             this.trafficLightsClient.findAllTrafficLights(
                 Empty,
@@ -190,7 +191,7 @@ export class TrafficLightsService {
                                 },
                                 null,
                                 false,
-                                10
+                                50
                             ));
                         }
                     });

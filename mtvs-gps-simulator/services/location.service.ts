@@ -2,7 +2,8 @@ import { carQueueName, rabbitMqUrl } from "../configs/rabbitmq.config";
 import { LocationMessageDto } from "../dtos/location-message.dto";
 import { LocationDto } from "../dtos/location.dto";
 import { State } from "../dtos/state.enum";
-import { carSimulation } from "../simulated-data/cars.simulation";
+import { TrafficLightDto } from "../dtos/traffic-light.dto";
+import { simulations } from "../simulated-data/cars.simulation";
 import trafficLights from "../simulated-data/traffic-lights.simulation";
 import * as amqp from 'amqplib';
 
@@ -29,18 +30,40 @@ export class LocationService {
         return R * c;
     }
 
-    checkTrafficLights(carLocation: LocationDto): boolean {
+    checkTrafficLights(carLocation: LocationDto, carDirection?: LocationDto): { shouldStop: boolean, nearestLight?: TrafficLightDto } {
+        let shouldStop = false;
+        let nearestLight: TrafficLightDto | undefined;
+        let minDistance = Infinity;
+
         for (const trafficLight of trafficLights) {
             if (trafficLight.currentState === State.RED || trafficLight.currentState === State.YELLOW) {
                 const distance = this.calculateDistance(carLocation, trafficLight.location);
-                if (distance <= trafficLight.radius) {
-                    return true; // Hay un semáforo en rojo/amarillo cerca
+                
+                if (!carDirection || this.isInDirection(carLocation, carDirection, trafficLight.location)) {
+                    if (distance <= trafficLight.radius && distance < minDistance) {
+                        shouldStop = true;
+                        nearestLight = trafficLight;
+                        minDistance = distance;
+                    }
                 }
             }
         }
-        return false; // No hay semáforos en rojo/amarillo cerca
+
+        return { shouldStop, nearestLight };
     }
 
+    private isInDirection(currentLocation: LocationDto, nextLocation: LocationDto, trafficLightLocation: LocationDto): boolean {
+        
+        const dxVehicle = nextLocation.longitude - currentLocation.longitude;
+        const dyVehicle = nextLocation.latitude - currentLocation.latitude;
+        
+        const dxToLight = trafficLightLocation.longitude - currentLocation.longitude;
+        const dyToLight = trafficLightLocation.latitude - currentLocation.latitude;
+        
+        const dotProduct = dxVehicle * dxToLight + dyVehicle * dyToLight;
+        
+        return dotProduct > 0;
+    }
     async publishLocationUpdate(location: LocationDto, speed: number, status: 'MOVING' | 'STOPPED', carId: string): Promise<void> {
         try {
             const connection = await amqp.connect(rabbitMqUrl);
@@ -48,12 +71,15 @@ export class LocationService {
 
             await channel.assertQueue(carQueueName, { durable: true });
 
+            const simulation = simulations.find(simulation => simulation.car.carId === carId);
+
             const message: LocationMessageDto = {
                 timestamp: new Date().toISOString(),
                 location: location,
                 carId: carId,
                 speed: speed,
-                status: status
+                status: status,
+                car: simulation?.car
             };
 
             channel.sendToQueue(carQueueName, Buffer.from(JSON.stringify({

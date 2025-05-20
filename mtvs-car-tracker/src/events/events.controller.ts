@@ -17,7 +17,8 @@ export class EventsController {
       carId: data.carId,
       location: data.location,
       speed: data.speed,
-      status: data.status
+      status: data.status,
+      car: data.car,
     });
     return { processed: true };
   }
@@ -31,7 +32,8 @@ export class EventsController {
       state: data.currentState,
       location: data.location,
       cycleIntervals: data.cycleIntervals,
-      active: data.active
+      active: data.active,
+      lastUpdate: new Date().toLocaleTimeString().split('GMT')[0].trim()
     });
     return { processed: true };
   }
