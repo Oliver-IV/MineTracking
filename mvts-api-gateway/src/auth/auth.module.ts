@@ -20,7 +20,7 @@ import * as fs from 'fs';
           url: AUTH_SERVICE_URL,
           package: 'auth_service',
           protoPath: join(process.cwd(), 'src', 'auth', 'protos', 'auth.proto'),
-          credentials: grpc.credentials.createSsl(fs.readFileSync('./certs/server.crt'))
+          credentials: grpc.credentials.createSsl(fs.readFileSync('./src/auth/certs/server.crt'))
         },
       },
     ])
