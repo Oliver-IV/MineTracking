@@ -20,7 +20,7 @@ import * as grpc from '@grpc/grpc-js';
           url: ROUTES_SERVICE_URL,
           package: 'routes_service',
           protoPath: join(process.cwd(), 'src', 'routes', 'protos', 'routes.proto'),
-          credentials: grpc.credentials.createSsl(fs.readFileSync('./certs/server.crt'))
+          credentials: grpc.credentials.createSsl(fs.readFileSync(join(process.cwd(), "certs", "server.crt")))
         },
       },
     ])

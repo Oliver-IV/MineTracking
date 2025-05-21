@@ -1,0 +1,104 @@
+=== Log de servicios MineTracking Tue, May 20, 2025  8:42:30 PM ===
+=== Iniciando mvts_congestion_service con comando: dotnet run ===
+Compilando...
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5295
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\olive\OneDrive\Documentos\GitHub\MineTracking\mvts_congestion_service
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+pi-gateway con comando: npm run start ===
+
+> mvts-api-gateway@0.0.1 start
+> nest start
+
+webpack 5.99.6 compiled [1m[32msuccessfully[39m[22m in 9057 ms
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mClientsModuwebpack 5.99.6 compiled [1m[32msuccessfully[39m[22m in 11033 ms
+[32m[Nest] 42848  - [39m20/05/2025, 8:42:56 p.m. [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 42848  - [39m20/05/2025, 8:42:56 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +88ms[39m
+[32m[Nest] 42848  - [39m20/05/2025, 8:42:56 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 42848  - [39m20/05/2025, 8:42:56 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +171ms[39m
+[32m[Nest] 42848  - [39m20/05/2025, 8:42:56 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 42848  - [39m20/05/2025, 8:42:56 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCarsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest][1m[33m[@vue/compiler-sfc][0m[33m `defineEmits` is a compiler macro and no longer needs to be imported.[0m
+
+ successfully started[39m[38;5;3m +218ms[39m
+[32m[Nest] 42848  - [39m20/05/2025, 8:42:56 p.m. [32m    LOG[39m [38;5;3m[NestMicroservice] [39m[32mNest microservice successfully started[39m[38;5;3m +19ms[39m
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+traffic light created received: [object Object]
+^C[32mCarsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAppController {/}:[39m[38;5;3m +9ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/, GET} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCongestionsController {/congestions}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/congestions, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/congestions/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/congestions, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/congestions/date/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mTrafficLightsController {/traffic-lights}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/traffic-lights, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/traffic-lights, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/traffic-lights/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/traffic-lights/state/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/traffic-lights/:id, PATCH} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/traffic-lights/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCarsController {/cars}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/cars, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/cars, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/cars/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/cars/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/cars/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mReportsController {/reports}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/reports, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mShipmentsController {/shipments}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/shipments, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/shipments/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/shipments, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/shipments/date/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/auth}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/login, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/register, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/ban-token, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/is-token-banned, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/verify-token, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/auth/get-token-data, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mRoutesController {/routes}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/routes, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/routes, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/routes/locations, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/routes/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/routes/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 11656  - [39m20/05/2025, 8:42:47 p.m. [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +37ms[39m
+^Crvicio mvts-report-service falló al iniciar
+=== Iniciando mvts-routes-service con comando: npm run start ===
+
+> mvts-routes-service@0.0.1 start
+> nest start
+
+[32m[Nest] 23412  - [39m20/05/2025, 8:42:56 p.m. [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 23412  - [39m20/05/2025, 8:42:56 webpack 5.99.6 compiled [1m[32msuccessfully[39m[22m in 7678 ms
+[32m[Nest] 35476  - [39m20/05/2025, 8:43:05 p.m. [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 35476  - [39m20/05/2025, 8:43:05 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +57ms[39m
+[32m[Nest] 35476  - [39m20/05/2025, 8:43:05 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mClientsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 35476  - [39m20/05/2025, 8:43:05 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 35476  - [39m20/05/2025, 8:43:05 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +133ms[39m
+[32m[Nest] 35476  - [39m20/05/2025, 8:43:05 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 35476  - [39m20/05/2025, 8:43:05 p.m. [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTrafficLightsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 35476  - [39m20/05/2025, 8:43:05 p.m. [32m    LOG[39m [38;5;3m[NestMicroservice] [39m[32mNest microservice successfully started[39m[38;5;3m +107ms[39m
