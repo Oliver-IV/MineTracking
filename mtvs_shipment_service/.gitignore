@@ -7,7 +7,8 @@
 *.suo
 *.user
 *.userprefs
-/Properties/launchSettings.json # Evitar exponer configuraciones de lanzamiento locales
+/Properties/launchSettings.json 
+# Evitar exponer configuraciones de lanzamiento locales
 
 
 # Project files (normalmente no se ignoran, pero pueden ser �tiles en ciertos flujos)

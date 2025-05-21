@@ -25,8 +25,8 @@ export class TrafficLightsService {
     private initGrpcClient() {
         try {
             const certOptions = {
-                cert: fs.readFileSync(join(process.cwd(), '/certs/server.crt')),
-                key: fs.readFileSync(join(process.cwd(), '/certs/server.key.decrypted'))
+                cert: fs.readFileSync(join(process.cwd(), '/services/certs/server.crt')),
+                key: fs.readFileSync(join(process.cwd(), '/services/certs/server.key.decrypted'))
             };
             this.trafficLightsClient = new TrafficLightsServiceClient(GRPC_URL,
                 ChannelCredentials.createSsl(

@@ -10,23 +10,23 @@
 /Properties/launchSettings.json # Evitar exponer configuraciones de lanzamiento locales
 
 # Migrations that generate the database
-/Migrations/*
+# /Migrations/*
 
 
-# Project files (normalmente no se ignoran, pero pueden ser útiles en ciertos flujos)
+# Project files (normalmente no se ignoran, pero pueden ser ï¿½tiles en ciertos flujos)
 # /mvts-congestion-service.csproj
 # /mvts-congestion-service.csproj.user
 # /mvts-congestion-service.sln
 
-# Configuration files (depende de tu estrategia de configuración)
+# Configuration files (depende de tu estrategia de configuraciï¿½n)
 /appsettings.Development.json
-# appsettings.Production.json # Podrías considerar ignorar configuraciones específicas de entorno
+# appsettings.Production.json # Podrï¿½as considerar ignorar configuraciones especï¿½ficas de entorno
 # nlog.config # Si utilizas NLog u otro framework de logging
 
 # NuGet related
 /packages/*
 *.nupkg
-# nuget.config # Podrías ignorar la configuración local de NuGet
+# nuget.config # Podrï¿½as ignorar la configuraciï¿½n local de NuGet
 
 # Docker related (si aplica)
 /Dockerfile*
@@ -34,7 +34,7 @@
 
 # Kubernetes related (si aplica)
 /.kube/
-*.yaml # O los archivos de configuración de Kubernetes que uses
+*.yaml # O los archivos de configuraciï¿½n de Kubernetes que uses
 
 # ReSharper cache
 _ReSharper.*

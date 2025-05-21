@@ -12,9 +12,6 @@ services:
       - backend
     volumes:
       - ./mvts-api-gateway/certs:/usr/src/app/certs:ro
-      # - ./mvts-api-gateway/src/auth/certs:/usr/src/app/certs/auth:ro
-      # - ./mvts-api-gateway/src/cars/certs:/usr/src/app/certs/cars:ro
-      # - ./mvts-api-gateway/src/traffic-lights/certs:/usr/src/app/certs/traffic-lights:ro
   cars-manager:
     container_name: cars-manager
     build:
@@ -45,8 +42,8 @@ services:
     depends_on:
       - db
       - rmq
-    expose:
-      - "5000"
+    ports:
+      - "5000:5000"
     volumes:
       - ./mvts-traffic-lights-manager/certs:/usr/src/app/certs
     # ports:
@@ -75,6 +72,8 @@ services:
       context: ./mvts_congestion_service
       dockerfile: Dockerfile
     restart: always
+    expose:
+      - "5000"
     depends_on:
       - db
       - rmq
@@ -88,25 +87,54 @@ services:
       context: ./mtvs_shipment_service
       dockerfile: Dockerfile
     restart: always
+    expose:
+      - "8080"
     depends_on:
       - db
     networks:
       - backend
     environment:
       - ConnectionStrings__PostgreSQLConnection=Host=db;Username=postgres;Password=postgres;Database=mvts_shipments_db
+  car-tracker:
+    build:
+      context: ./mtvs-car-tracker
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - "3000"
+    networks:
+      - backend
+    depends_on:
+      - rmq
+      - mqtt
+    env_file:
+      - ./mtvs-car-tracker/.env
+  routes-manager:
+    build: 
+      context: ./mvts-routes-service
+      dockerfile: Dockerfile
+    container_name: routes-manager
+    depends_on:
+      - db
+    networks:
+      - backend
+    expose:
+      - "5000"
+    env_file:
+      - ./mvts-routes-service/.env
   db:
     image: postgres
     container_name: db
     restart: always
     # set shared memory limit when using docker compose
     # shm_size: 128mb
-    ports:
-      - '5432:5432'
+    expose:
+      - "5432"
     networks:
       - backend
     environment:
       POSTGRES_PASSWORD: "postgres"
-      POSTGRES_MULTIPLE_DATABASES: mvts_users_db, mvts_congestions_db, mvts_users_db, mvts_shipments_db
+      POSTGRES_MULTIPLE_DATABASES: mvts_car_db, mvts_traffic_lights_db, mvts_congestions_db, mvts_users_db, mvts_shipments_db, mvts_routes_db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -126,8 +154,25 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=user
       - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_ALLOW_GUEST=true
     networks:
       - backend
+      - frontend
+  mqtt:
+    build: 
+      context: ./mosquitto
+      dockerfile: Dockerfile
+    container_name: mqtt
+    networks:
+      - backend
+      - frontend
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/data:/mosquitto/data:rw
+      - ./mosquitto/log:/mosquitto/log:rw
+    restart: unless-stopped
 volumes:
   postgres_data:
 

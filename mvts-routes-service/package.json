@@ -30,6 +30,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
     "dotenv": "^16.5.0",
+    "mvts-routes-service": "file:",
     "pg": "^8.16.0",
     "protoc": "^1.1.3",
     "reflect-metadata": "^0.2.2",

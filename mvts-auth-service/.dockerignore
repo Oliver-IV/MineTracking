@@ -1,7 +1,7 @@
 node_modules
 
-# .env
-# .env.*
+.env
+.env.*
 
 *.log
 logs
@@ -17,3 +17,4 @@ build
 test
 __tests__
 coverage
+docker-compose.yml
