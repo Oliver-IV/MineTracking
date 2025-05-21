@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ShipmentFragment">
+    tools:context=".ShipmentLoadFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,42 +15,78 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
-        <!-- Título -->
         <TextView
-            android:id="@+id/notication_title"
+            android:id="@+id/titleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Viaje en transcurso"
+            android:text="Cargamento en progreso"
             android:textColor="@color/blue"
             android:textSize="34sp"
             android:fontFamily="sans-serif-medium"
             android:layout_marginTop="100dp"
             android:layout_marginBottom="8dp" />
 
-        <!-- Texto descriptivo -->
         <TextView
-            android:id="@+id/notication_body"
+            android:id="@+id/simulationIdText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No se puede registrar otro cargamento hasta finalizar la entrega"
+            android:text="ID: Cargando..."
             android:textSize="18sp"
             android:textColor="@color/grayText"
             android:gravity="center"
-            android:layout_marginBottom="250dp" />
+            android:layout_marginBottom="16dp" />
 
+        <TextView
+            android:id="@+id/vehicleInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vehículo: -"
+            android:textSize="16sp"
+            android:textColor="@color/grayText"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/routeInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ruta: -"
+            android:textSize="16sp"
+            android:textColor="@color/grayText"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/materialInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Material: -"
+            android:textSize="16sp"
+            android:textColor="@color/grayText"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/quantityInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cantidad: -"
+            android:textSize="16sp"
+            android:textColor="@color/grayText"
+            android:gravity="center"
+            android:layout_marginBottom="50dp" />
 
         <Button
-            android:id="@+id/btnHome"
+            android:id="@+id/btnFinish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/circle_btn"
             android:paddingVertical="16dp"
-            android:text="Volver a inicio"
+            android:text="Finalizar viaje"
             android:backgroundTint="@color/blue"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:layout_marginTop="16dp" />
     </LinearLayout>
-
 </FrameLayout>

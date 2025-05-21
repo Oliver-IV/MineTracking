@@ -12,8 +12,7 @@ async function getAllCarts(): Promise<CarDto[]> {
         if (!response.ok) {
             throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
         }
-        const jsonCarts = await response.json();
-        const carts = jsonCarts.cars ;
+        const carts = await response.json();
         return carts;
     } catch (error) {
         throw new Error("Failed to get all carts");

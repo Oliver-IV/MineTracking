@@ -2,10 +2,8 @@ package gui.mvts_mobile.dto.vehicle
 
 import com.google.gson.annotations.SerializedName
 
-data class VehicleDTO(
+data class SimulationVehicleDTO(
     @SerializedName("carId") val carId: String,
     @SerializedName("name") val name: String,
-    @SerializedName("type") val type: Int,
-    @SerializedName("state") val state: Int,
-    @SerializedName("capacity") val capacity: CapacityDTO
+    @SerializedName("shipment") val shipment: SimulationShipmentDTO
 )
