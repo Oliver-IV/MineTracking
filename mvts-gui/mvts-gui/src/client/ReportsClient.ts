@@ -2,7 +2,7 @@ import { HOST_NAME } from "@/configs/configs";
 import type { ReportDetailsDTO } from "../types/back/reportsDto/report.detailts.dto";
 async function POSTgeneratePDF(reportsDetails: ReportDetailsDTO): Promise<void> {
     try {
-        const response = await fetch(`${HOST_NAME}/api/reports/generatePDF`, {
+        const response = await fetch(`${HOST_NAME}/reports/`, {
             method: "POST",
             credentials: "include",
             headers: {

@@ -1,31 +1,45 @@
 <script setup lang="ts">
-import Card from '@/components/Card.vue';
+import { ref } from 'vue';
+import { POSTgeneratePDF } from "@/client/ReportsClient";
+
+
+const reportTime = ref('1');
+
+
+async function generateReport() {
+    const reportDetails = {
+        reportType: 1,
+        dateType: parseInt(reportTime.value),
+    };
+
+    try {
+        await POSTgeneratePDF(reportDetails);
+    } catch (error) {
+        console.error("Error generating report:", error);
+    }
+}
 </script>
 
 <template>
-    <h1>
-        Managment Reports
-    </h1>
+    <h1>Delivered Material</h1>
 
-    <div class="card-container">
-        <Card title="Congestiones" :value="777" change="+10 desde ayer" />
-        <Card title="Congestiones" :value="777" change="+10 desde ayer" />
-        <Card title="Congestiones" :value="777" change="+10 desde ayer" />
-        <Card title="Congestiones" :value="777" change="+10 desde ayer" />
-        <Card title="Congestiones" :value="777" change="+10 desde ayer" />
+    <div class="create-report">
+        <p>Report of</p>
+        <select name="date" id="report-time" v-model="reportTime">
+            <option value="1">Today</option>
+            <option value="2">Last 7 days</option>
+            <option value="3">Last 28 days</option>
+        </select>
+        <button @click="generateReport">Generate Report</button>
     </div>
 </template>
 
 <style scoped>
-.card-container {
+.create-report {
     display: flex;
-    justify-content: space-evenly;
-    gap: 2rem;
+    align-items: center;
     width: 90%;
     margin: auto;
-    align-items: center;
-
+    gap: 1rem;
 }
-
-
 </style>

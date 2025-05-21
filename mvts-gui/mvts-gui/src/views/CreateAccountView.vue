@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import { POSTregister } from '@/client/AuthClient';
 
 const name = ref('');
 const lastName = ref('');
@@ -11,9 +11,26 @@ const message = ref('');
 const router = useRouter();
 
 const createAccount = async () => {
+  try {
+    const response = await POSTregister({
+      name: name.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: password.value
+    });
 
+    if (response && response.success) {
+      message.value = 'Account created successfully!';
+      router.push('/login');  // Redirigir a la página de login
+    } else {
+      message.value = 'Error during registration.';
+    }
+  } catch (error) {
+    message.value = `Registration failed: ${error.message}`;
+  }
 };
 </script>
+
 
 <template>
   <div class="register-container">
