@@ -27,7 +27,6 @@ async function loadCarts() {
     try {
         loading.value = true;
         const loadedCarts = await getAllCarts();
-        console.log(loadedCarts)
         carts.value = loadedCarts.map(cart => {
             return {
                 id: cart.id,

@@ -1,11 +1,17 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { 
   CARS_SERVICE_NAME, 
   CarsServiceClient,
-  CreateCarDto, UpdateCarDto 
+  CreateCarDto, 
+  UpdateCarDto,
+  Car,
+  Cars,
+  Empty,
+  FindOneCarDto
 } from './type/cars';
 import { CARS_SERVICE } from '@app/common';
 import { ClientGrpc } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class CarsService implements OnModuleInit {
@@ -14,27 +20,77 @@ export class CarsService implements OnModuleInit {
   constructor(@Inject(CARS_SERVICE) private client: ClientGrpc) {}
 
   onModuleInit() {
-      this.carsService = this.client.getService<CarsServiceClient>(CARS_SERVICE_NAME);
+    this.carsService = this.client.getService<CarsServiceClient>(CARS_SERVICE_NAME);
   }
 
-  create(createCarDto: CreateCarDto) {
-    return this.carsService.createCar(createCarDto);
+  async create(createCarDto: CreateCarDto): Promise<Car> {
+    try {
+      return await lastValueFrom(this.carsService.createCar(createCarDto));
+    } catch (error) {
+      throw new HttpException(
+        'Failed to create car: ' + error.message,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
-  findAll() {
-    return this.carsService.findAllCars({});
+  async findAll(): Promise<Car[]> {
+    try {
+      const response = await lastValueFrom(this.carsService.findAllCars({} as Empty));
+      if (!response || !response.cars) {
+        throw new HttpException('No cars found', HttpStatus.NOT_FOUND);
+      }
+      return response.cars;
+    } catch (error) {
+      throw new HttpException(
+        'Failed to fetch cars: ' + error.message,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
-  findOne(id: string) {
-    return this.carsService.findOneCar({ carId: id });
+  async findOne(id: string): Promise<Car> {
+    try {
+      const car = await lastValueFrom(this.carsService.findOneCar({ carId: id } as FindOneCarDto));
+      if (!car) {
+        throw new HttpException('Car not found', HttpStatus.NOT_FOUND);
+      }
+      return car;
+    } catch (error) {
+      throw new HttpException(
+        'Failed to fetch car: ' + error.message,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
-  update(id: string, updateCarDto: UpdateCarDto) {
-    console.log(id,updateCarDto);
-    return this.carsService.updateCar({...updateCarDto, carId: id});
+  async update(id: string, updateCarDto: UpdateCarDto): Promise<Car> {
+    try {
+      const updateData = { ...updateCarDto, carId: id };
+      const updatedCar = await lastValueFrom(this.carsService.updateCar(updateData));
+      
+      if (!updatedCar) {
+        throw new HttpException('Car update failed', HttpStatus.BAD_REQUEST);
+      }
+      
+      return updatedCar;
+    } catch (error) {
+      throw new HttpException(
+        'Failed to update car: ' + error.message,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
-  remove(id: string) {
-    return this.carsService.removeCar({ carId: id });
+  async remove(id: string): Promise<{ success: boolean }> {
+    try {
+      const result = await lastValueFrom(this.carsService.removeCar({ carId: id } as FindOneCarDto));
+      return { success: !!result };
+    } catch (error) {
+      throw new HttpException(
+        'Failed to delete car: ' + error.message,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 }

@@ -6,6 +6,8 @@ import gui.mvts_mobile.dto.login.LoginRequestDTO
 import gui.mvts_mobile.dto.login.LoginResponseDTO
 import gui.mvts_mobile.dto.route.RouteDTO
 import gui.mvts_mobile.dto.route.RoutesDTO
+import gui.mvts_mobile.dto.route.SimulationDataDTO
+import gui.mvts_mobile.dto.route.SimulationResponse
 import gui.mvts_mobile.dto.shipment.ShipmentCreateDTO
 import gui.mvts_mobile.dto.shipment.ShipmentDTO
 import gui.mvts_mobile.dto.shipment.ShipmentResponseDTO
@@ -28,6 +30,9 @@ interface ApiService {
     fun getShipmentById(@Path("id") shipmentId: String): Call<ShipmentDTO>
 
 
+    @POST("/api/simulation/start")
+    fun startSimulation(@Body simulationDataDTO: SimulationDataDTO): Call<SimulationResponse>
+
     //Endpoint congestion service
     @POST("congestions")
     fun createCongestion(@Body congestionRequest: CongestionCreateDTO): Call<CongestionResponseDTO>
@@ -36,6 +41,6 @@ interface ApiService {
     @GET("routes")
     fun getRoutes(): Call<RoutesDTO>
 
-    @GET("cars/{id}")
-    fun getVehicleById(@Path("id") vehicleId: String): Call<VehicleDTO>
+    @GET("cars")
+    fun findAllCars(): Call<List<VehicleDTO>>
 }

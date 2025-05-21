@@ -14,8 +14,8 @@ export class CarsController {
   }
 
   @Get()
-  findAll() {
-    return this.carsService.findAll();
+  async findAll() {
+    return await this.carsService.findAll();
   }
 
   @Get(':id')

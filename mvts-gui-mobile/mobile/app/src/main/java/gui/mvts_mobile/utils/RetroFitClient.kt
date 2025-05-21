@@ -20,11 +20,21 @@ import javax.net.ssl.X509TrustManager
 
 object RetroFitClient {
     private const val BASE_URL = "https://192.168.100.5:3000/"
+    private const val SIMULATION_URL = "http://192.168.100.5:3001"
 
 //
     fun getApiService(context: Context): ApiService {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return retrofit.create(ApiService::class.java)
+    }
+
+    fun getSimulationService(context: Context): ApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(SIMULATION_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

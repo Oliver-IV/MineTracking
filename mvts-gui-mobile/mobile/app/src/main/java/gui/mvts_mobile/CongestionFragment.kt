@@ -46,7 +46,6 @@ class CongestionFragment : Fragment() {
         btnLogCongestion = view.findViewById(R.id.btnLogCongestion)
         txtDescription = view.findViewById(R.id.txtDescription)
         txtTest = view.findViewById(R.id.testing_input)
-        txtTest.text = appData.token.toString()
 
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, CongestionType.getStrings())
         congestionSpinner.adapter = adapter
