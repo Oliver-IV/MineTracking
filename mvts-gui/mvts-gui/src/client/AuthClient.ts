@@ -20,7 +20,7 @@ async function POTSlogin(loginDto: LoginDto) {
         }
         return response.json();
     } catch (error) {
-        console.error("Error: ", error) ;
+        console.error("Error: ", error);
         throw error;
     }
 }
@@ -29,18 +29,19 @@ async function POSTregister(registerUserDto: RegisterUserDto): Promise<any> {
     try {
         const response = await fetch(`${HOST_NAME}/auth/register`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                credentials: "include",
+
             },
             body: JSON.stringify(registerUserDto),
         });
         if (!response.ok) {
-            throw new Error("Error logging in");
+            throw new Error();
         }
         return response.json();
     } catch (error) {
-        console.error("Error: ", error) ;
+        console.error("Error: ", error);
         throw error;
     }
 }
@@ -56,7 +57,7 @@ async function POSTlogout() {
         }
         return response.json();
     } catch (error) {
-        console.error("Error: ", error) ;
+        console.error("Error: ", error);
         throw error;
     }
 }
