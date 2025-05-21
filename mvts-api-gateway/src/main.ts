@@ -7,12 +7,13 @@ import { CERT_PASS } from './configs/enviroment';
 import { JwtGuard } from './auth/guards/JwtGuard';
 import * as cookieParser from 'cookie-parser';
 import { credentials } from '@grpc/grpc-js';
+import { join } from 'path';
 
 async function bootstrap() {
 
   const httpsOptions = {
-    key: fs.readFileSync("./certs/server.key"),
-    cert: fs.readFileSync("./certs/server.crt"),
+    key: fs.readFileSync(join(process.cwd(), "certs", "server.key")),
+    cert: fs.readFileSync(join(process.cwd(), "certs", "server.crt")),
     passphrase: CERT_PASS
   }
 

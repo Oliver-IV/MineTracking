@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node server.ts",
     "generate-proto": "npx protoc --ts_proto_out=./generated --ts_proto_opt=outputServices=grpc-js --proto_path=./proto ./proto/traffic-lights.proto"
   },
   "keywords": [],
