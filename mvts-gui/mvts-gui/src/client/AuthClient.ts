@@ -12,6 +12,7 @@ async function POTSlogin(loginDto: LoginDto) {
             },
             body: JSON.stringify(loginDto),
         });
+        console.log(response);
         if (response.status === 401) {
             throw new Error("Wrong Credentials");
         }
@@ -36,6 +37,8 @@ async function POSTregister(registerUserDto: RegisterUserDto): Promise<any> {
             },
             body: JSON.stringify(registerUserDto),
         });
+        console.log(response);
+
         if (!response.ok) {
             throw new Error();
         }

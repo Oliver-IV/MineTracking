@@ -1,4 +1,5 @@
-import { carQueueName, rabbitMqUrl } from "../configs/rabbitmq.config";
+import { Inject, OnModuleInit } from "@nestjs/common";
+import { carQueueName, rabbitMqServiceName, rabbitMqUrl } from "../configs/rabbitmq.config";
 import { LocationMessageDto } from "../dtos/location-message.dto";
 import { LocationDto } from "../dtos/location.dto";
 import { State } from "../dtos/state.enum";
@@ -7,7 +8,7 @@ import { simulations } from "../simulated-data/cars.simulation";
 import trafficLights from "../simulated-data/traffic-lights.simulation";
 import * as amqp from 'amqplib';
 
-export class LocationService {
+export class LocationService{
 
     constructor() {
         this.checkTrafficLights = this.checkTrafficLights.bind(this);
@@ -64,15 +65,17 @@ export class LocationService {
         
         return dotProduct > 0;
     }
+
     async publishLocationUpdate(location: LocationDto, speed: number, status: 'MOVING' | 'STOPPED', carId: string): Promise<void> {
         try {
+
             const connection = await amqp.connect(rabbitMqUrl);
             const channel = await connection.createChannel();
-
+            
             await channel.assertQueue(carQueueName, { durable: true });
-
+            
             const simulation = simulations.find(simulation => simulation.car.carId === carId);
-
+            
             const message: LocationMessageDto = {
                 timestamp: new Date().toISOString(),
                 location: location,
@@ -81,12 +84,15 @@ export class LocationService {
                 status: status,
                 car: simulation?.car
             };
-
+            
             channel.sendToQueue(carQueueName, Buffer.from(JSON.stringify({
                 pattern: 'car_location_updates',
                 data: message
             })), {
-                persistent: true
+                persistent: true,
+                headers:{
+                    "x-pattern":"car_location_updates"
+                }
             });
 
             console.log(`Ubicación publicada: ${JSON.stringify(message)}`);

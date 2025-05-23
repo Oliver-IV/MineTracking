@@ -9,12 +9,13 @@ import { TrafficLightsConsumer } from "../consumers/traffic-lights.consumer";
 import { CarDto } from "../dtos/car.dto";
 import { CarSimulationDto } from "../dtos/car-simulation.dto";
 import { simulations } from "../simulated-data/cars.simulation";
+// import {EventLocationService} from "../services/event-location.service";
 
+// var event : EventLocationService;
 const carService = new CarService();
 const locationService = new LocationService();
 const trafficLightsService = new TrafficLightsService();
 const trafficLightsConsumer = new TrafficLightsConsumer(trafficLightsService);
-
 var trafficLightsSimulationStarted = false;
 
 const { simulateGoogleMapsRoute } = carService;
@@ -72,14 +73,14 @@ async function POSTstartSimulation(req: Request, res: Response) {
             console.log('Simulación de vehículo completada: Llegó al destino');
             return;
         }
-
+        
         const nextLocation = carSimulation.route[nextIndex];
         
         const { shouldStop, nearestLight } = checkTrafficLights(
             carSimulation.currentLocation, 
             nextLocation
         );
-
+        
         if (shouldStop && !carSimulation.isStopped) {
             carSimulation.isStopped = true;
             await publishLocationUpdate(carSimulation.currentLocation, 0, 'STOPPED', carSimulation.car.carId);
@@ -88,10 +89,12 @@ async function POSTstartSimulation(req: Request, res: Response) {
             carSimulation.isStopped = false;
             carSimulation.currentRouteIndex++;
             carSimulation.currentLocation = carSimulation.route[carSimulation.currentRouteIndex];
+            // await event.emitLocationUpdate(carSimulation.currentLocation,carSimulation.speed,'MOVING',carSimulation.car.carId);
             await publishLocationUpdate(carSimulation.currentLocation, carSimulation.speed, 'MOVING', carSimulation.car.carId);
         } else if (!carSimulation.isStopped) {
             carSimulation.currentRouteIndex++;
             carSimulation.currentLocation = carSimulation.route[carSimulation.currentRouteIndex];
+            // await event.emitLocationUpdate(carSimulation.currentLocation,carSimulation.speed,'MOVING',carSimulation.car.carId);
             await publishLocationUpdate(carSimulation.currentLocation, carSimulation.speed, 'MOVING', carSimulation.car.carId);
         }
     }, carSimulation.updateInterval);

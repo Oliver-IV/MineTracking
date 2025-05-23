@@ -42,8 +42,8 @@ services:
     depends_on:
       - db
       - rmq
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     volumes:
       - ./mvts-traffic-lights-manager/certs:/usr/src/app/certs
     # ports:
@@ -122,6 +122,21 @@ services:
       - "5000"
     env_file:
       - ./mvts-routes-service/.env
+  simulator:
+    build:
+      context: ./mtvs-gps-simulator
+      dockerfile: Dockerfile
+    container_name: simulator
+    depends_on:
+      - rmq
+      - traffic-lights-manager
+    ports:
+      - "3001:3000"
+    networks:
+      - backend
+      - frontend
+    env_file:
+      - ./mtvs-gps-simulator/.env
   db:
     image: postgres
     container_name: db
@@ -154,7 +169,6 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=user
       - RABBITMQ_DEFAULT_PASS=password
-      - RABBITMQ_ALLOW_GUEST=true
     networks:
       - backend
       - frontend

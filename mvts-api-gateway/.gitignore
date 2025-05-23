@@ -43,11 +43,11 @@ lerna-debug.log*
 .env.production.local
 .env.local
 /certs
-/src/**/certs
-# /src/auth/certs
-# /src/cars/certs
-# /src/traffic-lights/certs
-# /src/routes/certs
+# /src/**/certs
+/src/auth/certs
+/src/cars/certs
+/src/traffic-lights/certs
+/src/routes/certs
 
 # temp directory
 .temp

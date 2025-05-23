@@ -30,7 +30,7 @@ import {
         name: TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE,
         transport: Transport.RMQ,
         options: {
-          urls: [RMQ_URI_2],
+          urls: [RMQ_URI],
           queue: TRAFFIC_LIGHT_COLOR_CHANGE_QUEUE,
         },
       },

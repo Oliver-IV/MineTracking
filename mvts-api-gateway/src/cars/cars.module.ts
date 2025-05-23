@@ -19,7 +19,9 @@ import { CARS_MANAGER_SERVICE_URL } from 'src/configs/enviroment';
           package: CARS_PACKAGE_NAME,
           protoPath: join(__dirname, '../cars.proto'),
           url: CARS_MANAGER_SERVICE_URL,
-          credentials: grpc.credentials.createSsl(fs.readFileSync(join(process.cwd(), "certs", "server.crt"))),
+          credentials: grpc.credentials.createSsl(
+            fs.readFileSync(join(process.cwd(), "src","cars","certs", "server.crt")),
+          ),
         },
       },
     ]),

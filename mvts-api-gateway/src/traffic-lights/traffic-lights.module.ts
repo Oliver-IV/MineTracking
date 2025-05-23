@@ -19,7 +19,9 @@ import { TRAFFIC_LIGHTS_URL } from 'src/configs/enviroment';
             url: TRAFFIC_LIGHTS_URL,
             package: TRAFFIC_LIGHTS_PACKAGE_NAME,
             protoPath: join(__dirname, '../traffic-lights.proto'),
-            credentials: grpc.credentials.createSsl(fs.readFileSync(join(process.cwd(), "certs", "server.crt"))),
+            credentials: grpc.credentials.createSsl(
+              fs.readFileSync(join(process.cwd(), "src","traffic-lights","certs", "server.crt")),
+            ),
           },
         },
       ]),

@@ -1,5 +1,5 @@
 import { Controller, Logger } from '@nestjs/common';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { Ctx, EventPattern, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { MqttService } from '../mqtt/mqtt.service';
 import { LocationMessageDto } from 'src/cars/dtos/location-message.dto';
 
@@ -10,7 +10,7 @@ export class EventsController {
   constructor(private readonly mqttService: MqttService) { }
 
   @EventPattern('car_location_updates')
-  async handleCarLocationUpdate(@Payload() data: LocationMessageDto) {
+  async handleCarLocationUpdate(@Payload() data: LocationMessageDto, @Ctx() context: RmqContext) {
     this.logger.log(`[Controller] Recibida actualización de ubicación para carID: ${data.carId}`);
     this.logger.log(`[Controller] Coordenadas: ${data.location.latitude}, ${data.location.longitude}`);
     this.mqttService.publish('cars/location', {

@@ -18,8 +18,9 @@ const createAccount = async () => {
       email: email.value,
       password: password.value
     });
+    console.log(response);
 
-    if (response && response.success) {
+    if (response) {
       message.value = 'Account created successfully!';
       router.push('/login');  // Redirigir a la página de login
     } else {
